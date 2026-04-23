@@ -138,103 +138,66 @@ body.light .card:hover{border-color:#d4d4d8}
 <!-- DASHBOARD -->
 <div id="tab-dashboard" class="tab active">
 <div style="margin-bottom:12px">
-<div id="dash-greeting" style="font-size:22px;font-weight:700;letter-spacing:-.5px"></div>
-<div id="dash-date" style="font-size:12px;color:var(--text2);margin-top:2px"></div>
-<div class="flex" style="justify-content:space-between"><div id="dash-quote" style="font-style:italic;color:var(--accent2);font-size:12px;margin-top:4px"></div><div id="dash-last-updated" style="font-size:10px;color:var(--text2)"></div></div>
+<div id="dash-greeting" style="font-size:18px;font-weight:700;letter-spacing:-.4px"></div>
+<div id="dash-date" style="font-size:11px;color:var(--text2);margin-top:2px"></div>
 </div>
 <div class="card" id="dash-alerts" style="display:none"></div>
-<!-- Today's Score Ring + Stats -->
-<div class="grid g4 mb16">
-<div class="card" style="text-align:center;padding:16px"><canvas id="dash-ring" width="80" height="80" style="margin:0 auto"></canvas><div id="dash-ring-label" style="font-size:11px;color:var(--text2);margin-top:4px"></div></div>
-<div class="card stat-box" id="dash-stat-1"></div>
-<div class="card stat-box" id="dash-stat-2"></div>
-<div class="card stat-box" id="dash-stat-3"></div>
-</div>
-<div class="grid g2 mb16">
-<div class="card"><h3>Habits</h3><div id="dash-habits"></div></div>
-<div class="card"><h3>Life Log</h3><div id="dash-work"></div></div>
-</div>
-<div class="grid g3 mb16">
-<div class="card"><h3>Finance</h3><div id="dash-finance"></div></div>
-<div class="card"><h3>Outfit</h3><div id="dash-outfit"></div></div>
-<div class="card"><h3>Career</h3><div id="dash-career"></div></div>
-</div>
-<div class="grid g2 mb16">
-<div class="card"><h3>Journal</h3><div id="dash-journal"></div></div>
-<div class="card"><h3>Streaks</h3><div id="dash-streaks"></div></div>
-</div>
-<div class="card"><h3>QUICK ACTIONS</h3>
+<div class="grid g4 mb8" id="dash-top-stats"></div>
+<div class="card"><h3>TODAY</h3><div id="dash-today"></div></div>
+<div class="card"><h3>THIS WEEK</h3><div id="dash-week"></div></div>
 <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:4px">
 <button class="sec" onclick="switchTab('habits')" style="font-size:10px;padding:6px">Habits</button>
 <button class="sec" onclick="switchTab('work')" style="font-size:10px;padding:6px">Life Log</button>
-<button class="sec" onclick="switchTab('finance')" style="font-size:10px;padding:6px">Expense</button>
+<button class="sec" onclick="switchTab('finance')" style="font-size:10px;padding:6px">Finance</button>
 <button class="sec" onclick="switchTab('journal')" style="font-size:10px;padding:6px">Journal</button>
-<button class="sec" onclick="switchTab('outfit')" style="font-size:10px;padding:6px">Outfit</button>
-<button class="sec" onclick="switchTab('career')" style="font-size:10px;padding:6px">Career</button>
-<button class="sec" onclick="generateWeeklyReport()" style="font-size:10px;padding:6px">Report</button>
-<button class="sec" onclick="exportData()" style="font-size:10px;padding:6px">Export</button>
-</div></div>
-<div class="card"><h3>YEAR IN REVIEW</h3><div id="dash-year-review"></div></div>
+</div>
 </div>
 <!-- HABITS TAB -->
 <div id="tab-habits" class="tab">
 <h2 style="margin-bottom:12px">Habits</h2>
-<!-- Gamification bar -->
-<div class="card" id="xp-card">
-<div class="flex" style="justify-content:space-between;align-items:center">
-<div><span id="xp-level" style="font-size:18px;font-weight:700"></span> <span id="xp-title" style="color:var(--text2);font-size:12px"></span></div>
-<div style="text-align:right"><span id="xp-points" style="font-size:13px;font-weight:600;color:var(--accent2)"></span></div>
-</div>
-<div class="xp-bar mt8"><div class="xp-fill" id="xp-fill"></div></div>
-<div id="xp-next" style="font-size:10px;color:var(--text2);margin-top:3px"></div>
-</div>
-<div id="habit-nudge" style="font-size:12px;color:var(--accent2);padding:6px 0"></div>
-<div class="grid g4 mb16" id="habits-stats"></div>
+<div class="grid g4 mb8" id="habits-stats"></div>
 <!-- Date picker -->
-<div class="card" style="padding:12px">
+<div class="card" style="padding:10px">
 <div class="flex" style="justify-content:space-between;align-items:center">
-<button class="sec" onclick="changeHabitDate(-1)">◀</button>
-<div style="text-align:center"><span id="habit-date-label" style="font-size:14px;font-weight:600"></span><br><span id="habit-day-label" style="font-size:11px;color:var(--text2)"></span></div>
-<button class="sec" onclick="changeHabitDate(1)">▶</button>
+<button class="sec" onclick="changeHabitDate(-1)" style="padding:4px 8px">◀</button>
+<div style="text-align:center"><span id="habit-date-label" style="font-size:14px;font-weight:600"></span> <span id="habit-day-label" style="font-size:11px;color:var(--text2)"></span></div>
+<button class="sec" onclick="changeHabitDate(1)" style="padding:4px 8px">▶</button>
 </div>
-<div class="flex mt8" style="justify-content:center;gap:6px">
-<button class="sec" onclick="quickFillAll(true)" style="font-size:10px;padding:3px 7px">Check All</button>
-<button class="sec" onclick="quickFillAll(false)" style="font-size:10px;padding:3px 7px">Uncheck All</button>
-<button class="sec" onclick="copyFromYesterday()" style="font-size:10px;padding:3px 7px">Copy Yesterday</button>
+<div class="flex mt8" style="justify-content:center;gap:3px">
+<button class="sec" style="font-size:9px;padding:2px 6px" onclick="quickFillAll(true)">Check All</button>
+<button class="sec" style="font-size:9px;padding:2px 6px" onclick="quickFillAll(false)">Uncheck</button>
+<button class="sec" style="font-size:9px;padding:2px 6px" onclick="copyFromYesterday()">Copy Yesterday</button>
 </div>
 </div>
-<!-- Habit sections -->
-<div class="card"><div class="flex mb8" style="justify-content:space-between"><h3>Good Habits</h3><button class="sec" onclick="addHabitPrompt('good')" style="font-size:10px;padding:3px 8px">+ Add</button></div><div id="good-habits-list"></div></div>
-<div class="card"><div class="flex mb8" style="justify-content:space-between"><h3>Don'ts</h3><button class="sec" onclick="addHabitPrompt('donts')" style="font-size:10px;padding:3px 8px">+ Add</button></div><div id="donts-list"></div></div>
-<div class="card"><div class="flex mb8" style="justify-content:space-between"><h3>Fitness</h3><button class="sec" onclick="addHabitPrompt('fitness')" style="font-size:10px;padding:3px 8px">+ Add</button></div><div id="fitness-list"></div></div>
-<!-- Water tracker -->
-<div class="card"><h3>Water Tracker</h3>
-<div class="flex" style="align-items:center;gap:16px;margin:8px 0">
+<div id="habit-nudge" style="font-size:11px;color:var(--accent2);padding:4px 0"></div>
+<!-- Habits -->
+<div class="card"><div class="flex" style="justify-content:space-between"><h3>GOOD HABITS</h3><button class="sec" onclick="addHabitPrompt('good')" style="font-size:9px;padding:2px 6px">+ Add</button></div><div id="good-habits-list"></div></div>
+<div class="card"><div class="flex" style="justify-content:space-between"><h3>DON'TS</h3><button class="sec" onclick="addHabitPrompt('donts')" style="font-size:9px;padding:2px 6px">+ Add</button></div><div id="donts-list"></div></div>
+<div class="card"><div class="flex" style="justify-content:space-between"><h3>FITNESS</h3><button class="sec" onclick="addHabitPrompt('fitness')" style="font-size:9px;padding:2px 6px">+ Add</button></div><div id="fitness-list"></div></div>
+<!-- Water -->
+<div class="card">
+<h3>WATER</h3>
+<div class="flex" style="align-items:center;gap:12px;margin:6px 0">
 <div class="water-bar" id="water-bottles"></div>
-<div><span id="water-count" style="font-size:24px;font-weight:700"></span><span style="color:var(--text2);font-size:13px"> / <span id="water-goal">3</span> bottles</span></div>
-<div id="water-status" style="font-size:14px"></div>
+<div><span id="water-count" style="font-size:20px;font-weight:700"></span><span style="color:var(--text2);font-size:11px"> / <span id="water-goal">3</span></span></div>
+<div id="water-status" style="font-size:12px"></div>
+<div style="margin-left:auto" class="flex" style="gap:3px"><button onclick="addWater()" style="padding:3px 8px;font-size:10px">+</button><button class="sec" onclick="removeWater()" style="padding:3px 8px;font-size:10px">-</button>
+<input type="number" id="water-goal-input" min="1" max="10" value="3" style="width:40px;font-size:10px" onchange="updateWaterGoal()"></div>
 </div>
-<div class="flex" style="gap:8px"><button onclick="addWater()">+ Add Bottle</button><button class="sec" onclick="removeWater()">- Remove</button>
-<span style="margin-left:auto;font-size:12px;color:var(--text2)">Goal:</span><input type="number" id="water-goal-input" min="1" max="10" value="3" style="width:60px" onchange="updateWaterGoal()"></div>
 </div>
-<!-- Food log -->
-<div class="card card-collapse open">
-<h3 onclick="toggleCollapse(this)">Food Log <span id="food-date-display" style="font-size:13px;color:var(--text2)"></span></h3>
+<!-- Food -->
+<div class="card card-collapse">
+<h3 onclick="toggleCollapse(this)">FOOD LOG <span id="food-date-display" style="font-size:10px;color:var(--text2)"></span></h3>
 <div class="card-body"><div id="food-log-entries"></div>
-<div class="flex mt8"><button onclick="addFoodEntry()">+ Add Meal</button></div></div>
+<div class="flex mt8"><button class="sec" onclick="addFoodEntry()" style="font-size:9px;padding:2px 6px">+ Add Meal</button></div></div>
 </div>
-<!-- Calendar + Charts -->
-<div class="grid g2">
-<div class="card"><h3>Monthly Calendar</h3><div class="cal-grid" id="habit-calendar"></div></div>
-<div class="card"><h3>Daily Completion</h3><div class="chart-container"><canvas id="habits-chart"></canvas></div></div>
-</div>
-<div class="grid g2">
-<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">Streaks</h3><div class="card-body"><div id="streaks-display"></div></div></div>
-<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">Achievements</h3><div class="card-body"><div id="achievements-display"></div></div></div>
-</div>
-<div class="card"><h3>Daily Note</h3><textarea id="habit-daily-note" placeholder="How was your day? Any reflections..." rows="2" onchange="saveDailyNote()"></textarea></div>
-<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">Weekly Summary</h3><div class="card-body"><div id="weekly-summary"></div></div></div>
-<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">Best & Worst Days</h3><div class="card-body"><div id="best-worst-days"></div></div></div>
+<!-- Calendar -->
+<div class="card"><h3>CALENDAR</h3><div class="cal-grid" id="habit-calendar"></div></div>
+<!-- Collapsible extras -->
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">STREAKS</h3><div class="card-body"><div id="streaks-display"></div></div></div>
+<div class="card"><h3>NOTE</h3><textarea id="habit-daily-note" placeholder="Any reflections..." rows="2" style="font-size:11px" onchange="saveDailyNote()"></textarea></div>
+<!-- Hidden elements needed by JS -->
+<div style="display:none"><div id="xp-level"></div><div id="xp-title"></div><div id="xp-points"></div><div id="xp-fill"></div><div id="xp-next"></div><div id="achievements-display"></div><div id="weekly-summary"></div><div id="best-worst-days"></div><canvas id="habits-chart"></canvas></div>
 </div>
 <!-- WORK TAB -->
 <div id="tab-work" class="tab">
@@ -274,84 +237,83 @@ body.light .card:hover{border-color:#d4d4d8}
 <!-- FINANCE TAB -->
 <div id="tab-finance" class="tab">
 <h2 style="margin-bottom:12px">Finance</h2>
+<!-- 3 clean tabs -->
 <div class="flex" style="gap:2px;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:12px">
-<button class="sec fin-sub active" onclick="switchFinSub('overview')">Overview</button>
-<button class="sec fin-sub" onclick="switchFinSub('expenses')">Expenses</button>
+<button class="sec fin-sub active" onclick="switchFinSub('month')">This Month</button>
 <button class="sec fin-sub" onclick="switchFinSub('investments')">Investments</button>
 <button class="sec fin-sub" onclick="switchFinSub('history')">History</button>
 </div>
-<!-- OVERVIEW -->
-<div id="fin-sub-overview" class="fin-panel">
-<div class="grid g4 mb16">
-<div class="card stat-box"><div class="num" style="font-size:16px;color:var(--green)" id="fin-salary"></div><div class="lbl">Salary</div></div>
-<div class="card stat-box"><div class="num" style="font-size:16px;color:var(--accent2)" id="fin-savings-target"></div><div class="lbl">Savings Target</div></div>
-<div class="card stat-box"><div class="num" style="font-size:16px" id="fin-savings-rate"></div><div class="lbl">Savings Rate</div></div>
-<div class="card stat-box"><div class="num" style="font-size:16px" id="fin-month-trend"></div><div class="lbl">Trend</div></div>
-</div>
-<div class="card"><h3>Account Balances</h3><div class="grid g4" id="account-balances"></div>
-<div class="flex mt8"><button onclick="editAccounts()">Accounts</button><button class="sec" onclick="editSalary()">Salary</button><button class="sec" onclick="showTransfer()">Transfer</button><button class="sec" onclick="showAddIncome()">Income</button><button class="sec" onclick="showRecurring()">Recurring</button><button class="sec" onclick="showParseSMS()">SMS Import</button></div></div>
-<div class="card" id="finance-summary"></div>
-<!-- GOALS -->
-<div class="card"><h3>Financial Goals</h3><div id="fin-goals"></div>
-<div class="flex mt8"><button onclick="showAddGoal()">+ Add Goal</button></div></div>
-<!-- WEALTH -->
-<div class="card"><h3>Wealth Creation</h3><div id="wealth-stats" class="mb8"></div><div class="chart-container"><canvas id="wealth-chart"></canvas></div></div>
-<div class="card"><h3>Where is My Money</h3><div id="money-map"></div></div>
-<div class="grid g2">
-<div class="card"><h3>Budget vs Actual</h3><div class="chart-container"><canvas id="finance-bar"></canvas></div></div>
-<div class="card"><h3>Net Worth</h3><div class="chart-container"><canvas id="networth-chart"></canvas></div></div>
-</div>
-</div>
-<!-- EXPENSES -->
-<div id="fin-sub-expenses" class="fin-panel" style="display:none">
-<div class="flex mb8"><input type="month" id="finance-month" style="width:auto" onchange="renderFinance()"></div>
-<div class="grid g2">
-<div class="card"><h3>His Expenses</h3><table id="his-expenses-table"><thead><tr><th>Category</th><th>Budget</th><th>Actual</th><th>Status</th></tr></thead><tbody></tbody></table>
-<div class="flex mt8"><button onclick="addExpenseCategory('his')">+ Category</button></div></div>
-<div class="card"><h3>My Expenses</h3><table id="my-expenses-table"><thead><tr><th>Category</th><th>Budget</th><th>Actual</th><th>Status</th></tr></thead><tbody></tbody></table>
-<div class="flex mt8"><button onclick="addExpenseCategory('my')">+ Category</button></div></div>
-</div>
+
+<!-- THIS MONTH -->
+<div id="fin-sub-month" class="fin-panel">
+<!-- Top numbers -->
+<div class="grid g4 mb8" id="fin-top-stats"></div>
+<!-- Accounts -->
 <div class="card">
-<h3>Quick Log</h3>
-<div class="flex flex-wrap mb8" style="gap:6px">
-<input type="date" id="exp-date" style="width:auto">
+<div class="flex" style="justify-content:space-between"><h3>ACCOUNTS</h3>
+<div class="flex" style="gap:3px"><button class="sec" onclick="editAccounts()" style="font-size:9px;padding:2px 6px">Edit</button><button class="sec" onclick="showTransfer()" style="font-size:9px;padding:2px 6px">Transfer</button><button class="sec" onclick="showAddIncome()" style="font-size:9px;padding:2px 6px">+ Income</button></div></div>
+<div class="grid g4" id="account-balances" style="margin-top:6px"></div>
+</div>
+<!-- Budget vs Actual — single unified table -->
+<div class="card">
+<div class="flex" style="justify-content:space-between"><h3>BUDGET vs ACTUAL</h3>
+<div class="flex" style="gap:3px">
+<input type="month" id="finance-month" style="width:auto;font-size:10px;padding:2px 6px" onchange="renderFinance()">
+<button class="sec" onclick="editSalary()" style="font-size:9px;padding:2px 6px">Settings</button></div></div>
+<table id="budget-table"><thead><tr><th>Category</th><th style="text-align:right">Budget</th><th style="text-align:right">Actual</th><th style="text-align:right">Left</th></tr></thead><tbody></tbody></table>
+<div class="flex mt8" style="gap:3px"><button class="sec" onclick="addExpenseCategory('his')" style="font-size:9px;padding:2px 6px">+ His category</button><button class="sec" onclick="addExpenseCategory('my')" style="font-size:9px;padding:2px 6px">+ My category</button></div>
+</div>
+<!-- Quick expense log -->
+<div class="card">
+<h3>LOG EXPENSE</h3>
+<div class="flex flex-wrap" style="gap:4px">
 <select id="exp-who" style="width:auto" onchange="updateExpCatDropdown()"><option value="his">His</option><option value="my">My</option></select>
 <select id="exp-cat" style="width:auto"></select>
-<input type="number" id="exp-amt" placeholder="₹" style="width:80px">
+<input type="number" id="exp-amt" placeholder="₹" style="width:70px">
 <select id="exp-account" style="width:auto"></select>
-<input type="text" id="exp-note" placeholder="Note" style="width:100px">
+<input type="text" id="exp-note" placeholder="Note" style="width:80px">
+<input type="date" id="exp-date" style="width:auto">
 <button onclick="addDailyExpense()">Add</button>
 </div>
-<table id="daily-expenses-table"><thead><tr><th>Date</th><th>Who</th><th>Category</th><th>Amount</th><th>A/c</th><th>Note</th><th></th></tr></thead><tbody></tbody></table>
+<table id="daily-expenses-table" style="margin-top:6px"><thead><tr><th>Date</th><th>Who</th><th>Category</th><th style="text-align:right">Amount</th><th>A/c</th><th>Note</th><th></th></tr></thead><tbody></tbody></table>
+<div class="flex mt8" style="gap:3px">
+<button class="sec" onclick="showParseSMS()" style="font-size:9px;padding:2px 6px">SMS Import</button>
+<button class="sec" onclick="showBankCSVImport()" style="font-size:9px;padding:2px 6px">Bank CSV</button>
+<button class="sec" onclick="showRecurring()" style="font-size:9px;padding:2px 6px">Recurring</button>
+<button class="sec" onclick="suggestBudgets()" style="font-size:9px;padding:2px 6px">Auto-Budget</button>
+<button class="sec" onclick="saveMonthSnapshot()" style="font-size:9px;padding:2px 6px">Save Snapshot</button>
 </div>
-<div class="card"><h3>Expense Split</h3><div class="chart-container"><canvas id="finance-doughnut"></canvas></div></div>
-<div class="card"><h3>📅 Spending Heatmap</h3><div class="cal-grid" id="spend-heatmap"></div></div>
-<div class="card"><div class="flex flex-wrap" style="justify-content:space-between;gap:6px"><h3>🤖 Actions</h3>
-<div class="flex flex-wrap" style="gap:4px"><button onclick="saveMonthSnapshot()">Save Month</button><button class="sec" onclick="suggestBudgets()">Auto-Budget</button><button class="sec" onclick="showBankCSVImport()">Bank CSV</button></div></div></div>
 </div>
+<!-- Spending pace -->
+<div class="card" id="finance-summary"></div>
+<!-- Goals -->
+<div class="card"><h3>GOALS</h3><div id="fin-goals"></div>
+<div class="flex mt8"><button class="sec" onclick="showAddGoal()" style="font-size:9px;padding:2px 6px">+ Add Goal</button></div></div>
+</div>
+
 <!-- INVESTMENTS -->
 <div id="fin-sub-investments" class="fin-panel" style="display:none">
-<div class="grid g4 mb16" id="invest-summary"></div>
-<div class="grid g2 mb16">
-<div class="card" style="padding:12px"><h3 style="font-size:13px">Diversification</h3><div class="chart-container" style="height:180px"><canvas id="invest-pie"></canvas></div></div>
-<div class="card" style="padding:12px"><h3 style="font-size:13px">Growth</h3><div class="chart-container" style="height:180px"><canvas id="invest-growth"></canvas></div></div>
-</div>
-<div class="card"><h3>Fixed Deposits</h3><div id="fd-summary" class="mb8" style="font-size:11px"></div>
-<table id="fd-table"><thead><tr><th>Bank</th><th>Amount</th><th>Rate</th><th>Type</th><th>Start</th><th>Maturity</th><th>Interest</th><th>Days Left</th><th></th></tr></thead><tbody></tbody></table>
+<div class="grid g4 mb8" id="invest-summary"></div>
+<div class="card"><h3>FIXED DEPOSITS</h3><div id="fd-summary" style="font-size:10px;color:var(--text2);margin-bottom:4px"></div>
+<table id="fd-table"><thead><tr><th>Bank</th><th style="text-align:right">Amount</th><th>Rate</th><th>Type</th><th>Maturity</th><th style="text-align:right">Interest</th><th>Left</th><th></th></tr></thead><tbody></tbody></table>
 <div class="flex mt8"><button onclick="showAddFD()">+ Add FD</button></div></div>
-<div class="card"><h3>Mutual Funds / SIPs</h3><div id="mf-summary" class="mb8" style="font-size:11px"></div>
-<table id="mf-table"><thead><tr><th>Fund</th><th>Type</th><th>Invested</th><th>Current</th><th>Returns</th><th>XIRR</th><th>SIP/mo</th><th>Start</th><th></th></tr></thead><tbody></tbody></table>
+<div class="card"><h3>MUTUAL FUNDS / SIPs</h3><div id="mf-summary" style="font-size:10px;color:var(--text2);margin-bottom:4px"></div>
+<table id="mf-table"><thead><tr><th>Fund</th><th>Type</th><th style="text-align:right">Invested</th><th style="text-align:right">Current</th><th style="text-align:right">Returns</th><th>XIRR</th><th></th></tr></thead><tbody></tbody></table>
 <div class="flex mt8"><button onclick="showAddMF()">+ Add MF</button>
 <button class="sec" onclick="$('zerodha-csv').click()">Import Zerodha</button>
 <input type="file" id="zerodha-csv" accept=".csv" style="display:none" onchange="importZerodhaCSV(event)">
 </div></div>
-<div class="card"><h3>Monthly Cash Flow</h3><div id="invest-income"></div></div>
-<div class="card"><h3>Upcoming</h3><div id="invest-upcoming"></div></div>
+<div class="card"><h3>UPCOMING</h3><div id="invest-upcoming"></div></div>
+<div class="grid g2">
+<div class="card"><h3>ALLOCATION</h3><div class="chart-container" style="height:180px"><canvas id="invest-pie"></canvas></div></div>
+<div class="card"><h3>NET WORTH</h3><div class="chart-container" style="height:180px"><canvas id="networth-chart"></canvas></div></div>
 </div>
+</div>
+
 <!-- HISTORY -->
 <div id="fin-sub-history" class="fin-panel" style="display:none">
 <div class="flex mb8" style="justify-content:space-between;align-items:center">
-<h3>Monthly History</h3>
+<h3>MONTHLY HISTORY</h3>
 <select id="history-month-select" style="width:auto" onchange="renderFinanceHistory()"><option value="all">All Months</option></select>
 </div>
 <div id="finance-history-table"></div>
@@ -1107,60 +1069,54 @@ initFinanceHistory();
 if(!$('finance-month').value)$('finance-month').value=thisMonth;
 const month=$('finance-month').value;
 const accs=getAccounts(),cfg=getFinanceConfig(),exps=getExpenses();
-// Salary & savings - per month
-const monthlySalary=LS.get('monthlySalary',{'2025-11':213000,'2025-12':213000,'2026-01':213000,'2026-02':213000,'2026-03':213000});
-const curSalary=monthlySalary[month]||cfg.salary||0;
-$('fin-salary').textContent=inr(curSalary);
-$('fin-savings-target').textContent=inr(cfg.savingsTarget);
-// Month trend from history
-const hist=LS.get('finHistory',{});const months=Object.keys(hist).sort();
-if(months.length>=2){const last=hist[months[months.length-1]],prev=hist[months[months.length-2]];
-const lastTotal=last.accounts.reduce((s,a)=>s+a.bal,0),prevTotal=prev.accounts.reduce((s,a)=>s+a.bal,0);
-const diff=lastTotal-prevTotal;$('fin-month-trend').innerHTML=`<span style="color:${diff>=0?'var(--green)':'var(--red)'}">${inr(Math.abs(diff))} ${diff>=0?'↑':'↓'}</span>`}
-else{$('fin-month-trend').textContent='—'}
-// Balances
+const ms=LS.get('monthlySalary',{});const curSalary=ms[month]||cfg.salary||0;
+const monthExps=exps.filter(e=>e.date&&e.date.startsWith(month));
+const overrides=LS.get('actualOverrides',{});
+function getAct(who,cats){return cats.reduce((s,c)=>{const ok=`${month}_${who}_${c.name}`;
+return s+(overrides[ok]!==undefined?overrides[ok]:monthExps.filter(e=>e.who===who&&e.cat===c.name).reduce((s2,e)=>s2+e.amount,0))},0)}
+const hisTotal=cfg.hisCats.reduce((s,c)=>s+c.budget,0),myTotal=cfg.myCats.reduce((s,c)=>s+c.budget,0);
+const hisActual=getAct('his',cfg.hisCats),myActual=getAct('my',cfg.myCats);
+const totalBudget=hisTotal+myTotal,totalActual=hisActual+myActual,diff=totalBudget-totalActual;
 const inHand=accs.filter(a=>['AXIS','SLICE','CASH','SODEXO'].includes(a.name)).reduce((s,a)=>s+a.bal,0);
 const savings=accs.filter(a=>['MF','FD','PF'].includes(a.name)).reduce((s,a)=>s+a.bal,0);
-let bhtml=accs.map(a=>`<div class="stat-box"><div class="num" style="font-size:18px">${inr(a.bal)}</div><div class="lbl">${a.name}</div></div>`).join('');
-bhtml+=`<div class="stat-box"><div class="num" style="font-size:18px;color:var(--green)">${inr(inHand)}</div><div class="lbl">In Hand</div></div>`;
-bhtml+=`<div class="stat-box"><div class="num" style="font-size:18px;color:var(--accent2)">${inr(savings)}</div><div class="lbl">Savings</div></div>`;
-$('account-balances').innerHTML=bhtml;
-// Expenses tables
-const monthExps=exps.filter(e=>e.date&&e.date.startsWith(month));
-renderExpTable('his',cfg.hisCats,monthExps);
-renderExpTable('my',cfg.myCats,monthExps);
-// Summary — use overrides if present
-const overrides=LS.get('actualOverrides',{});
-function getActual(who,cats){return cats.reduce((s,c)=>{
+// Top stats
+$('fin-top-stats').innerHTML=`
+<div class="card stat-box"><div class="num" style="font-size:16px">${inr(inHand+savings)}</div><div class="lbl">Net Worth</div></div>
+<div class="card stat-box"><div class="num" style="font-size:16px;color:var(--green)">${inr(curSalary)}</div><div class="lbl">Salary</div></div>
+<div class="card stat-box"><div class="num" style="font-size:16px">${inr(totalActual)}</div><div class="lbl">Spent</div></div>
+<div class="card stat-box"><div class="num" style="font-size:16px;color:${diff>=0?'var(--green)':'var(--red)'}">${inr(Math.abs(diff))}</div><div class="lbl">${diff>=0?'Saved':'Over'}</div></div>`;
+// Accounts
+$('account-balances').innerHTML=accs.map(a=>`<div style="text-align:center;padding:6px"><div style="font-size:14px;font-weight:700">${inr(a.bal)}</div><div style="font-size:9px;color:var(--text2)">${a.name}</div></div>`).join('');
+// Unified budget table
+let btHtml='';
+const renderCatRows=(who,cats,label)=>{
+btHtml+=`<tr><td colspan="4" style="font-weight:700;padding-top:8px;color:var(--text2);font-size:10px;text-transform:uppercase;letter-spacing:.3px">${label}</td></tr>`;
+cats.forEach((c,i)=>{
 const ok=`${month}_${who}_${c.name}`;
-return s+(overrides[ok]!==undefined?overrides[ok]:monthExps.filter(e=>e.who===who&&e.cat===c.name).reduce((s2,e)=>s2+e.amount,0))},0)}
-const hisTotal=cfg.hisCats.reduce((s,c)=>s+c.budget,0);const myTotal=cfg.myCats.reduce((s,c)=>s+c.budget,0);
-const hisActual=getActual('his',cfg.hisCats);const myActual=getActual('my',cfg.myCats);
-const totalBudget=hisTotal+myTotal,totalActual=hisActual+myActual,diff=totalBudget-totalActual;
+const actual=overrides[ok]!==undefined?overrides[ok]:monthExps.filter(e=>e.who===who&&e.cat===c.name).reduce((s,e)=>s+e.amount,0);
+const left=c.budget-actual;
+btHtml+=`<tr><td>${c.name}</td>
+<td style="text-align:right"><input type="number" value="${c.budget}" style="width:70px;text-align:right" onchange="updateBudget('${who}',${i},this.value)"></td>
+<td style="text-align:right"><input type="number" value="${actual}" style="width:70px;text-align:right" onchange="updateActual('${who}','${c.name}',this.value)"></td>
+<td style="text-align:right;color:${left>=0?'var(--green)':'var(--red)'};font-weight:600;font-size:11px">${left>=0?inr(left):'-'+inr(Math.abs(left))}</td></tr>`})};
+renderCatRows('his',cfg.hisCats,'His expenses');
+renderCatRows('my',cfg.myCats,'My expenses');
+btHtml+=`<tr style="border-top:2px solid var(--border);font-weight:700"><td>TOTAL</td><td style="text-align:right">${inr(totalBudget)}</td><td style="text-align:right">${inr(totalActual)}</td>
+<td style="text-align:right;color:${diff>=0?'var(--green)':'var(--red)'}">${diff>=0?inr(diff):'-'+inr(Math.abs(diff))}</td></tr>`;
+$('budget-table').querySelector('tbody').innerHTML=btHtml;
 // Spending pace
-const dayOfMonth=new Date().getDate();const daysInM=daysInMonth(new Date().getFullYear(),new Date().getMonth());
-const paceExpected=Math.round(totalBudget*(dayOfMonth/daysInM));
-const paceStatus=totalActual<=paceExpected?'✅ On track':'⚠️ Spending fast';
+const dayOfMonth=new Date().getDate(),daysInM=daysInMonth(new Date().getFullYear(),new Date().getMonth());
 const dailyAvg=dayOfMonth>0?Math.round(totalActual/dayOfMonth):0;
-const projectedTotal=dailyAvg*daysInM;
-$('finance-summary').innerHTML=`<h3>Monthly Summary</h3>
-<div class="grid g4"><div class="stat-box"><div class="num" style="font-size:16px">${inr(hisTotal)}</div><div class="lbl">His Budget</div></div>
-<div class="stat-box"><div class="num" style="font-size:16px">${inr(myTotal)}</div><div class="lbl">My Budget</div></div>
-<div class="stat-box"><div class="num" style="font-size:16px">${inr(totalActual)}</div><div class="lbl">Total Spent</div></div>
-<div class="stat-box"><div class="num" style="font-size:16px;color:${diff>=0?'var(--green)':'var(--red)'}">${inr(Math.abs(diff))}</div><div class="lbl">${diff>=0?'✅ Under Budget':'⚠️ Over Budget'}</div></div></div>
-<div style="margin-top:10px;padding:10px;background:var(--card2);border-radius:8px;font-size:12px">
-<div class="flex" style="justify-content:space-between"><span>📊 Day ${dayOfMonth}/${daysInM} — Expected pace: ${inr(paceExpected)}</span><span style="font-weight:600">${paceStatus}</span></div>
-<div class="flex mt8" style="justify-content:space-between"><span>Daily avg: ${inr(dailyAvg)}/day</span><span>Projected month-end: <strong style="color:${projectedTotal>totalBudget?'var(--red)':'var(--green)'}">${inr(projectedTotal)}</strong></span></div>
-</div>`;
-// Spending insights
+const projected=dailyAvg*daysInM;
+$('finance-summary').innerHTML=`<h3>PACE</h3>
+<div style="font-size:11px;display:flex;justify-content:space-between"><span>Day ${dayOfMonth}/${daysInM}</span><span>${inr(dailyAvg)}/day</span><span>Projected: <strong style="color:${projected>totalBudget?'var(--red)':'var(--green)'}">${inr(projected)}</strong></span></div>`;
 const insights=getSpendingInsights();
-if(insights.length){$('finance-summary').innerHTML+=`<div style="margin-top:8px;padding:8px;background:var(--card2);border-radius:8px;font-size:11px">${insights.map(i=>'<div style="padding:2px 0">'+i+'</div>').join('')}</div>`}
-// Daily log
-$('exp-date').value=$('exp-date').value||todayStr;
-updateExpCatDropdown();
-let dhtml='';monthExps.sort((a,b)=>b.date.localeCompare(a.date)).forEach((e,i)=>{
-dhtml+=`<tr><td>${fmtDate(e.date)}</td><td>${e.who}</td><td>${e.cat}</td><td>${inr(e.amount)}</td><td>${e.account||'—'}</td><td style="color:var(--text2)">${e.note||''}</td><td><button class="sec" style="padding:2px 6px" onclick="removeExpense(${exps.indexOf(e)})">✕</button></td></tr>`});
-$('daily-expenses-table').querySelector('tbody').innerHTML=dhtml||'<tr><td colspan="6" style="text-align:center;color:var(--text2)">No expenses logged</td></tr>';
+if(insights.length)$('finance-summary').innerHTML+=`<div style="margin-top:6px;font-size:10px;color:var(--text2)">${insights.slice(0,3).map(i=>'<div>'+i+'</div>').join('')}</div>`;
+// Expense log
+$('exp-date').value=$('exp-date').value||todayStr;updateExpCatDropdown();
+let dhtml='';monthExps.sort((a,b)=>b.date.localeCompare(a.date)).forEach(e=>{
+dhtml+=`<tr><td>${fmtDate(e.date)}</td><td style="font-size:10px">${e.who}</td><td>${e.cat}</td><td style="text-align:right">${inr(e.amount)}</td><td style="font-size:10px">${e.account||'—'}</td><td style="color:var(--text2);font-size:10px">${e.note||''}</td><td><button class="sec" style="padding:1px 4px;font-size:9px" onclick="removeExpense(${exps.indexOf(e)})">✕</button></td></tr>`});
+$('daily-expenses-table').querySelector('tbody').innerHTML=dhtml||'<tr><td colspan="7" style="text-align:center;color:var(--text2)">No expenses</td></tr>';
 renderFinanceCharts(month);
 }
 function renderExpTable(who,cats,monthExps){
@@ -1596,29 +1552,7 @@ cfg.savingsTarget=parseFloat($('edit-savings').value)||0;LS.set('finConfig',cfg)
 LS.set('salaryDay',parseInt($('edit-salary-day').value)||1);
 closeModal();renderFinance()}
 function renderFinanceCharts(month){
-const cfg=getFinanceConfig(),exps=getExpenses().filter(e=>e.date&&e.date.startsWith(month));
-const allCats=[...cfg.hisCats,...cfg.myCats];
-const labels=allCats.map(c=>c.name),budgets=allCats.map(c=>c.budget);
-const actuals=allCats.map(c=>{const who=cfg.hisCats.includes(c)?'his':'my';return exps.filter(e=>e.who===who&&e.cat===c.name).reduce((s,e)=>s+e.amount,0)});
-makeChart('finance-bar',{type:'bar',data:{labels,datasets:[{label:'Budget',data:budgets,backgroundColor:'#7c5cfc'},{label:'Actual',data:actuals,backgroundColor:'#ef4444'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#888'}}}}});
-const catTotals=allCats.map((_,i)=>actuals[i]).filter(v=>v>0);const catLabels=allCats.filter((_,i)=>actuals[i]>0).map(c=>c.name);
-const colors=['#7c5cfc','#22c55e','#eab308','#ef4444','#3b82f6','#ec4899','#f97316','#6b7280','#14b8a6','#8b5cf6','#f43f5e','#84cc16','#06b6d4'];
-makeChart('finance-doughnut',{type:'doughnut',data:{labels:catLabels,datasets:[{data:catTotals,backgroundColor:colors.slice(0,catLabels.length)}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#888',font:{size:11}}}}}});
-// Spending heatmap
-const hm=$('spend-heatmap');if(hm){
-const[y,mo]=[parseInt(month.split('-')[0]),parseInt(month.split('-')[1])-1];
-const dim=daysInMonth(y,mo),firstDay=new Date(y,mo,1).getDay();
-const allExps=getExpenses().filter(e=>e.date&&e.date.startsWith(month)&&e.who!=='income'&&e.who!=='transfer');
-const dayTotals={};allExps.forEach(e=>{dayTotals[e.date]=(dayTotals[e.date]||0)+e.amount});
-const maxSpend=Math.max(1,...Object.values(dayTotals));
-let hmHtml=DAYS.map(d=>`<div style="font-size:9px;color:var(--text2);text-align:center;font-weight:600">${d}</div>`).join('');
-for(let i=0;i<firstDay;i++)hmHtml+=`<div class="cal-day empty"></div>`;
-for(let d=1;d<=dim;d++){const ds=`${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-const spent=dayTotals[ds]||0;const intensity=spent>0?Math.max(0.15,spent/maxSpend):0;
-const isToday=ds===todayStr;
-hmHtml+=`<div class="cal-day ${isToday?'today':''}" style="background:rgba(239,68,68,${intensity});color:${intensity>0.5?'#fff':'var(--text2)'};font-size:10px;cursor:default" title="${ds}: ${inr(spent)}">${d}</div>`}
-hm.innerHTML=hmHtml}
-renderFinanceHistory();renderNetworthChart();renderInvestments();renderGoals();renderWealth();applyRecurring();
+renderFinanceHistory();renderNetworthChart();renderInvestments();renderGoals();applyRecurring();
 }
 function saveMonthSnapshot(){
 const month=$('finance-month').value||thisMonth;
@@ -2569,131 +2503,60 @@ const hour=today.getHours();
 const greet=hour<12?'Good morning':hour<17?'Good afternoon':hour<21?'Good evening':'Good night';
 $('dash-greeting').textContent=greet;
 $('dash-date').textContent=today.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-$('dash-quote').textContent='💡 "'+QUOTES[today.getDate()%QUOTES.length]+'"';
-const lu=LS.get('lastUpdated');$('dash-last-updated').textContent=lu?'Last active: '+new Date(lu).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}):'';
-// Score ring
 const habits=getHabits(),hData=getHabitData(),water=getWaterData(),wGoal=getWaterGoal();
-const sc=calcDayScore(todayStr);
-const canvas=$('dash-ring');if(canvas){const ctx=canvas.getContext('2d');const cx=40,cy=40,r=32;
-ctx.clearRect(0,0,80,80);
-ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle=document.body.classList.contains('light')?'#e4e4e7':'#23232e';ctx.lineWidth=6;ctx.stroke();
-ctx.beginPath();ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*(sc.pct/100));
-ctx.strokeStyle=sc.pct>=70?'#22c55e':sc.pct>=40?'#eab308':'#ef4444';ctx.lineWidth=6;ctx.lineCap='round';ctx.stroke();
-ctx.fillStyle=getComputedStyle(document.body).getPropertyValue('--text');ctx.font='bold 16px Inter';ctx.textAlign='center';ctx.textBaseline='middle';
-ctx.fillText(sc.pct+'%',cx,cy)}
-$('dash-ring-label').textContent='Today\'s Score';
-// Stats
+const sc=calcDayScore(todayStr);const wc=water[todayStr]||0;
 const dayType=classifyDay(todayStr);
-const{xp}=calcXP();let lvl=LEVELS[0];for(const l of LEVELS){if(xp>=l.xp)lvl=l}
-$('dash-stat-1').innerHTML=`<div class="num" style="font-size:16px">Lv.${lvl.lvl}</div><div class="lbl">${lvl.title}</div>`;
-$('dash-stat-2').innerHTML=`<div class="num" style="font-size:16px;color:${dayType?dayType.color:'var(--text2)'}">${dayType?dayType.name:'—'}</div><div class="lbl">Vibe</div>`;
-const wc=water[todayStr]||0;
-$('dash-stat-3').innerHTML=`<div class="num" style="font-size:16px;color:${wc>=wGoal?'var(--green)':'var(--text2)'}">${wc}/${wGoal}</div><div class="lbl">💧 Water</div>`;
+const accs=getAccounts();const netWorth=accs.reduce((s,a)=>s+a.bal,0);
+// Top 4 stats
+$('dash-top-stats').innerHTML=`
+<div class="card stat-box"><div class="num" style="font-size:16px">${sc.pct}%</div><div class="lbl">Habits</div></div>
+<div class="card stat-box"><div class="num" style="font-size:16px">${wc}/${wGoal}</div><div class="lbl">Water</div></div>
+<div class="card stat-box"><div class="num" style="font-size:16px">${dayType?dayType.name:'—'}</div><div class="lbl">Vibe</div></div>
+<div class="card stat-box"><div class="num" style="font-size:16px">${inr(netWorth)}</div><div class="lbl">Net Worth</div></div>`;
+// Today card — what's done, what's not
+let todayHtml='<div style="font-size:11px">';
 // Habits
-const cats=['good','donts','fitness'];let hhtml='';
-cats.forEach(cat=>{habits[cat].forEach((name)=>{const done=hData[`${cat}_${name}_${todayStr}`];
-hhtml+=`<div class="flex" style="padding:2px 0;font-size:12px"><span>${done?'✅':'⬜'}</span><span style="margin-left:6px">${name}</span></div>`})});
-hhtml+=`<div class="flex" style="padding:2px 0;font-size:12px"><span>${wc>=wGoal?'✅':'⬜'}</span><span style="margin-left:6px">💧 Water: ${wc}/${wGoal}</span></div>`;
-$('dash-habits').innerHTML=hhtml;
-// Life Log summary
-const wData2=getWorkData(),wd3=wData2[todayStr]||{},wHrs=wd3.hours||{};
-const filled=getDayActivities(todayStr);
-let whtml='';
-if(filled.length){
-const catCount={};filled.forEach(c=>{catCount[c]=(catCount[c]||0)+1});
-whtml+=`<div style="font-size:14px;font-weight:600;margin-bottom:6px">${dayType?dayType.name:'—'} · ${filled.length} activities</div>`;
-Object.entries(catCount).sort((a,b)=>b[1]-a[1]).forEach(([c,n])=>{
-whtml+=`<div style="font-size:12px;padding:2px 0"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${CAT_COLORS[c]||'#888'};margin-right:4px"></span>${c}: ${n}</div>`});
-}else{whtml='<p style="color:var(--text2);font-size:13px">No hours logged today</p>'}
-$('dash-work').innerHTML=whtml;
-// Finance
-const accs=getAccounts();const inHand=accs.filter(a=>['AXIS','SLICE','CASH','SODEXO'].includes(a.name)).reduce((s,a)=>s+a.bal,0);
-const sav=accs.filter(a=>['MF','FD','PF'].includes(a.name)).reduce((s,a)=>s+a.bal,0);
-$('dash-finance').innerHTML=`<div class="stat-box" style="padding:8px"><div class="num" style="font-size:20px">${inr((inHand+sav))}</div><div class="lbl">Net Worth</div></div>
-<div class="flex" style="justify-content:space-around;font-size:12px;color:var(--text2)"><span>In Hand: ${inr(inHand)}</span><span>Savings: ${inr(sav)}</span></div>`;
+const cats=['good','donts','fitness'];let done=0,total=0;
+cats.forEach(cat=>{habits[cat].forEach(name=>{total++;const d=hData[`${cat}_${name}_${todayStr}`];if(d)done++;
+todayHtml+=`<div style="padding:1px 0;color:${d?'var(--green)':'var(--text2)'}">${d?'✓':'○'} ${name}</div>`})});
+todayHtml+=`<div style="padding:1px 0;color:${wc>=wGoal?'var(--green)':'var(--text2)'}">${wc>=wGoal?'✓':'○'} Water ${wc}/${wGoal}</div>`;
 // Outfit
-const outfits=getOutfits(),hist=getOutfitHistory(),te=hist[todayStr];
-if(te&&te.outfit){const o=outfits.find(x=>x.id===te.outfit);$('dash-outfit').innerHTML=`<div style="font-size:18px;font-weight:600;padding:8px">#${te.outfit} ${o?o.name:''}</div>`}
-else if(te&&te.off){$('dash-outfit').innerHTML='<div style="font-size:18px;padding:8px">😴 Day Off</div>'}
-else{$('dash-outfit').innerHTML='<div style="padding:8px"><p style="color:var(--text2)">No outfit picked</p><button onclick="switchTab(\'outfit\')" style="margin-top:8px">Pick one →</button></div>'}
-// Career
-const cData=getCareerData(),goals=getCareerGoals();
-const thisM=cData.filter(e=>e.date&&e.date.startsWith(thisMonth));
-let chtml='';['Resume Update','Job Application','LeetCode','Coursera/Course'].forEach(t=>{
-const cnt=thisM.filter(e=>e.type===t).length;const g=goals[t]||0;
-chtml+=`<div class="flex" style="font-size:12px;padding:2px 0;justify-content:space-between"><span>${t}</span><span style="font-weight:600">${cnt}/${g} ${cnt>=g&&g?'✅':''}</span></div>`});
-$('dash-career').innerHTML=chtml;
-// Journal
-const jData=getJournalData();const recent=[...jData].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);
-let jhtml='';recent.forEach(e=>{jhtml+=`<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px"><strong>${e.title||'Untitled'}</strong> ${e.mood||''} <span style="color:var(--text2)">${fmtDate(e.date)}</span></div>`});
-$('dash-journal').innerHTML=jhtml||'<p style="color:var(--text2);font-size:13px">No journal entries yet</p>';
-// Streaks summary
-let shtml='<div class="flex flex-wrap" style="gap:8px">';
-// Habit streak (days with >50% completion)
-let habitStreak=0;for(let i=0;i<60;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
-const sc2=calcDayScore(ds);if(sc2.pct>=50)habitStreak++;else break}
-shtml+=`<div style="padding:8px 12px;background:var(--card2);border-radius:8px;text-align:center;min-width:80px"><div style="font-size:18px;font-weight:700">${habitStreak>0?'🔥'+habitStreak:'—'}</div><div style="font-size:10px;color:var(--text2)">Habits</div></div>`;
-// Life log streak
-let logStreak=0;for(let i=0;i<60;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
-if(getDayActivities(ds).length>0)logStreak++;else break}
-shtml+=`<div style="padding:8px 12px;background:var(--card2);border-radius:8px;text-align:center;min-width:80px"><div style="font-size:18px;font-weight:700">${logStreak>0?'📋'+logStreak:'—'}</div><div style="font-size:10px;color:var(--text2)">Life Log</div></div>`;
-// Journal streak
-let jStreak=0;for(let i=0;i<60;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
-if(jData.some(e=>e.date===ds))jStreak++;else break}
-shtml+=`<div style="padding:8px 12px;background:var(--card2);border-radius:8px;text-align:center;min-width:80px"><div style="font-size:18px;font-weight:700">${jStreak>0?'📝'+jStreak:'—'}</div><div style="font-size:10px;color:var(--text2)">Journal</div></div>`;
-// Water streak
-let wStreak=0;const wd2=getWaterData(),wg2=getWaterGoal();for(let i=0;i<60;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);if((wd2[ds]||0)>=wg2)wStreak++;else break}
-shtml+=`<div style="padding:8px 12px;background:var(--card2);border-radius:8px;text-align:center;min-width:80px"><div style="font-size:18px;font-weight:700">${wStreak>0?'💧'+wStreak:'—'}</div><div style="font-size:10px;color:var(--text2)">Water</div></div>`;
-shtml+='</div>';$('dash-streaks').innerHTML=shtml;
-// Smart alerts
+const outHist=getOutfitHistory(),outfits=getOutfits(),oe=outHist[todayStr];
+if(oe&&oe.outfit){const o=outfits.find(x=>x.id===oe.outfit);todayHtml+=`<div style="padding:1px 0;color:var(--green)">✓ Outfit: ${o?o.name.slice(0,30):''}</div>`}
+else if(oe&&oe.off){todayHtml+=`<div style="padding:1px 0;color:var(--text2)">— Day off</div>`}
+else{todayHtml+=`<div style="padding:1px 0;color:var(--text2)">○ No outfit picked</div>`}
+// Life log
+const acts=getDayActivities(todayStr);
+todayHtml+=`<div style="padding:1px 0;color:${acts.length?'var(--green)':'var(--text2)'}">${acts.length?'✓ '+acts.length+' hours logged':'○ No hours logged'}</div>`;
+todayHtml+='</div>';$('dash-today').innerHTML=todayHtml;
+// Week summary — simple streak counts
+let weekHtml='<div class="grid g4" style="gap:4px;font-size:10px;text-align:center">';
+let hStreak=0,wStreak=0,lStreak=0,jStreak=0;
+for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
+if(calcDayScore(ds).pct>=50)hStreak++;else if(i>0)break}
+for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
+if((water[ds]||0)>=wGoal)wStreak++;else if(i>0)break}
+for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
+if(getDayActivities(ds).length)lStreak++;else if(i>0)break}
+const jData=getJournalData();
+for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
+if(jData.some(e=>e.date===ds))jStreak++;else if(i>0)break}
+weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${hStreak}d</div>Habits</div>`;
+weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${wStreak}d</div>Water</div>`;
+weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${lStreak}d</div>Life Log</div>`;
+weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${jStreak}d</div>Journal</div>`;
+weekHtml+='</div>';$('dash-week').innerHTML=weekHtml;
+// Alerts — only show if something needs attention
 let alerts=[];
-// Yesterday's habits not done
 const yd=new Date(today);yd.setDate(yd.getDate()-1);const yds=yd.toISOString().slice(0,10);
-const ySc=calcDayScore(yds);if(ySc.total>0&&ySc.pct<50)alerts.push({icon:'⚠️',text:`Yesterday's habits only ${ySc.pct}% done`,action:"switchTab('habits')"});
-// No life log today
-if(!getDayActivities(todayStr).length)alerts.push({icon:'📋',text:'No hours logged today',action:"switchTab('work')"});
-// No outfit picked
-const outHist=getOutfitHistory();if(!outHist[todayStr])alerts.push({icon:'👔',text:'No outfit picked for today',action:"switchTab('outfit')"});
-// FD maturing soon
-const inv2=getInvestments();inv2.fd.forEach(f=>{const dl=Math.round((new Date(f.maturity)-today)/86400000);
-if(dl>0&&dl<=7)alerts.push({icon:'🏦',text:f.bank+' FD matures in '+dl+' days!',action:"switchTab('finance')"})});
-// Goals behind schedule
-getFinGoals().forEach(g=>{if(g.deadline){const dl=Math.round((new Date(g.deadline)-today)/86400000/30);
-const pct=g.target>0?g.current/g.target*100:0;if(dl<6&&pct<50)alerts.push({icon:'🎯',text:g.name+' goal behind schedule ('+Math.round(pct)+'%)',action:"switchTab('finance')"})}});
-// Water not done
-if((getWaterData()[todayStr]||0)<getWaterGoal())alerts.push({icon:'💧',text:'Water goal not met yet',action:"switchTab('habits')"});
-// Predictions
-const preds=getPredictions();
-let alertHtml='';
-if(alerts.length)alertHtml+='<h3 style="color:var(--yellow)">Needs Attention</h3>'+alerts.map(a=>`<div class="flex" style="padding:4px 0;border-bottom:1px solid var(--border);font-size:12px;cursor:pointer" onclick="${a.action}"><span>${a.icon}</span><span style="flex:1">${a.text}</span><span style="color:var(--accent2)">→</span></div>`).join('');
-if(preds.length)alertHtml+='<h3 style="margin-top:8px;color:var(--accent2)">🔮 Predictions</h3>'+preds.map(p=>`<div style="padding:3px 0;font-size:12px">${p.icon} ${p.text}</div>`).join('');
-const cross=getCrossInsights();
-if(cross.length)alertHtml+='<h3 style="margin-top:8px;color:var(--green)">🧠 Insights</h3>'+cross.map(c=>{
-const col=c.type==='positive'?'var(--green)':c.type==='warning'?'var(--yellow)':'var(--text2)';
-return`<div style="padding:3px 0;font-size:12px;color:${col}">${c.icon} ${c.text}</div>`}).join('');
-if(alertHtml){$('dash-alerts').style.display='block';$('dash-alerts').innerHTML=alertHtml}
+const ySc=calcDayScore(yds);if(ySc.total>0&&ySc.pct<50)alerts.push({text:'Yesterday: '+ySc.pct+'% habits',action:"switchTab('habits')"});
+if(!acts.length)alerts.push({text:'No hours logged today',action:"switchTab('work')"});
+if(!oe)alerts.push({text:'No outfit picked',action:"switchTab('outfit')"});
+const inv=getInvestments();inv.fd.forEach(f=>{const dl=Math.round((new Date(f.maturity)-today)/86400000);
+if(dl>0&&dl<=7)alerts.push({text:f.bank+' FD matures in '+dl+'d',action:"switchTab('finance')"})});
+if(alerts.length){$('dash-alerts').style.display='block';
+$('dash-alerts').innerHTML='<h3>NEEDS ATTENTION</h3>'+alerts.map(a=>`<div style="padding:3px 0;font-size:11px;cursor:pointer;border-bottom:1px solid var(--border)" onclick="${a.action}">${a.text} →</div>`).join('')}
 else{$('dash-alerts').style.display='none'}
-// Year in review
-const yr=today.getFullYear();let yrHtml='<div class="grid g4" style="gap:6px">';
-// Total habits done this year
-let yrHabitsDone=0;const hData2=getHabitData();Object.entries(hData2).forEach(([k,v])=>{if(v&&k.includes('_'+yr))yrHabitsDone++});
-yrHtml+=`<div style="padding:8px;background:var(--card2);border-radius:6px;text-align:center;font-size:10px"><div style="font-size:16px;font-weight:700">${yrHabitsDone}</div>Habits done</div>`;
-// Total expenses this year
-const yrExps=getExpenses().filter(e=>e.date&&e.date.startsWith(yr)&&e.who!=='income'&&e.who!=='transfer');
-const yrSpent=yrExps.reduce((s,e)=>s+e.amount,0);
-yrHtml+=`<div style="padding:8px;background:var(--card2);border-radius:6px;text-align:center;font-size:10px"><div style="font-size:16px;font-weight:700">${inr(yrSpent)}</div>Spent</div>`;
-// Journal entries this year
-const yrJournal=getJournalData().filter(e=>e.date&&e.date.startsWith(yr)).length;
-yrHtml+=`<div style="padding:8px;background:var(--card2);border-radius:6px;text-align:center;font-size:10px"><div style="font-size:16px;font-weight:700">${yrJournal}</div>Journal entries</div>`;
-// Career activities this year
-const yrCareer=getCareerData().filter(e=>e.date&&e.date.startsWith(yr)).length;
-yrHtml+=`<div style="padding:8px;background:var(--card2);border-radius:6px;text-align:center;font-size:10px"><div style="font-size:16px;font-weight:700">${yrCareer}</div>Career activities</div>`;
-yrHtml+='</div>';
-// Days tracked
-let yrDaysTracked=0;const wData3=getWorkData();Object.keys(wData3).forEach(d=>{if(d.startsWith(yr)&&wData3[d].hours&&Object.values(wData3[d].hours).some(h=>h.cat||h.cats?.length))yrDaysTracked++});
-const yrOutfitDays=Object.keys(getOutfitHistory()).filter(d=>d.startsWith(yr)).length;
-yrHtml+=`<div style="margin-top:6px;font-size:10px;color:var(--text2)">${yrDaysTracked} days logged in Life Log · ${yrOutfitDays} outfits tracked · ${Object.keys(getWaterData()).filter(d=>d.startsWith(yr)&&getWaterData()[d]>=getWaterGoal()).length} water goals met</div>`;
-$('dash-year-review').innerHTML=yrHtml;
 }
 
 // ===== INIT =====
