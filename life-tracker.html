@@ -194,6 +194,7 @@ body.light .card:hover{border-color:#d4d4d8}
 <!-- Calendar -->
 <div class="card"><h3>CALENDAR</h3><div class="cal-grid" id="habit-calendar"></div></div>
 <div class="card card-collapse"><h3 onclick="toggleCollapse(this)">LIFESTYLE CALENDAR</h3><div class="card-body">
+<div id="lifestyle-counts" style="margin-bottom:6px"></div>
 <div style="font-size:9px;color:var(--text2);margin-bottom:4px"><span style="color:#22c55e">● Healthy</span> <span style="color:#ef4444">● Junk</span> <span style="color:#7c3aed">● Productive</span> <span style="color:#f59e0b">● Disciplined</span></div>
 <div class="cal-grid" id="lifestyle-calendar"></div></div></div>
 <!-- Collapsible extras -->
@@ -714,25 +715,33 @@ if(isToday)cls+=' today';if(isWe)cls+=' weekend';
 html+=`<div class="${cls}" style="cursor:pointer" title="${ds}: ${sc.pct}%" onclick="habitViewDate=new Date('${ds}');renderHabits()">${d}</div>`;
 }
 $('habit-calendar').innerHTML=html;
-// Lifestyle calendar
+// Lifestyle calendar — multi-indicator per day
 const lc=$('lifestyle-calendar');if(lc){
 let lhtml=DAYS.map(d=>`<div style="font-size:9px;color:var(--text2);font-weight:600;text-align:center">${d}</div>`).join('');
+let counts={healthy:0,junk:0,productive:0,disciplined:0};
 for(let i=0;i<firstDay;i++)lhtml+=`<div class="cal-day empty"></div>`;
 for(let d=1;d<=dim;d++){
 const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-const dt2=new Date(y,m,d);if(dt2>today){lhtml+=`<div class="cal-day future">${d}</div>`;continue}
+const dt2=new Date(y,m,d);if(dt2>today){lhtml+=`<div class="cal-day future" style="font-size:10px">${d}</div>`;continue}
 const sc2=calcDayScore(ds);const food=getFoodLog()[ds]||[];
 const hasJunk=food.some(f=>f.junk);const allHealthy=food.length>0&&!hasJunk;
 const dayType2=classifyDay(ds);const isProd=dayType2&&dayType2.name.includes('Productive');
 const isDisciplined=sc2.pct>=80;
-// Priority: junk(red) > productive(purple) > disciplined(yellow) > healthy(green) > gray
-let bg='var(--card2)',col='var(--text2)',label='';
-if(hasJunk){bg='rgba(239,68,68,.3)';col='#ef4444';label='J'}
-else if(isProd){bg='rgba(124,58,237,.3)';col='#a78bfa';label='P'}
-else if(isDisciplined){bg='rgba(245,158,11,.3)';col='#f59e0b';label='D'}
-else if(allHealthy){bg='rgba(34,197,94,.3)';col='#22c55e';label='H'}
-lhtml+=`<div class="cal-day ${ds===todayStr?'today':''}" style="background:${bg};color:${col};font-size:9px" title="${ds}: ${label||'—'}">${d}</div>`}
-lc.innerHTML=lhtml}
+// Build dots for each trait this day has
+let dots='';
+if(allHealthy){dots+='<span style="color:#22c55e">●</span>';counts.healthy++}
+if(hasJunk){dots+='<span style="color:#ef4444">●</span>';counts.junk++}
+if(isProd){dots+='<span style="color:#7c3aed">●</span>';counts.productive++}
+if(isDisciplined){dots+='<span style="color:#f59e0b">●</span>';counts.disciplined++}
+lhtml+=`<div class="cal-day ${ds===todayStr?'today':''}" style="flex-direction:column;font-size:10px;height:auto;min-height:32px;padding:2px" title="${ds}">
+<span>${d}</span><span style="font-size:7px;line-height:1">${dots||''}</span></div>`}
+lc.innerHTML=lhtml;
+// Counts
+const lcc=$('lifestyle-counts');if(lcc)lcc.innerHTML=`<div class="flex" style="gap:10px;font-size:11px">
+<span style="color:#22c55e"><strong>${counts.healthy}</strong> Healthy</span>
+<span style="color:#ef4444"><strong>${counts.junk}</strong> Junk</span>
+<span style="color:#7c3aed"><strong>${counts.productive}</strong> Productive</span>
+<span style="color:#f59e0b"><strong>${counts.disciplined}</strong> Disciplined</span></div>`}
 }
 
 // Chart
