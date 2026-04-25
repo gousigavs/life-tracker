@@ -1083,17 +1083,36 @@ const date=$('work-date').value||todayStr;const todos=getTodos();if(!todos[date]
 todos[date].push({text,done:false,hour:''});LS.set('todos',todos);$('new-todo').value='';renderTodos()}
 function toggleTodo(date,i){const todos=getTodos();todos[date][i].done=!todos[date][i].done;LS.set('todos',todos);renderTodos()}
 function removeTodo(date,i){const todos=getTodos();todos[date].splice(i,1);LS.set('todos',todos);renderTodos()}
-function setTodoHour(date,i,hour){const todos=getTodos();todos[date][i].hour=hour;LS.set('todos',todos);renderTodos()}
+function toggleTodoHour(date,i,hour){
+const todos=getTodos();const t=todos[date][i];
+if(!t.hours)t.hours=t.hour!==''?[parseInt(t.hour)]:[];
+const hi=parseInt(hour);const idx=t.hours.indexOf(hi);
+if(idx>=0)t.hours.splice(idx,1);else t.hours.push(hi);
+t.hours.sort((a,b)=>a-b);
+// Add todo text to hourly breakdown desc
+const wData=getWorkData();if(!wData[date])wData[date]={hours:{}};if(!wData[date].hours)wData[date].hours={};
+t.hours.forEach(h=>{
+if(!wData[date].hours[h])wData[date].hours[h]={cats:[],desc:''};
+const existing=wData[date].hours[h].desc||'';
+if(!existing.includes(t.text))wData[date].hours[h].desc=existing?(existing+', '+t.text):t.text;
+});
+saveWorkData(wData);LS.set('todos',todos);renderTodos();renderWorkLog();
+}
 function renderTodos(){
 const date=$('work-date').value||todayStr;const todos=getTodos();const items=todos[date]||[];
-if(!items.length){$('work-todos').innerHTML='<div style="color:var(--text2);font-size:10px">No tasks for this day</div>';return}
+if(!items.length){$('work-todos').innerHTML='<div style="color:var(--text2);font-size:11px">No tasks for this day</div>';return}
 let html='';items.forEach((t,i)=>{
-html+=`<div class="flex" style="padding:3px 0;border-bottom:1px solid var(--border);gap:4px">
-<span style="cursor:pointer;font-size:12px" onclick="toggleTodo('${date}',${i})">${t.done?'✓':'○'}</span>
-<span style="flex:1;font-size:11px;${t.done?'text-decoration:line-through;color:var(--text2)':''}">${t.text}</span>
-<select style="width:auto;font-size:9px;padding:1px 4px" onchange="setTodoHour('${date}',${i},this.value)">
-<option value="">—</option>${WORK_HOURS.map((h,hi)=>`<option value="${hi}" ${t.hour==hi?'selected':''}>${h}</option>`).join('')}</select>
-<span style="cursor:pointer;font-size:9px;color:var(--text2)" onclick="removeTodo('${date}',${i})">✕</span></div>`});
+const hours=t.hours||( t.hour!==''&&t.hour!==undefined?[parseInt(t.hour)]:[]);
+const hourLabels=hours.map(h=>WORK_HOURS[h]).filter(Boolean);
+html+=`<div style="padding:4px 0;border-bottom:1px solid var(--border)">
+<div class="flex" style="gap:4px">
+<span style="cursor:pointer;font-size:13px" onclick="toggleTodo('${date}',${i})">${t.done?'✓':'○'}</span>
+<span style="flex:1;font-size:12px;${t.done?'text-decoration:line-through;color:var(--text2)':''}">${t.text}</span>
+<span style="cursor:pointer;font-size:10px;color:var(--text2)" onclick="removeTodo('${date}',${i})">✕</span></div>
+<div class="flex flex-wrap" style="gap:2px;margin-top:2px;margin-left:20px">${WORK_HOURS.map((h,hi)=>{
+const sel=hours.includes(hi);
+return`<span style="font-size:8px;padding:1px 4px;border-radius:4px;cursor:pointer;${sel?'background:var(--accent);color:#fff':'background:var(--card2);color:var(--text2)'}" onclick="toggleTodoHour('${date}',${i},${hi})">${h.split('–')[0]}</span>`}).join('')}
+</div></div>`});
 $('work-todos').innerHTML=html;
 }
 
