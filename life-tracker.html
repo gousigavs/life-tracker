@@ -332,35 +332,58 @@ body.light .card:hover{border-color:#d4d4d8}
 </div>
 <!-- CAREER TAB -->
 <div id="tab-career" class="tab">
-<h2 style="margin-bottom:12px">Career Growth</h2>
+<h2 style="margin-bottom:12px">Career</h2>
+<div class="grid g3 mb8" id="career-stats"></div>
+<!-- Quick log -->
 <div class="card">
-<h3>Log Activity</h3>
-<div class="flex flex-wrap mb8" style="gap:6px">
+<h3>LOG</h3>
+<div class="flex flex-wrap" style="gap:4px">
 <input type="date" id="career-date" style="width:auto">
 <select id="career-type" style="width:auto">
-<option>Resume Update</option><option>Job Application</option><option>Coursera/Course</option><option>LeetCode</option><option>Side Project</option><option>Networking</option><option>Mock Interview</option><option>Portfolio Update</option>
-</select>
-<input type="text" id="career-desc" placeholder="Description / Link" style="flex:1;min-width:200px">
+<option>Coursera</option><option>LeetCode</option><option>System Design</option><option>Resume/Jobs</option><option>Portfolio</option><option>Reading</option></select>
+<input type="number" id="career-hours" placeholder="Hours" style="width:60px" step="0.5">
+<input type="text" id="career-desc" placeholder="What did you do / Link" style="flex:1;min-width:150px">
 <button onclick="addCareerEntry()">Add</button>
 </div>
 </div>
-<div class="card">
-<h3>Job Applications</h3>
+<!-- 6 Sections -->
+<div class="card card-collapse open"><h3 onclick="toggleCollapse(this)">COURSERA — Weekend 2-3hrs</h3><div class="card-body">
+<div style="font-size:10px;color:var(--text2);margin-bottom:4px"><a href="https://www.coursera.org/programs/coursera-for-amazon-employees-ardns?authProvider=amazon" target="_blank" style="color:var(--accent2)">Coursera for Amazon →</a></div>
+<div id="career-coursera"></div>
+</div></div>
+
+<div class="card card-collapse open"><h3 onclick="toggleCollapse(this)">LEETCODE — Daily 0.5-1hr</h3><div class="card-body">
+<div style="font-size:10px;color:var(--text2);margin-bottom:4px"><a href="https://docs.google.com/document/d/1sG2ZM3c4jtldCRqYOkHd4kWxOIksqEf4bkR-m3nenGY/edit" target="_blank" style="color:var(--accent2)">DSA List →</a></div>
+<div id="career-leetcode"></div>
+</div></div>
+
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">RESUME + JOB EXPLORATION — Weekend 1hr</h3><div class="card-body">
+<div id="career-jobs"></div>
+<div style="margin-top:6px;border-top:1px solid var(--border);padding-top:6px">
+<h3 style="margin-bottom:4px">APPLICATIONS</h3>
 <div id="job-apps-list"></div>
-<div class="flex mt8 flex-wrap" style="gap:6px">
-<input type="text" id="job-company" placeholder="Company" style="width:120px">
-<input type="text" id="job-role" placeholder="Role" style="width:120px">
-<select id="job-status" style="width:auto"><option value="applied">📤 Applied</option><option value="screening">📞 Screening</option><option value="interview">🎤 Interview</option><option value="offer">🎉 Offer</option><option value="rejected">❌ Rejected</option><option value="ghosted">👻 Ghosted</option></select>
-<input type="text" id="job-link" placeholder="Link (optional)" style="flex:1;min-width:100px">
-<button onclick="addJobApp()">Add</button>
-</div>
-</div>
-<div class="card"><h3>Monthly Goals</h3><div id="career-goals"></div>
-<div class="flex mt8"><button class="sec" onclick="editCareerGoals()">Set Goals</button></div></div>
-<div class="grid g3 mb16" id="career-stats"></div>
-<div class="card"><h3>Activity Log</h3><table id="career-table"><thead><tr><th>Date</th><th>Type</th><th>Description</th><th></th></tr></thead><tbody></tbody></table></div>
-<div class="card"><h3>ACTIVITY CALENDAR</h3><div class="cal-grid" id="career-calendar"></div></div>
-<div class="card"><h3>30-DAY CHART</h3><div class="chart-container"><canvas id="career-chart"></canvas></div></div>
+<div class="flex mt8 flex-wrap" style="gap:4px">
+<input type="text" id="job-company" placeholder="Company" style="width:100px">
+<input type="text" id="job-role" placeholder="Role" style="width:100px">
+<select id="job-status" style="width:auto;font-size:10px"><option value="applied">Applied</option><option value="screening">Screening</option><option value="interview">Interview</option><option value="offer">Offer</option><option value="rejected">Rejected</option><option value="ghosted">Ghosted</option></select>
+<input type="text" id="job-link" placeholder="Link" style="flex:1;min-width:80px">
+<button onclick="addJobApp()" style="font-size:10px;padding:3px 8px">Add</button>
+</div></div>
+</div></div>
+
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">SYSTEM DESIGN — Weekend 2hrs</h3><div class="card-body">
+<div id="career-sysdesign"></div>
+</div></div>
+
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">WORK PORTFOLIO — Weekend 1hr</h3><div class="card-body">
+<div id="career-portfolio"></div>
+</div></div>
+
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">READING — Books / Papers</h3><div class="card-body">
+<div id="career-reading"></div>
+</div></div>
+
+<div class="card"><h3>CALENDAR</h3><div class="cal-grid" id="career-calendar"></div></div>
 </div>
 
 <!-- JOURNAL TAB -->
@@ -2142,8 +2165,8 @@ mapHtml+='</div>';$('money-map').innerHTML=mapHtml;
 function getCareerData(){return LS.get('careerData',[])}
 function getCareerGoals(){return LS.get('careerGoals',{'Resume Update':1,'Job Application':5,'Coursera/Course':2,'LeetCode':10,'Side Project':2,'Networking':2})}
 function addCareerEntry(){
-const e={date:$('career-date').value||todayStr,type:$('career-type').value,desc:$('career-desc').value};
-if(!e.desc&&!e.type)return;const d=getCareerData();d.push(e);LS.set('careerData',d);$('career-desc').value='';toast('✅ Activity logged');renderCareer();
+const e={date:$('career-date').value||todayStr,type:$('career-type').value,desc:$('career-desc').value,hours:parseFloat($('career-hours')?.value)||0};
+if(!e.desc&&!e.type)return;const d=getCareerData();d.push(e);LS.set('careerData',d);$('career-desc').value='';if($('career-hours'))$('career-hours').value='';toast('Logged');renderCareer();
 }
 function removeCareerEntry(i){const d=getCareerData();d.splice(i,1);LS.set('careerData',d);renderCareer()}
 function editCareerGoals(){
@@ -2190,47 +2213,38 @@ $('job-apps-list').innerHTML=html;
 }
 function renderCareer(){
 if(!$('career-date').value)$('career-date').value=todayStr;
-const data=getCareerData(),goals=getCareerGoals();
-const types=['Resume Update','Job Application','Coursera/Course','LeetCode','Side Project','Networking'];
+const data=getCareerData();
 const thisMonthData=data.filter(e=>e.date&&e.date.startsWith(thisMonth));
-// Goals with progress bars + days since last
-let ghtml='';types.forEach(t=>{const count=thisMonthData.filter(e=>e.type===t).length;const goal=goals[t]||0;
-const pct=goal>0?Math.min(100,Math.round(count/goal*100)):0;
-const color=pct>=100?'var(--green)':pct>=50?'var(--yellow)':'var(--red)';
-// Days since last activity of this type
-const lastEntry=[...data].filter(e=>e.type===t).sort((a,b)=>b.date.localeCompare(a.date))[0];
-const daysSince=lastEntry?Math.floor((today-new Date(lastEntry.date))/86400000):999;
-const daysLabel=daysSince===0?'today':daysSince===999?'never':daysSince+'d ago';
-const urgentStyle=daysSince>14?'color:var(--red);font-weight:600':'color:var(--text2)';
-ghtml+=`<div class="flex mb8" style="gap:8px;align-items:center"><span style="width:150px;font-size:13px">${t}</span>
-<div style="flex:1"><div class="xp-bar"><div class="xp-fill" style="width:${pct}%;background:${color}"></div></div></div>
-<span style="font-size:12px;font-weight:600;min-width:45px;text-align:right">${count}/${goal}</span>
-<span style="font-size:10px;min-width:50px;text-align:right;${urgentStyle}">${daysLabel}</span>
-${pct>=100?'<span>✅</span>':''}</div>`});
-$('career-goals').innerHTML=ghtml;
-// Stats
-let shtml='';types.forEach(t=>{const count=thisMonthData.filter(e=>e.type===t).length;
-shtml+=`<div class="card stat-box"><div class="num">${count}</div><div class="lbl">${t}</div></div>`});
+const typeMap={'Coursera':'career-coursera','LeetCode':'career-leetcode','Resume/Jobs':'career-jobs','System Design':'career-sysdesign','Portfolio':'career-portfolio','Reading':'career-reading'};
+// Stats — hours this month per section
+const sections=['Coursera','LeetCode','System Design','Resume/Jobs','Portfolio','Reading'];
+let shtml='';let totalHrs=0;
+sections.forEach(s=>{const hrs=thisMonthData.filter(e=>e.type===s).reduce((sum,e)=>sum+(parseFloat(e.hours)||0),0);totalHrs+=hrs;
+shtml+=`<div class="card stat-box"><div class="num" style="font-size:14px">${hrs}h</div><div class="lbl">${s}</div></div>`});
 $('career-stats').innerHTML=shtml;
-// Table
-let thtml='';[...data].sort((a,b)=>b.date.localeCompare(a.date)).forEach((e,_)=>{
+// Render each section's entries
+Object.entries(typeMap).forEach(([type,elId])=>{
+const el=$(elId);if(!el)return;
+const entries=data.filter(e=>e.type===type).sort((a,b)=>b.date.localeCompare(a.date));
+if(!entries.length){el.innerHTML='<div style="color:var(--text2);font-size:10px">No entries yet</div>';return}
+let html='';entries.forEach(e=>{
 const i=data.indexOf(e);
-const desc=e.desc&&e.desc.startsWith('http')?`<a href="${e.desc}" target="_blank" style="color:var(--accent2)">${e.desc}</a>`:e.desc;
-thtml+=`<tr><td>${fmtDate(e.date)}</td><td><span class="tag">${e.type}</span></td><td>${desc}</td><td><button class="sec" style="padding:2px 6px" onclick="removeCareerEntry(${i})">✕</button></td></tr>`});
-$('career-table').querySelector('tbody').innerHTML=thtml||'<tr><td colspan="4" style="text-align:center;color:var(--text2)">No activities logged</td></tr>';
-// Chart
-const labels=[],vals=[];
-for(let i=29;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
-labels.push(d.getDate());vals.push(data.filter(e=>e.date===ds).length)}
-makeChart('career-chart',{type:'bar',data:{labels,datasets:[{label:'Activities',data:vals,backgroundColor:'#7c5cfc'}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,ticks:{stepSize:1}}},plugins:{legend:{display:false}}}});
-// Career calendar
+const desc=e.desc&&e.desc.startsWith('http')?`<a href="${e.desc}" target="_blank" style="color:var(--accent2)">${e.desc.slice(0,50)}</a>`:e.desc;
+html+=`<div class="flex" style="padding:3px 0;border-bottom:1px solid var(--border);font-size:11px;gap:4px">
+<span style="color:var(--text2);min-width:50px">${fmtDate(e.date)}</span>
+<span style="color:var(--text2);min-width:30px">${e.hours?e.hours+'h':''}</span>
+<span style="flex:1">${desc||''}</span>
+<span style="cursor:pointer;color:var(--text2);font-size:9px" onclick="removeCareerEntry(${i})">✕</span></div>`});
+el.innerHTML=html;
+});
+// Calendar
 const y=today.getFullYear(),mo=today.getMonth(),dim=daysInMonth(y,mo),fd=new Date(y,mo,1).getDay();
 let calHtml=DAYS.map(d=>`<div style="font-size:9px;color:var(--text2);font-weight:600;text-align:center">${d}</div>`).join('');
 for(let i=0;i<fd;i++)calHtml+=`<div class="cal-day empty"></div>`;
 for(let d=1;d<=dim;d++){const ds=`${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-const count=data.filter(e=>e.date===ds).length;const isToday=ds===todayStr;
-const bg=count>=3?'var(--green)':count>=1?'var(--accent)':'var(--card2)';const col=count?'#fff':'var(--text2)';
-calHtml+=`<div class="cal-day ${isToday?'today':''}" style="background:${bg};color:${col}" title="${ds}: ${count} activities">${d}</div>`}
+const hrs=data.filter(e=>e.date===ds).reduce((s,e)=>s+(parseFloat(e.hours)||0),0);const isToday=ds===todayStr;
+const bg=hrs>=3?'var(--green)':hrs>=1?'var(--accent)':'var(--card2)';const col=hrs?'#fff':'var(--text2)';
+calHtml+=`<div class="cal-day ${isToday?'today':''}" style="background:${bg};color:${col}" title="${ds}: ${hrs}h">${d}</div>`}
 $('career-calendar').innerHTML=calHtml;
 renderJobApps();
 }
