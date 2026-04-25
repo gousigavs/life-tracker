@@ -193,6 +193,9 @@ body.light .card:hover{border-color:#d4d4d8}
 </div>
 <!-- Calendar -->
 <div class="card"><h3>CALENDAR</h3><div class="cal-grid" id="habit-calendar"></div></div>
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">LIFESTYLE CALENDAR</h3><div class="card-body">
+<div style="font-size:9px;color:var(--text2);margin-bottom:4px"><span style="color:#22c55e">● Healthy</span> <span style="color:#ef4444">● Junk</span> <span style="color:#7c3aed">● Productive</span> <span style="color:#f59e0b">● Disciplined</span></div>
+<div class="cal-grid" id="lifestyle-calendar"></div></div></div>
 <!-- Collapsible extras -->
 <div class="card card-collapse"><h3 onclick="toggleCollapse(this)">STREAKS</h3><div class="card-body"><div id="streaks-display"></div></div></div>
 <div class="card"><h3>NOTE</h3><textarea id="habit-daily-note" placeholder="Any reflections..." rows="2" style="font-size:11px" onchange="saveDailyNote()"></textarea></div>
@@ -222,7 +225,15 @@ body.light .card:hover{border-color:#d4d4d8}
 <button class="sec" onclick="clearDay()" style="font-size:10px;padding:3px 7px">Clear</button>
 </div>
 </div>
-<div class="grid g4 mb16" id="work-stats"></div>
+<div class="grid g4 mb8" id="work-stats"></div>
+<div class="card">
+<h3>TODO</h3>
+<div id="work-todos"></div>
+<div class="flex mt8" style="gap:4px">
+<input type="text" id="new-todo" placeholder="Add a task..." style="flex:1" onkeydown="if(event.key==='Enter')addTodo()">
+<button onclick="addTodo()" style="font-size:10px;padding:3px 8px">Add</button>
+</div>
+</div>
 <div class="card"><h3>Month View</h3>
 <div class="flex mb8"><input type="month" id="work-cal-month" style="width:auto" onchange="renderWorkCalendar()"></div>
 <div id="work-cal-legend" style="margin-bottom:8px"></div>
@@ -393,11 +404,12 @@ body.light .card:hover{border-color:#d4d4d8}
 </div>
 <div class="grid g4 mb16" id="journal-stats"></div>
 <div class="card">
-<div class="flex mb8" style="justify-content:space-between;flex-wrap:wrap;gap:8px">
-<h3>Entries</h3>
-<div class="flex" style="gap:6px">
-<input type="text" id="journal-search" placeholder="🔍 Search..." style="width:150px" oninput="renderJournal()">
-<select id="journal-filter-mood" style="width:auto" onchange="renderJournal()"><option value="">All moods</option><option>😊</option><option>😐</option><option>😔</option><option>😤</option><option>🤩</option><option>😴</option><option>🤒</option></select>
+<div class="flex mb8" style="justify-content:space-between;flex-wrap:wrap;gap:4px">
+<h3>ENTRIES</h3>
+<div class="flex" style="gap:4px">
+<select id="journal-month-filter" style="width:auto;font-size:10px" onchange="renderJournal()"><option value="">All time</option></select>
+<input type="text" id="journal-search" placeholder="Search..." style="width:100px;font-size:10px" oninput="renderJournal()">
+<select id="journal-filter-mood" style="width:auto;font-size:10px" onchange="renderJournal()"><option value="">All moods</option><option>😊</option><option>😐</option><option>😔</option><option>😤</option><option>🤩</option><option>😴</option><option>🤒</option></select>
 </div>
 </div>
 <div id="journal-entries"></div>
@@ -674,9 +686,28 @@ const sc=calcDayScore(ds);
 let cls='cal-day';
 if(isFuture)cls+=' future';else if(sc.pct>=70)cls+=' done';else cls+=' miss';
 if(isToday)cls+=' today';if(isWe)cls+=' weekend';
-html+=`<div class="${cls}" title="${ds}: ${sc.pct}%">${d}</div>`;
+html+=`<div class="${cls}" style="cursor:pointer" title="${ds}: ${sc.pct}%" onclick="habitViewDate=new Date('${ds}');renderHabits()">${d}</div>`;
 }
 $('habit-calendar').innerHTML=html;
+// Lifestyle calendar
+const lc=$('lifestyle-calendar');if(lc){
+let lhtml=DAYS.map(d=>`<div style="font-size:9px;color:var(--text2);font-weight:600;text-align:center">${d}</div>`).join('');
+for(let i=0;i<firstDay;i++)lhtml+=`<div class="cal-day empty"></div>`;
+for(let d=1;d<=dim;d++){
+const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+const dt2=new Date(y,m,d);if(dt2>today){lhtml+=`<div class="cal-day future">${d}</div>`;continue}
+const sc2=calcDayScore(ds);const food=getFoodLog()[ds]||[];
+const hasJunk=food.some(f=>f.junk);const allHealthy=food.length>0&&!hasJunk;
+const dayType2=classifyDay(ds);const isProd=dayType2&&dayType2.name.includes('Productive');
+const isDisciplined=sc2.pct>=80;
+// Priority: junk(red) > productive(purple) > disciplined(yellow) > healthy(green) > gray
+let bg='var(--card2)',col='var(--text2)',label='';
+if(hasJunk){bg='rgba(239,68,68,.3)';col='#ef4444';label='J'}
+else if(isProd){bg='rgba(124,58,237,.3)';col='#a78bfa';label='P'}
+else if(isDisciplined){bg='rgba(245,158,11,.3)';col='#f59e0b';label='D'}
+else if(allHealthy){bg='rgba(34,197,94,.3)';col='#22c55e';label='H'}
+lhtml+=`<div class="cal-day ${ds===todayStr?'today':''}" style="background:${bg};color:${col};font-size:9px" title="${ds}: ${label||'—'}">${d}</div>`}
+lc.innerHTML=lhtml}
 }
 
 // Chart
@@ -907,7 +938,7 @@ if(productive)scoreHtml+=` · 💼 ${productive} productive`;
 if(social)scoreHtml+=` · 📱 ${social} social media`;
 $('work-score').innerHTML=scoreHtml;
 if(!$('work-cal-month').value)$('work-cal-month').value=date.slice(0,7);
-renderWorkStats();renderWorkCalendar();renderWorkCharts(date);
+renderWorkStats();renderWorkCalendar();renderWorkCharts(date);renderTodos();
 }
 function showAddSlotCat(date,slot){
 const cats=getWorkCats();
@@ -915,7 +946,7 @@ let html='<h3>Add Activity — '+WORK_HOURS[slot]+'</h3><div style="display:flex
 cats.forEach(c=>{
 html+=`<div style="padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;background:${CAT_COLORS[c]||'var(--card2)'}22;border:1px solid ${CAT_COLORS[c]||'var(--border)'};color:${CAT_COLORS[c]||'var(--text)'}" onclick="addSlotCat('${date}',${slot},'${c.replace(/'/g,"\\'")}')">${c}</div>`;
 });
-html+='<div style="padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;background:var(--card2);border:1px solid var(--border)" onclick="addWorkCategory();closeModal()">+ Custom</div>';
+html+='<div style="padding:6px 10px;border-radius:8px;cursor:pointer;font-size:12px;background:var(--card2);border:1px solid var(--border)" onclick="addCustomSlotCat(\''+date+'\','+slot+')">+ Custom</div>';
 html+='</div>';
 showModal(html);
 }
@@ -939,7 +970,12 @@ const d=getWorkData();if(!d[date])d[date]={hours:{}};if(!d[date].hours)d[date].h
 if(!d[date].hours[slot])d[date].hours[slot]={cats:[],desc:''};
 d[date].hours[slot][field]=val;saveWorkData(d);
 }
-function addWorkCategory(){const name=prompt('New category (emoji + name):');if(name){const cats=getWorkCats();cats.push(name);LS.set('workCats',cats);toast('✅ Added');renderWorkLog()}}
+function addWorkCategory(){const name=prompt('New category (emoji + name):');if(name){const cats=getWorkCats();cats.push(name);LS.set('workCats',cats);toast('Added');renderWorkLog()}}
+function addCustomSlotCat(date,slot){
+const name=prompt('New category (emoji + name):');if(!name)return;
+const cats=getWorkCats();if(!cats.includes(name)){cats.push(name);LS.set('workCats',cats)}
+addSlotCat(date,slot,name);
+}
 function renderWorkStats(){
 const data=getWorkData(),m=$('work-date').value.slice(0,7);
 let totalAct=0,prodAct=0,socialAct=0,daysLogged=0;
@@ -974,14 +1010,16 @@ $('work-calendar').innerHTML=html;
 }
 function renderWorkCharts(date){
 const data=getWorkData(),cats=getWorkCats();
-// Today's doughnut — count all activities
-const dayActs=getDayActivities(date);
+// Doughnut — fractional hours (2 activities in 1 hour = 0.5 each)
+const dd=data[date]||{};const hrs=dd.hours||{};
 const catHours={};cats.forEach(c=>catHours[c]=0);
-dayActs.forEach(c=>{if(catHours[c]!==undefined)catHours[c]++});
+Object.values(hrs).forEach(h=>{
+const ac=h.cats&&h.cats.length?h.cats:(h.cat?[h.cat]:[]);
+if(ac.length)ac.forEach(c=>{if(catHours[c]!==undefined)catHours[c]+=1/ac.length})});
 const usedCats=cats.filter(c=>catHours[c]>0);
-const vals=usedCats.map(c=>catHours[c]);
+const vals=usedCats.map(c=>Math.round(catHours[c]*10)/10);
 const colors=usedCats.map(c=>CAT_COLORS[c]||'#7c5cfc');
-makeChart('work-doughnut',{type:'doughnut',data:{labels:usedCats,datasets:[{data:vals,backgroundColor:colors}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#888',font:{size:9}}}}}});
+makeChart('work-doughnut',{type:'doughnut',data:{labels:usedCats.map((c,i)=>c+' '+vals[i]+'h'),datasets:[{data:vals,backgroundColor:colors}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#888',font:{size:9}}}}}});
 // 7-day stacked
 const labels=[];const datasets={};cats.forEach(c=>datasets[c]=[]);
 for(let i=6;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
@@ -991,6 +1029,27 @@ acts.forEach(c=>{if(dayCounts[c]!==undefined)dayCounts[c]++});
 cats.forEach(c=>datasets[c].push(dayCounts[c]))}
 const activeCats=cats.filter(c=>datasets[c].some(v=>v>0));
 makeChart('work-bar',{type:'bar',data:{labels,datasets:activeCats.map(c=>({label:c,data:datasets[c],backgroundColor:CAT_COLORS[c]||'#7c5cfc'}))},options:{responsive:true,maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}},plugins:{legend:{position:'bottom',labels:{color:'#888',font:{size:9}}}}}});
+}
+
+// ===== TODOS =====
+function getTodos(){return LS.get('todos',{})}
+function addTodo(){const text=$('new-todo').value.trim();if(!text)return;
+const date=$('work-date').value||todayStr;const todos=getTodos();if(!todos[date])todos[date]=[];
+todos[date].push({text,done:false,hour:''});LS.set('todos',todos);$('new-todo').value='';renderTodos()}
+function toggleTodo(date,i){const todos=getTodos();todos[date][i].done=!todos[date][i].done;LS.set('todos',todos);renderTodos()}
+function removeTodo(date,i){const todos=getTodos();todos[date].splice(i,1);LS.set('todos',todos);renderTodos()}
+function setTodoHour(date,i,hour){const todos=getTodos();todos[date][i].hour=hour;LS.set('todos',todos);renderTodos()}
+function renderTodos(){
+const date=$('work-date').value||todayStr;const todos=getTodos();const items=todos[date]||[];
+if(!items.length){$('work-todos').innerHTML='<div style="color:var(--text2);font-size:10px">No tasks for this day</div>';return}
+let html='';items.forEach((t,i)=>{
+html+=`<div class="flex" style="padding:3px 0;border-bottom:1px solid var(--border);gap:4px">
+<span style="cursor:pointer;font-size:12px" onclick="toggleTodo('${date}',${i})">${t.done?'✓':'○'}</span>
+<span style="flex:1;font-size:11px;${t.done?'text-decoration:line-through;color:var(--text2)':''}">${t.text}</span>
+<select style="width:auto;font-size:9px;padding:1px 4px" onchange="setTodoHour('${date}',${i},this.value)">
+<option value="">—</option>${WORK_HOURS.map((h,hi)=>`<option value="${hi}" ${t.hour==hi?'selected':''}>${h}</option>`).join('')}</select>
+<span style="cursor:pointer;font-size:9px;color:var(--text2)" onclick="removeTodo('${date}',${i})">✕</span></div>`});
+$('work-todos').innerHTML=html;
 }
 
 // ===== FINANCE MODULE =====
@@ -2208,10 +2267,15 @@ showModal(`<h3>Edit Entry</h3>
 function saveEditJournal(i){const d=getJournalData();d[i].date=$('ej-date').value;d[i].title=$('ej-title').value;d[i].body=$('ej-body').value;LS.set('journalData',d);closeModal();toast('✅ Updated');renderJournal()}
 function renderJournal(){
 if(!$('journal-date').value)$('journal-date').value=todayStr;
-const prompt=getJournalPrompt();if($('journal-daily-prompt'))$('journal-daily-prompt').textContent=prompt?'💡 '+prompt+' (click to use)':'';
+const prompt=getJournalPrompt();if($('journal-daily-prompt'))$('journal-daily-prompt').textContent=prompt?''+prompt+' (click to use)':'';
 const data=getJournalData();
 const search=($('journal-search')?$('journal-search').value:'').toLowerCase();
 const moodFilter=$('journal-filter-mood')?$('journal-filter-mood').value:'';
+const monthFilter=$('journal-month-filter')?$('journal-month-filter').value:'';
+// Populate month dropdown
+const allMonths=[...new Set(data.map(e=>e.date?e.date.slice(0,7):'').filter(Boolean))].sort().reverse();
+const mfEl=$('journal-month-filter');if(mfEl){const cur=mfEl.value;
+mfEl.innerHTML='<option value="">All time</option>'+allMonths.map(m=>`<option value="${m}" ${m===cur?'selected':''}>${m}</option>`).join('')}
 const thisMonthEntries=data.filter(e=>e.date&&e.date.startsWith(thisMonth));
 let streak=0;for(let i=0;i<30;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
 if(data.some(e=>e.date===ds))streak++;else break}
@@ -2224,6 +2288,7 @@ $('journal-stats').innerHTML=`
 <div class="card stat-box"><div class="num">${topMood?topMood[0]:'—'}</div><div class="lbl">Top Mood</div></div>`;
 // Filter entries
 let filtered=[...data].sort((a,b)=>b.date.localeCompare(a.date));
+if(monthFilter)filtered=filtered.filter(e=>e.date&&e.date.startsWith(monthFilter));
 if(search)filtered=filtered.filter(e=>(e.title||'').toLowerCase().includes(search)||(e.body||'').toLowerCase().includes(search)||(e.tags||[]).some(t=>t.toLowerCase().includes(search)));
 if(moodFilter)filtered=filtered.filter(e=>e.mood===moodFilter);
 let ehtml='';filtered.forEach(e=>{
@@ -2656,6 +2721,8 @@ initFinanceHistory();
 localStorage.removeItem('lt_finHistoryLoaded');
 autoSnapshot();
 renderDashboard();
+// Auto-refresh life log time pointer every minute
+setInterval(()=>{if($('tab-work')&&$('tab-work').classList.contains('active'))renderWorkLog()},60000);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 </script>
 </body>
