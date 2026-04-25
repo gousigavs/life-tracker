@@ -358,6 +358,7 @@ body.light .card:hover{border-color:#d4d4d8}
 </div></div>
 
 <div class="card card-collapse"><h3 onclick="toggleCollapse(this)">RESUME + JOB EXPLORATION — Weekend 1hr</h3><div class="card-body">
+<div class="flex mb8" style="gap:4px"><span style="font-size:10px;color:var(--text2);min-width:60px">Resume:</span><input type="text" id="resume-link" placeholder="Paste resume link (FlowCV, Drive, etc.)" style="flex:1;font-size:10px" onchange="LS.set('resumeLink',this.value)"><a id="resume-link-go" href="#" target="_blank" style="font-size:10px;color:var(--accent2);display:none">Open →</a></div>
 <div id="career-jobs"></div>
 <div style="margin-top:6px;border-top:1px solid var(--border);padding-top:6px">
 <h3 style="margin-bottom:4px">APPLICATIONS</h3>
@@ -2247,6 +2248,9 @@ const bg=hrs>=3?'var(--green)':hrs>=1?'var(--accent)':'var(--card2)';const col=h
 calHtml+=`<div class="cal-day ${isToday?'today':''}" style="background:${bg};color:${col}" title="${ds}: ${hrs}h">${d}</div>`}
 $('career-calendar').innerHTML=calHtml;
 renderJobApps();
+// Resume link
+const rl=LS.get('resumeLink','');if($('resume-link')){$('resume-link').value=rl;
+if(rl){$('resume-link-go').href=rl;$('resume-link-go').style.display='inline'}else{$('resume-link-go').style.display='none'}}
 }
 
 // ===== JOURNAL MODULE =====
