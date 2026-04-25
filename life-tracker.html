@@ -386,6 +386,17 @@ body.light .card:hover{border-color:#d4d4d8}
 <div id="career-reading"></div>
 </div></div>
 
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">WISHLIST — Target Companies</h3><div class="card-body">
+<div id="wishlist-items"></div>
+<div class="flex mt8 flex-wrap" style="gap:4px">
+<input type="text" id="wl-company" placeholder="Company" style="width:100px">
+<input type="text" id="wl-role" placeholder="Role" style="width:100px">
+<input type="text" id="wl-comp" placeholder="Comp (e.g. 30-40L)" style="width:100px">
+<input type="text" id="wl-location" placeholder="Location" style="width:80px">
+<input type="text" id="wl-notes" placeholder="Notes" style="flex:1;min-width:80px">
+<button onclick="addWishlist()" style="font-size:11px;padding:4px 8px">Add</button>
+</div>
+</div></div>
 <div class="card"><h3>CALENDAR</h3><div class="cal-grid" id="career-calendar"></div></div>
 </div>
 
@@ -2257,13 +2268,30 @@ const hrs=data.filter(e=>e.date===ds).reduce((s,e)=>s+(parseFloat(e.hours)||0),0
 const bg=hrs>=3?'var(--green)':hrs>=1?'var(--accent)':'var(--card2)';const col=hrs?'#fff':'var(--text2)';
 calHtml+=`<div class="cal-day ${isToday?'today':''}" style="background:${bg};color:${col}" title="${ds}: ${hrs}h">${d}</div>`}
 $('career-calendar').innerHTML=calHtml;
-renderJobApps();
+renderJobApps();renderWishlist();
 // Resume link
 const rl=LS.get('resumeLink','');if($('resume-link')){$('resume-link').value=rl;
 if(rl){$('resume-link-go').href=rl;$('resume-link-go').style.display='inline'}else{$('resume-link-go').style.display='none'}}
 // Portfolio link
 const pl=LS.get('portfolioLink','');if($('portfolio-link')){$('portfolio-link').value=pl;
 if(pl){$('portfolio-link-go').href=pl;$('portfolio-link-go').style.display='inline'}else{$('portfolio-link-go').style.display='none'}}
+}
+
+// Wishlist
+function getWishlist(){return LS.get('wishlist',[])}
+function addWishlist(){
+const w={company:$('wl-company').value,role:$('wl-role').value,comp:$('wl-comp').value,location:$('wl-location').value,notes:$('wl-notes').value};
+if(!w.company)return;const list=getWishlist();list.push(w);LS.set('wishlist',list);
+$('wl-company').value='';$('wl-role').value='';$('wl-comp').value='';$('wl-location').value='';$('wl-notes').value='';
+toast('Added');renderWishlist();
+}
+function removeWishlist(i){const list=getWishlist();list.splice(i,1);LS.set('wishlist',list);renderWishlist()}
+function renderWishlist(){
+const list=getWishlist();
+if(!list.length){$('wishlist-items').innerHTML='<div style="color:var(--text2);font-size:11px">No companies yet</div>';return}
+let html='<table><thead><tr><th>Company</th><th>Role</th><th>Comp</th><th>Location</th><th>Notes</th><th></th></tr></thead><tbody>';
+list.forEach((w,i)=>{html+=`<tr><td><strong>${w.company}</strong></td><td>${w.role}</td><td>${w.comp}</td><td>${w.location}</td><td style="color:var(--text2)">${w.notes}</td><td><span style="cursor:pointer;color:var(--text2)" onclick="removeWishlist(${i})">✕</span></td></tr>`});
+html+='</tbody></table>';$('wishlist-items').innerHTML=html;
 }
 
 // ===== JOURNAL MODULE =====
