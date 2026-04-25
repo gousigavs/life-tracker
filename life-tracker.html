@@ -13,7 +13,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0a0a0c;--card:#111116;--card2:#18181f;--border:#1f1f2a;--text:#d4d4d8;--text2:#63637a;--accent:#7c3aed;--accent2:#a78bfa;--green:#10b981;--red:#ef4444;--yellow:#f59e0b;--pink:#ec4899;--r:12px}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;font-size:13px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
 .sidebar{width:180px;background:var(--card);border-right:1px solid var(--border);padding:8px 0;display:flex;flex-direction:column;position:fixed;height:100vh;z-index:10}
 .sidebar h2{padding:14px 14px 10px;font-size:13px;font-weight:700;color:var(--text);letter-spacing:-.3px}
 .nav-item{padding:7px 14px;cursor:pointer;font-size:12px;color:var(--text2);transition:.12s;margin:1px 6px;border-radius:6px}
@@ -29,25 +29,25 @@ h3{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;le
 .card h3{color:var(--text2)}
 .grid{display:grid;gap:8px}
 .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:repeat(4,1fr)}
-button{background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:11px;font-weight:500;transition:.12s}
+button{background:var(--accent);color:#fff;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:500;transition:.12s}
 button:hover{opacity:.9}
 button.sec{background:transparent;border:1px solid var(--border);color:var(--text2);font-weight:400}
 button.sec:hover{border-color:var(--accent);color:var(--accent2)}
 button.danger{background:var(--red)}
-input,select,textarea{background:var(--bg);color:var(--text);border:1px solid var(--border);padding:6px 10px;border-radius:6px;font-family:inherit;font-size:11px;width:100%;transition:.12s}
+input,select,textarea{background:var(--bg);color:var(--text);border:1px solid var(--border);padding:8px 10px;border-radius:6px;font-family:inherit;font-size:13px;width:100%;transition:.12s}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,58,237,.1)}
 textarea{resize:vertical;min-height:60px}select{cursor:pointer}
-table{width:100%;border-collapse:collapse;font-size:11px}
-th,td{padding:6px 8px;text-align:left;border-bottom:1px solid var(--border)}
-th{color:var(--text2);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.4px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)}
+th{color:var(--text2);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
 .stat-box{text-align:center;padding:10px}.stat-box .num{font-size:20px;font-weight:700;color:var(--text);letter-spacing:-.5px}.stat-box .lbl{font-size:10px;color:var(--text2);margin-top:2px}
 .badge{display:inline-block;padding:2px 7px;border-radius:8px;font-size:9px;font-weight:600}
 .badge-green{background:rgba(16,185,129,.1);color:var(--green)}.badge-red{background:rgba(239,68,68,.1);color:var(--red)}.badge-yellow{background:rgba(245,158,11,.1);color:var(--yellow)}
 .habit-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;background:var(--card2);margin-bottom:3px;transition:.12s}
 .habit-row:hover{background:#1e1e28}
-.habit-row .h-name{flex:1;font-size:12px;font-weight:500}
+.habit-row .h-name{flex:1;font-size:13px;font-weight:500}
 .habit-row .h-streak{font-size:10px;color:var(--text2);min-width:50px;text-align:right}
-.habit-row .h-check{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;transition:.15s;border:1.5px solid var(--border);background:transparent;flex-shrink:0}
+.habit-row .h-check{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:.15s;border:1.5px solid var(--border);background:transparent;flex-shrink:0}
 .habit-row .h-check.done{background:var(--green);border-color:var(--green);color:#fff}
 .habit-row .h-del{opacity:0;cursor:pointer;color:var(--text2);font-size:10px;transition:.12s}.habit-row:hover .h-del,.habit-row:hover .h-move{opacity:.6}
 .water-bar{display:flex;gap:4px;align-items:center}
@@ -63,7 +63,7 @@ th{color:var(--text2);font-weight:600;font-size:10px;text-transform:uppercase;le
 .achievement{display:inline-flex;align-items:center;gap:2px;padding:2px 7px;border-radius:10px;font-size:10px;background:var(--card2);border:1px solid var(--border);margin:1px}
 .achievement.unlocked{background:rgba(245,158,11,.08);border-color:var(--yellow);color:var(--yellow)}
 .food-row{display:flex;gap:5px;align-items:center;margin-bottom:4px;flex-wrap:wrap}.food-row input{flex:1;min-width:80px}
-.chip{display:inline-flex;align-items:center;gap:2px;padding:2px 8px;border-radius:12px;font-size:10px;cursor:pointer;border:1px solid var(--border);background:var(--card2);transition:.12s}
+.chip{display:inline-flex;align-items:center;gap:2px;padding:4px 10px;border-radius:12px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--card2);transition:.12s}
 .chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
 .chart-container{position:relative;height:200px;margin-top:6px}
 .outfit-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:10px}
@@ -146,10 +146,10 @@ body.light .card:hover{border-color:#d4d4d8}
 <div class="card"><h3>TODAY</h3><div id="dash-today"></div></div>
 <div class="card"><h3>THIS WEEK</h3><div id="dash-week"></div></div>
 <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:4px">
-<button class="sec" onclick="switchTab('habits')" style="font-size:10px;padding:6px">Habits</button>
-<button class="sec" onclick="switchTab('work')" style="font-size:10px;padding:6px">Life Log</button>
-<button class="sec" onclick="switchTab('finance')" style="font-size:10px;padding:6px">Finance</button>
-<button class="sec" onclick="switchTab('journal')" style="font-size:10px;padding:6px">Journal</button>
+<button class="sec" onclick="switchTab('habits')" style="font-size:11px;padding:6px">Habits</button>
+<button class="sec" onclick="switchTab('work')" style="font-size:11px;padding:6px">Life Log</button>
+<button class="sec" onclick="switchTab('finance')" style="font-size:11px;padding:6px">Finance</button>
+<button class="sec" onclick="switchTab('journal')" style="font-size:11px;padding:6px">Journal</button>
 </div>
 </div>
 <!-- HABITS TAB -->
@@ -164,16 +164,16 @@ body.light .card:hover{border-color:#d4d4d8}
 <button class="sec" onclick="changeHabitDate(1)" style="padding:4px 8px">▶</button>
 </div>
 <div class="flex mt8" style="justify-content:center;gap:3px">
-<button class="sec" style="font-size:9px;padding:2px 6px" onclick="quickFillAll(true)">Check All</button>
-<button class="sec" style="font-size:9px;padding:2px 6px" onclick="quickFillAll(false)">Uncheck</button>
-<button class="sec" style="font-size:9px;padding:2px 6px" onclick="copyFromYesterday()">Copy Yesterday</button>
+<button class="sec" style="font-size:11px;padding:4px 8px" onclick="quickFillAll(true)">Check All</button>
+<button class="sec" style="font-size:11px;padding:4px 8px" onclick="quickFillAll(false)">Uncheck</button>
+<button class="sec" style="font-size:11px;padding:4px 8px" onclick="copyFromYesterday()">Copy Yesterday</button>
 </div>
 </div>
 <div id="habit-nudge" style="font-size:11px;color:var(--accent2);padding:4px 0"></div>
 <!-- Habits -->
-<div class="card"><div class="flex" style="justify-content:space-between"><h3>GOOD HABITS</h3><button class="sec" onclick="addHabitPrompt('good')" style="font-size:9px;padding:2px 6px">+ Add</button></div><div id="good-habits-list"></div></div>
-<div class="card"><div class="flex" style="justify-content:space-between"><h3>DON'TS</h3><button class="sec" onclick="addHabitPrompt('donts')" style="font-size:9px;padding:2px 6px">+ Add</button></div><div id="donts-list"></div></div>
-<div class="card"><div class="flex" style="justify-content:space-between"><h3>FITNESS</h3><button class="sec" onclick="addHabitPrompt('fitness')" style="font-size:9px;padding:2px 6px">+ Add</button></div><div id="fitness-list"></div></div>
+<div class="card"><div class="flex" style="justify-content:space-between"><h3>GOOD HABITS</h3><button class="sec" onclick="addHabitPrompt('good')" style="font-size:11px;padding:4px 8px">+ Add</button></div><div id="good-habits-list"></div></div>
+<div class="card"><div class="flex" style="justify-content:space-between"><h3>DON'TS</h3><button class="sec" onclick="addHabitPrompt('donts')" style="font-size:11px;padding:4px 8px">+ Add</button></div><div id="donts-list"></div></div>
+<div class="card"><div class="flex" style="justify-content:space-between"><h3>FITNESS</h3><button class="sec" onclick="addHabitPrompt('fitness')" style="font-size:11px;padding:4px 8px">+ Add</button></div><div id="fitness-list"></div></div>
 <!-- Water -->
 <div class="card">
 <h3>WATER</h3>
@@ -189,7 +189,7 @@ body.light .card:hover{border-color:#d4d4d8}
 <div class="card card-collapse">
 <h3 onclick="toggleCollapse(this)">FOOD LOG <span id="food-date-display" style="font-size:10px;color:var(--text2)"></span></h3>
 <div class="card-body"><div id="food-log-entries"></div>
-<div class="flex mt8"><button class="sec" onclick="addFoodEntry()" style="font-size:9px;padding:2px 6px">+ Add Meal</button></div></div>
+<div class="flex mt8"><button class="sec" onclick="addFoodEntry()" style="font-size:11px;padding:4px 8px">+ Add Meal</button></div></div>
 </div>
 <!-- Calendar -->
 <div class="card"><h3>CALENDAR</h3><div class="cal-grid" id="habit-calendar"></div></div>
@@ -218,11 +218,11 @@ body.light .card:hover{border-color:#d4d4d8}
 <div id="work-score" class="mt16" style="font-size:18px;font-weight:600"></div>
 <div id="day-tag" class="mt8"></div>
 <div class="flex mt8 flex-wrap" style="gap:4px">
-<button class="sec" onclick="suggestLifeLog()" style="font-size:10px;padding:3px 7px">Auto-fill</button>
-<button class="sec" onclick="copyLifeLogFromYesterday()" style="font-size:10px;padding:3px 7px">Yesterday</button>
-<button class="sec" onclick="applyTemplate('workday')" style="font-size:10px;padding:3px 7px">Workday</button>
-<button class="sec" onclick="applyTemplate('weekend')" style="font-size:10px;padding:3px 7px">Weekend</button>
-<button class="sec" onclick="clearDay()" style="font-size:10px;padding:3px 7px">Clear</button>
+<button class="sec" onclick="suggestLifeLog()" style="font-size:11px;padding:4px 8px">Auto-fill</button>
+<button class="sec" onclick="copyLifeLogFromYesterday()" style="font-size:11px;padding:4px 8px">Yesterday</button>
+<button class="sec" onclick="applyTemplate('workday')" style="font-size:11px;padding:4px 8px">Workday</button>
+<button class="sec" onclick="applyTemplate('weekend')" style="font-size:11px;padding:4px 8px">Weekend</button>
+<button class="sec" onclick="clearDay()" style="font-size:11px;padding:4px 8px">Clear</button>
 </div>
 </div>
 <div class="grid g4 mb8" id="work-stats"></div>
@@ -231,7 +231,7 @@ body.light .card:hover{border-color:#d4d4d8}
 <div id="work-todos"></div>
 <div class="flex mt8" style="gap:4px">
 <input type="text" id="new-todo" placeholder="Add a task..." style="flex:1" onkeydown="if(event.key==='Enter')addTodo()">
-<button onclick="addTodo()" style="font-size:10px;padding:3px 8px">Add</button>
+<button onclick="addTodo()" style="font-size:11px;padding:4px 8px">Add</button>
 </div>
 </div>
 <div class="card"><h3>Month View</h3>
@@ -262,7 +262,7 @@ body.light .card:hover{border-color:#d4d4d8}
 <!-- Accounts -->
 <div class="card">
 <div class="flex" style="justify-content:space-between"><h3>ACCOUNTS</h3>
-<div class="flex" style="gap:3px"><button class="sec" onclick="editAccounts()" style="font-size:9px;padding:2px 6px">Edit</button><button class="sec" onclick="showTransfer()" style="font-size:9px;padding:2px 6px">Transfer</button><button class="sec" onclick="showAddIncome()" style="font-size:9px;padding:2px 6px">+ Income</button></div></div>
+<div class="flex" style="gap:3px"><button class="sec" onclick="editAccounts()" style="font-size:11px;padding:4px 8px">Edit</button><button class="sec" onclick="showTransfer()" style="font-size:11px;padding:4px 8px">Transfer</button><button class="sec" onclick="showAddIncome()" style="font-size:11px;padding:4px 8px">+ Income</button></div></div>
 <div class="grid g4" id="account-balances" style="margin-top:6px"></div>
 </div>
 <!-- Budget vs Actual — single unified table -->
@@ -270,9 +270,9 @@ body.light .card:hover{border-color:#d4d4d8}
 <div class="flex" style="justify-content:space-between"><h3>BUDGET vs ACTUAL</h3>
 <div class="flex" style="gap:3px">
 <input type="month" id="finance-month" style="width:auto;font-size:10px;padding:2px 6px" onchange="renderFinance()">
-<button class="sec" onclick="editSalary()" style="font-size:9px;padding:2px 6px">Settings</button></div></div>
+<button class="sec" onclick="editSalary()" style="font-size:11px;padding:4px 8px">Settings</button></div></div>
 <table id="budget-table"><thead><tr><th>Category</th><th style="text-align:right">Budget</th><th style="text-align:right">Actual</th><th style="text-align:right">Left</th></tr></thead><tbody></tbody></table>
-<div class="flex mt8" style="gap:3px"><button class="sec" onclick="addExpenseCategory('his')" style="font-size:9px;padding:2px 6px">+ His category</button><button class="sec" onclick="addExpenseCategory('my')" style="font-size:9px;padding:2px 6px">+ My category</button></div>
+<div class="flex mt8" style="gap:3px"><button class="sec" onclick="addExpenseCategory('his')" style="font-size:11px;padding:4px 8px">+ His category</button><button class="sec" onclick="addExpenseCategory('my')" style="font-size:11px;padding:4px 8px">+ My category</button></div>
 </div>
 <!-- Quick expense log -->
 <div class="card">
@@ -288,18 +288,18 @@ body.light .card:hover{border-color:#d4d4d8}
 </div>
 <table id="daily-expenses-table" style="margin-top:6px"><thead><tr><th>Date</th><th>Who</th><th>Category</th><th style="text-align:right">Amount</th><th>A/c</th><th>Note</th><th></th></tr></thead><tbody></tbody></table>
 <div class="flex mt8" style="gap:3px">
-<button class="sec" onclick="showParseSMS()" style="font-size:9px;padding:2px 6px">SMS Import</button>
-<button class="sec" onclick="showBankCSVImport()" style="font-size:9px;padding:2px 6px">Bank CSV</button>
-<button class="sec" onclick="showRecurring()" style="font-size:9px;padding:2px 6px">Recurring</button>
-<button class="sec" onclick="suggestBudgets()" style="font-size:9px;padding:2px 6px">Auto-Budget</button>
-<button class="sec" onclick="saveMonthSnapshot()" style="font-size:9px;padding:2px 6px">Save Snapshot</button>
+<button class="sec" onclick="showParseSMS()" style="font-size:11px;padding:4px 8px">SMS Import</button>
+<button class="sec" onclick="showBankCSVImport()" style="font-size:11px;padding:4px 8px">Bank CSV</button>
+<button class="sec" onclick="showRecurring()" style="font-size:11px;padding:4px 8px">Recurring</button>
+<button class="sec" onclick="suggestBudgets()" style="font-size:11px;padding:4px 8px">Auto-Budget</button>
+<button class="sec" onclick="saveMonthSnapshot()" style="font-size:11px;padding:4px 8px">Save Snapshot</button>
 </div>
 </div>
 <!-- Spending pace -->
 <div class="card" id="finance-summary"></div>
 <!-- Goals -->
 <div class="card"><h3>GOALS</h3><div id="fin-goals"></div>
-<div class="flex mt8"><button class="sec" onclick="showAddGoal()" style="font-size:9px;padding:2px 6px">+ Add Goal</button></div></div>
+<div class="flex mt8"><button class="sec" onclick="showAddGoal()" style="font-size:11px;padding:4px 8px">+ Add Goal</button></div></div>
 </div>
 
 <!-- INVESTMENTS -->
@@ -368,7 +368,7 @@ body.light .card:hover{border-color:#d4d4d8}
 <input type="text" id="job-role" placeholder="Role" style="width:100px">
 <select id="job-status" style="width:auto;font-size:10px"><option value="applied">Applied</option><option value="screening">Screening</option><option value="interview">Interview</option><option value="offer">Offer</option><option value="rejected">Rejected</option><option value="ghosted">Ghosted</option></select>
 <input type="text" id="job-link" placeholder="Link" style="flex:1;min-width:80px">
-<button onclick="addJobApp()" style="font-size:10px;padding:3px 8px">Add</button>
+<button onclick="addJobApp()" style="font-size:11px;padding:4px 8px">Add</button>
 </div></div>
 </div></div>
 
@@ -463,12 +463,12 @@ body.light .card:hover{border-color:#d4d4d8}
 <button class="sec" onclick="clearOutfitDate()">Clear</button>
 </div>
 <div class="flex flex-wrap mt8" style="gap:3px">
-<button class="sec" style="font-size:10px;padding:3px 7px" onclick="suggestByCategory('Top+Jeans')">Top+Jeans</button>
-<button class="sec" style="font-size:10px;padding:3px 7px" onclick="suggestByCategory('Kurti+Leggings')">Kurti</button>
-<button class="sec" style="font-size:10px;padding:3px 7px" onclick="suggestByCategory('Shirt+Jeans')">Shirt</button>
-<button class="sec" style="font-size:10px;padding:3px 7px" onclick="suggestByCategory('Tshirt')">Tshirt</button>
-<button class="sec" style="font-size:10px;padding:3px 7px" onclick="suggestLeastWorn()">Least worn</button>
-<button class="sec" style="font-size:10px;padding:3px 7px" onclick="smartOutfitSuggest()">Smart</button>
+<button class="sec" style="font-size:11px;padding:4px 8px" onclick="suggestByCategory('Top+Jeans')">Top+Jeans</button>
+<button class="sec" style="font-size:11px;padding:4px 8px" onclick="suggestByCategory('Kurti+Leggings')">Kurti</button>
+<button class="sec" style="font-size:11px;padding:4px 8px" onclick="suggestByCategory('Shirt+Jeans')">Shirt</button>
+<button class="sec" style="font-size:11px;padding:4px 8px" onclick="suggestByCategory('Tshirt')">Tshirt</button>
+<button class="sec" style="font-size:11px;padding:4px 8px" onclick="suggestLeastWorn()">Least worn</button>
+<button class="sec" style="font-size:11px;padding:4px 8px" onclick="smartOutfitSuggest()">Smart</button>
 </div>
 <div id="manual-pick" style="display:none;margin-top:8px">
 <select id="manual-outfit-select" style="margin-bottom:6px"></select>
@@ -1199,7 +1199,7 @@ if(insights.length)$('finance-summary').innerHTML+=`<div style="margin-top:6px;f
 // Expense log
 $('exp-date').value=$('exp-date').value||todayStr;updateExpCatDropdown();
 let dhtml='';monthExps.sort((a,b)=>b.date.localeCompare(a.date)).forEach(e=>{
-dhtml+=`<tr><td>${fmtDate(e.date)}</td><td style="font-size:10px">${e.who}</td><td>${e.cat}</td><td style="text-align:right">${inr(e.amount)}</td><td style="font-size:10px">${e.account||'—'}</td><td style="color:var(--text2);font-size:10px">${e.note||''}</td><td><button class="sec" style="padding:1px 4px;font-size:9px" onclick="removeExpense(${exps.indexOf(e)})">✕</button></td></tr>`});
+dhtml+=`<tr><td>${fmtDate(e.date)}</td><td style="font-size:12px">${e.who}</td><td>${e.cat}</td><td style="text-align:right">${inr(e.amount)}</td><td style="font-size:12px">${e.account||'—'}</td><td style="color:var(--text2);font-size:10px">${e.note||''}</td><td><button class="sec" style="padding:1px 4px;font-size:9px" onclick="removeExpense(${exps.indexOf(e)})">✕</button></td></tr>`});
 $('daily-expenses-table').querySelector('tbody').innerHTML=dhtml||'<tr><td colspan="7" style="text-align:center;color:var(--text2)">No expenses</td></tr>';
 renderFinanceCharts(month);
 }
@@ -1762,10 +1762,10 @@ html+=`<div class="card" style="padding:14px;margin-bottom:8px;cursor:pointer" o
 <span style="font-size:13px;font-weight:600;color:${diff>=0?'var(--green)':'var(--red)'}">${diff>=0?'✅ '+inr(diff)+' saved':'⚠️ '+inr(Math.abs(diff))+' over'}</span>
 </div>
 <div class="grid g4" style="gap:6px;margin:8px 0">
-<div style="font-size:10px"><span style="color:var(--text2)">Net Worth</span><br><strong>${inr(net)}</strong></div>
-<div style="font-size:10px"><span style="color:var(--text2)">In Hand</span><br><strong style="color:var(--green)">${inr(inHand)}</strong></div>
-<div style="font-size:10px"><span style="color:var(--text2)">His Spent</span><br><strong>${inr(h.hisActual||0)}</strong>/<span style="color:var(--text2)">${inr(h.hisBudget||0)}</span></div>
-<div style="font-size:10px"><span style="color:var(--text2)">My Spent</span><br><strong>${inr(h.myActual||0)}</strong>/<span style="color:var(--text2)">${inr(h.myBudget||0)}</span></div>
+<div style="font-size:12px"><span style="color:var(--text2)">Net Worth</span><br><strong>${inr(net)}</strong></div>
+<div style="font-size:12px"><span style="color:var(--text2)">In Hand</span><br><strong style="color:var(--green)">${inr(inHand)}</strong></div>
+<div style="font-size:12px"><span style="color:var(--text2)">His Spent</span><br><strong>${inr(h.hisActual||0)}</strong>/<span style="color:var(--text2)">${inr(h.hisBudget||0)}</span></div>
+<div style="font-size:12px"><span style="color:var(--text2)">My Spent</span><br><strong>${inr(h.myActual||0)}</strong>/<span style="color:var(--text2)">${inr(h.myBudget||0)}</span></div>
 </div>`;
 if(allCats.length){html+=`<div style="font-size:11px;color:var(--text2);margin-top:4px">💸 Top: ${allCats.slice(0,5).map(c=>c.name+' '+inr(c.actual)).join(' · ')}</div>`}
 html+=`<div style="font-size:11px;color:var(--accent2);margin-top:4px">Click for full breakdown →</div></div>`;
@@ -1785,7 +1785,7 @@ function getRecurring(){return LS.get('recurring',[])}
 function showRecurring(){
 const rec=getRecurring();
 let html='<h3>🔄 Recurring Expenses</h3><p style="font-size:11px;color:var(--text2);margin-bottom:8px">Set once — auto-added on the 1st of each month when you open the app</p>';
-rec.forEach((r,i)=>{html+=`<div class="flex mb8" style="font-size:10px"><span style="flex:1">${r.who}: ${r.cat} — ${inr(r.amount)} ${r.note?'('+r.note+')':''}</span><span class="h-del" style="cursor:pointer" onclick="removeRecurring(${i})">✕</span></div>`});
+rec.forEach((r,i)=>{html+=`<div class="flex mb8" style="font-size:12px"><span style="flex:1">${r.who}: ${r.cat} — ${inr(r.amount)} ${r.note?'('+r.note+')':''}</span><span class="h-del" style="cursor:pointer" onclick="removeRecurring(${i})">✕</span></div>`});
 html+=`<div class="flex mt8 flex-wrap" style="gap:6px">
 <select id="rec-who" style="width:auto"><option value="his">His</option><option value="my">My</option></select>
 <input type="text" id="rec-cat" placeholder="Category" style="width:100px">
@@ -2100,7 +2100,7 @@ const cat=m.category||'Other';mfByCat[cat]=(mfByCat[cat]||0)+m.current;
 mfHtml+=`<tr><td><strong>${m.fund}</strong><br><span class="tag">${cat}</span></td>
 <td>${m.mfType==='sip'?'📅 SIP':'💰 Lump'}</td><td>${inr(m.invested)}</td>
 <td><input type="number" value="${m.current}" style="width:80px" onchange="updateMFCurrent(${m.id},this.value)"></td>
-<td style="color:${ret>=0?'var(--green)':'var(--red)'}"><strong>${inr(ret)}</strong><br><span style="font-size:10px">${retPct}%</span></td>
+<td style="color:${ret>=0?'var(--green)':'var(--red)'}"><strong>${inr(ret)}</strong><br><span style="font-size:12px">${retPct}%</span></td>
 <td>${xirr}%</td><td>${m.sipAmount?inr(m.sipAmount):'-'}</td><td>${fmtDate(m.start)}</td>
 <td><span style="cursor:pointer;opacity:.5" onclick="removeInvestment('mf',${m.id})">✕</span></td></tr>`});
 $('mf-table').querySelector('tbody').innerHTML=mfHtml||'<tr><td colspan="9" style="color:var(--text2);text-align:center">No MFs</td></tr>';
@@ -2417,7 +2417,7 @@ const dateEntry=hist[selectedDate];
 if(dateEntry&&dateEntry.outfit){const o=outfits.find(x=>x.id===dateEntry.outfit);
 const wornCounts2={};Object.values(hist).forEach(e=>{if(e.outfit)wornCounts2[e.outfit]=(wornCounts2[e.outfit]||0)+1});
 $('outfit-pick').innerHTML=o?`<div style="font-size:24px">${catEmoji[o.cat]||'👔'}</div><div style="margin-top:2px">#${o.id} ${o.name}</div><div style="font-size:10px;color:var(--text2)">${o.cat} · Worn ${wornCounts2[o.id]||0} times</div>`:'Not set'}
-else if(dateEntry&&dateEntry.off){$('outfit-pick').innerHTML='<div style="font-size:20px">😴</div><div style="font-size:10px">Day Off</div>'}
+else if(dateEntry&&dateEntry.off){$('outfit-pick').innerHTML='<div style="font-size:20px">😴</div><div style="font-size:12px">Day Off</div>'}
 else{$('outfit-pick').innerHTML='<div style="color:var(--text2);font-size:12px">No outfit set for this date</div>'}
 // Manual dropdown
 $('manual-outfit-select').innerHTML=outfits.map(o=>`<option value="${o.id}">#${o.id} ${o.name}</option>`).join('');
@@ -2655,7 +2655,7 @@ if(e.key==='4')switchTab('finance');if(e.key==='5')switchTab('career');if(e.key=
 if(e.key==='7')switchTab('outfit');if(e.key==='/'){e.preventDefault();$('global-search').focus()}
 if((e.key==='z'||e.key==='Z')&&(e.ctrlKey||e.metaKey)){e.preventDefault();undo()}
 if(e.key==='?')showModal(`<h3>Keyboard Shortcuts</h3>
-<table style="font-size:10px"><tbody>
+<table style="font-size:12px"><tbody>
 <tr><td style="font-weight:600;padding:4px 12px 4px 0">1-7</td><td>Switch tabs</td></tr>
 <tr><td style="font-weight:600;padding:4px 12px 4px 0">/</td><td>Search</td></tr>
 <tr><td style="font-weight:600;padding:4px 12px 4px 0">Ctrl+Z</td><td>Undo last delete</td></tr>
