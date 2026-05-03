@@ -2722,6 +2722,38 @@ const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i)
 keys.forEach(k=>localStorage.removeItem(k));alert('Data cleared. Refreshing...');location.reload()}
 initFinanceHistory();
 localStorage.removeItem('lt_finHistoryLoaded');
+// Seed default data if empty
+function seedDefaults(){
+if(LS.get('outfits'))return;// Already has data
+LS.set('outfits',[
+{id:1,name:'Baby pink with puff sleeves + light blue jeans',cat:'Top+Jeans'},
+{id:2,name:'Pista green top + black jeans',cat:'Top+Jeans'},
+{id:3,name:'Light pink shirt + dark blue jeans',cat:'Shirt+Jeans'},
+{id:4,name:'Rose gold kurti + sandal leggings',cat:'Kurti+Leggings'},
+{id:5,name:'Blue silver kurti + white leggings',cat:'Kurti+Leggings'},
+{id:6,name:'Mustard short top + black pant',cat:'Top+Pant'},
+{id:7,name:'Green short top + dark blue jeans',cat:'Top+Jeans'},
+{id:8,name:'White short loose top + light blue jeans',cat:'Top+Jeans'},
+{id:9,name:'White formal top + black jeans',cat:'Top+Jeans'},
+{id:10,name:'Black shirt + dark blue jeans',cat:'Shirt+Jeans'},
+{id:11,name:'Light blue striped tshirt',cat:'Tshirt'},
+{id:12,name:'Colorful tshirt',cat:'Tshirt'},
+{id:13,name:'White top with blue green',cat:'Top'},
+{id:14,name:'White top with black',cat:'Top'},
+{id:15,name:'Black top',cat:'Top'},
+{id:16,name:'Red top',cat:'Top'}]);
+LS.set('outfitHistory',{
+'2026-04-01':{outfit:3},'2026-04-02':{outfit:6},'2026-04-03':{outfit:8},
+'2026-04-04':{off:true},'2026-04-05':{off:true},
+'2026-04-06':{outfit:7},'2026-04-07':{outfit:5},'2026-04-08':{outfit:14},
+'2026-04-09':{outfit:10},'2026-04-10':{outfit:2},'2026-04-11':{outfit:13},
+'2026-04-12':{off:true},'2026-04-13':{outfit:12},'2026-04-14':{outfit:16},
+'2026-04-15':{outfit:11},'2026-04-16':{outfit:1},'2026-04-17':{outfit:3},
+'2026-04-18':{outfit:6},'2026-04-19':{off:true}});
+LS.set('habits',{good:['Wake at 7','Drink water & restroom','Bath + Cloth Wash + Get ready','Book','Brush twice'],donts:['No junk','No social media','No touch'],fitness:['Walk/Yoga/Exercise']});
+LS.set('waterGoal',3);
+}
+seedDefaults();
 autoSnapshot();
 renderDashboard();
 // Auto-refresh life log time pointer every minute
