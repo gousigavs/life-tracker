@@ -120,8 +120,10 @@ body.light .card:hover{border-color:#d4d4d8}
 <div class="nav-item active" onclick="switchTab('dashboard')">Dashboard <span style="float:right;opacity:.3;font-size:10px">1</span></div>
 <div class="nav-item" onclick="switchTab('habits')">Habits <span style="float:right;opacity:.3;font-size:10px">2</span></div>
 <div class="nav-item" onclick="switchTab('work')">Life Log <span style="float:right;opacity:.3;font-size:10px">3</span></div>
-<div class="nav-item" onclick="switchTab('journal')">Journal <span style="float:right;opacity:.3;font-size:12px">4</span></div>
-<div class="nav-item" onclick="switchTab('outfit')">Outfits <span style="float:right;opacity:.3;font-size:12px">5</span></div>
+<div class="nav-item" onclick="switchTab('finance')">Finance <span style="float:right;opacity:.3;font-size:10px">4</span></div>
+<div class="nav-item" onclick="switchTab('career')">Career <span style="float:right;opacity:.3;font-size:10px">5</span></div>
+<div class="nav-item" onclick="switchTab('journal')">Journal <span style="float:right;opacity:.3;font-size:10px">6</span></div>
+<div class="nav-item" onclick="switchTab('outfit')">Outfits <span style="float:right;opacity:.3;font-size:10px">7</span></div>
 <div style="margin-top:auto;padding:6px 10px;border-top:1px solid var(--border)">
 <div class="flex" style="gap:3px;margin-bottom:4px">
 <button class="sec" onclick="toggleTheme()" style="flex:1;font-size:10px;padding:4px" id="theme-btn">Theme</button>
@@ -146,6 +148,7 @@ body.light .card:hover{border-color:#d4d4d8}
 <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:4px">
 <button class="sec" onclick="switchTab('habits')" style="font-size:11px;padding:6px">Habits</button>
 <button class="sec" onclick="switchTab('work')" style="font-size:11px;padding:6px">Life Log</button>
+<button class="sec" onclick="switchTab('finance')" style="font-size:11px;padding:6px">Finance</button>
 <button class="sec" onclick="switchTab('journal')" style="font-size:11px;padding:6px">Journal</button>
 </div>
 </div>
@@ -241,6 +244,161 @@ body.light .card:hover{border-color:#d4d4d8}
 <div class="card"><h3>Category Breakdown</h3><div class="chart-container"><canvas id="work-doughnut"></canvas></div></div>
 <div class="card"><h3>7-Day Overview</h3><div class="chart-container"><canvas id="work-bar"></canvas></div></div>
 </div>
+</div>
+
+<!-- FINANCE TAB -->
+<div id="tab-finance" class="tab">
+<h2 style="margin-bottom:12px">Finance</h2>
+<!-- 3 clean tabs -->
+<div class="flex" style="gap:2px;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:12px">
+<button class="sec fin-sub active" onclick="switchFinSub('month')">This Month</button>
+<button class="sec fin-sub" onclick="switchFinSub('investments')">Investments</button>
+<button class="sec fin-sub" onclick="switchFinSub('history')">History</button>
+</div>
+
+<!-- THIS MONTH -->
+<div id="fin-sub-month" class="fin-panel">
+<!-- Top numbers -->
+<div class="grid g4 mb8" id="fin-top-stats"></div>
+<!-- Accounts -->
+<div class="card">
+<div class="flex" style="justify-content:space-between"><h3>ACCOUNTS</h3>
+<div class="flex" style="gap:3px"><button class="sec" onclick="editAccounts()" style="font-size:12px;padding:5px 10px">Edit</button><button class="sec" onclick="showTransfer()" style="font-size:12px;padding:5px 10px">Transfer</button><button class="sec" onclick="showAddIncome()" style="font-size:12px;padding:5px 10px">+ Income</button></div></div>
+<div class="grid g4" id="account-balances" style="margin-top:6px"></div>
+</div>
+<!-- Budget vs Actual — single unified table -->
+<div class="card">
+<div class="flex" style="justify-content:space-between"><h3>BUDGET vs ACTUAL</h3>
+<div class="flex" style="gap:3px">
+<input type="month" id="finance-month" style="width:auto;font-size:10px;padding:2px 6px" onchange="renderFinance()">
+<button class="sec" onclick="editSalary()" style="font-size:12px;padding:5px 10px">Settings</button></div></div>
+<table id="budget-table"><thead><tr><th>Category</th><th style="text-align:right">Budget</th><th style="text-align:right">Actual</th><th style="text-align:right">Left</th></tr></thead><tbody></tbody></table>
+<div class="flex mt8" style="gap:3px"><button class="sec" onclick="addExpenseCategory('his')" style="font-size:12px;padding:5px 10px">+ His category</button><button class="sec" onclick="addExpenseCategory('my')" style="font-size:12px;padding:5px 10px">+ My category</button></div>
+</div>
+<!-- Quick expense log -->
+<div class="card">
+<h3>LOG EXPENSE</h3>
+<div class="flex flex-wrap" style="gap:4px">
+<select id="exp-who" style="width:auto" onchange="updateExpCatDropdown()"><option value="his">His</option><option value="my">My</option></select>
+<select id="exp-cat" style="width:auto"></select>
+<input type="number" id="exp-amt" placeholder="₹" style="width:70px">
+<select id="exp-account" style="width:auto"></select>
+<input type="text" id="exp-note" placeholder="Note" style="width:80px">
+<input type="date" id="exp-date" style="width:auto">
+<button onclick="addDailyExpense()">Add</button>
+</div>
+<table id="daily-expenses-table" style="margin-top:6px"><thead><tr><th>Date</th><th>Who</th><th>Category</th><th style="text-align:right">Amount</th><th>A/c</th><th>Note</th><th></th></tr></thead><tbody></tbody></table>
+<div class="flex mt8" style="gap:3px">
+<button class="sec" onclick="showParseSMS()" style="font-size:12px;padding:5px 10px">SMS Import</button>
+<button class="sec" onclick="showBankCSVImport()" style="font-size:12px;padding:5px 10px">Bank CSV</button>
+<button class="sec" onclick="showRecurring()" style="font-size:12px;padding:5px 10px">Recurring</button>
+<button class="sec" onclick="suggestBudgets()" style="font-size:12px;padding:5px 10px">Auto-Budget</button>
+<button class="sec" onclick="saveMonthSnapshot()" style="font-size:12px;padding:5px 10px">Save Snapshot</button>
+<button class="sec" onclick="showPasteMonthData()" style="font-size:12px;padding:5px 10px">Paste Month Data</button>
+</div>
+</div>
+<!-- Spending pace -->
+<div class="card" id="finance-summary"></div>
+<!-- Goals -->
+<div class="card"><h3>GOALS</h3><div id="fin-goals"></div>
+<div class="flex mt8"><button class="sec" onclick="showAddGoal()" style="font-size:12px;padding:5px 10px">+ Add Goal</button></div></div>
+</div>
+
+<!-- INVESTMENTS -->
+<div id="fin-sub-investments" class="fin-panel" style="display:none">
+<div class="grid g4 mb8" id="invest-summary"></div>
+<div class="card"><h3>FIXED DEPOSITS</h3><div id="fd-summary" style="font-size:10px;color:var(--text2);margin-bottom:4px"></div>
+<table id="fd-table"><thead><tr><th>Bank</th><th style="text-align:right">Amount</th><th>Rate</th><th>Type</th><th>Maturity</th><th style="text-align:right">Interest</th><th>Left</th><th></th></tr></thead><tbody></tbody></table>
+<div class="flex mt8"><button onclick="showAddFD()">+ Add FD</button></div></div>
+<div class="card"><h3>MUTUAL FUNDS / SIPs</h3><div id="mf-summary" style="font-size:10px;color:var(--text2);margin-bottom:4px"></div>
+<table id="mf-table"><thead><tr><th>Fund</th><th>Type</th><th style="text-align:right">Invested</th><th style="text-align:right">Current</th><th style="text-align:right">Returns</th><th>XIRR</th><th></th></tr></thead><tbody></tbody></table>
+<div class="flex mt8"><button onclick="showAddMF()">+ Add MF</button>
+<button class="sec" onclick="$('zerodha-csv').click()">Import Zerodha</button>
+<input type="file" id="zerodha-csv" accept=".csv" style="display:none" onchange="importZerodhaCSV(event)">
+</div></div>
+<div class="card"><h3>UPCOMING</h3><div id="invest-upcoming"></div></div>
+<div class="grid g2">
+<div class="card"><h3>ALLOCATION</h3><div class="chart-container" style="height:180px"><canvas id="invest-pie"></canvas></div></div>
+<div class="card"><h3>NET WORTH</h3><div class="chart-container" style="height:180px"><canvas id="networth-chart"></canvas></div></div>
+</div>
+</div>
+
+<!-- HISTORY -->
+<div id="fin-sub-history" class="fin-panel" style="display:none">
+<div class="flex mb8" style="justify-content:space-between;align-items:center">
+<h3>MONTHLY HISTORY</h3>
+<select id="history-month-select" style="width:auto" onchange="renderFinanceHistory()"><option value="all">All Months</option></select>
+</div>
+<div id="finance-history-table"></div>
+</div>
+</div>
+<!-- CAREER TAB -->
+<div id="tab-career" class="tab">
+<div class="flex" style="justify-content:space-between;align-items:center;margin-bottom:12px"><h2>Career</h2><a href="https://docs.google.com/document/d/1Y3y7nvApYzIb0aCaz9nqtgqLdldWvp_VbbVbCdgCtnc/edit?tab=t.0#heading=h.t17gc9t8urkn" target="_blank" style="font-size:10px;color:var(--accent2)">Full Career Plan →</a></div>
+<div class="grid g3 mb8" id="career-stats"></div>
+<!-- Quick log -->
+<div class="card">
+<h3>LOG</h3>
+<div class="flex flex-wrap" style="gap:4px">
+<input type="date" id="career-date" style="width:auto">
+<select id="career-type" style="width:auto">
+<option>Coursera</option><option>LeetCode</option><option>System Design</option><option>Resume/Jobs</option><option>Portfolio</option><option>Reading</option></select>
+<input type="number" id="career-hours" placeholder="Hours" style="width:60px" step="0.5">
+<input type="text" id="career-desc" placeholder="What did you do / Link" style="flex:1;min-width:150px">
+<button onclick="addCareerEntry()">Add</button>
+</div>
+</div>
+<!-- 6 Sections -->
+<div class="card card-collapse open"><h3 onclick="toggleCollapse(this)">COURSERA — Weekend 2-3hrs</h3><div class="card-body">
+<div style="font-size:10px;color:var(--text2);margin-bottom:4px"><a href="https://www.coursera.org/programs/coursera-for-amazon-employees-ardns?authProvider=amazon" target="_blank" style="color:var(--accent2)">Coursera for Amazon →</a></div>
+<div id="career-coursera"></div>
+</div></div>
+
+<div class="card card-collapse open"><h3 onclick="toggleCollapse(this)">LEETCODE — Daily 0.5-1hr</h3><div class="card-body">
+<div style="font-size:10px;color:var(--text2);margin-bottom:4px"><a href="https://docs.google.com/document/d/1sG2ZM3c4jtldCRqYOkHd4kWxOIksqEf4bkR-m3nenGY/edit" target="_blank" style="color:var(--accent2)">DSA List →</a></div>
+<div id="career-leetcode"></div>
+</div></div>
+
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">RESUME + JOB EXPLORATION — Weekend 1hr</h3><div class="card-body">
+<div class="flex mb8" style="gap:4px"><span style="font-size:10px;color:var(--text2);min-width:60px">Resume:</span><input type="text" id="resume-link" placeholder="Paste resume link (FlowCV, Drive, etc.)" style="flex:1;font-size:10px" onchange="LS.set('resumeLink',this.value)"><a id="resume-link-go" href="#" target="_blank" style="font-size:10px;color:var(--accent2);display:none">Open →</a></div>
+<div id="career-jobs"></div>
+<div style="margin-top:6px;border-top:1px solid var(--border);padding-top:6px">
+<h3 style="margin-bottom:4px">APPLICATIONS</h3>
+<div id="job-apps-list"></div>
+<div class="flex mt8 flex-wrap" style="gap:4px">
+<input type="text" id="job-company" placeholder="Company" style="width:100px">
+<input type="text" id="job-role" placeholder="Role" style="width:100px">
+<select id="job-status" style="width:auto;font-size:10px"><option value="applied">Applied</option><option value="screening">Screening</option><option value="interview">Interview</option><option value="offer">Offer</option><option value="rejected">Rejected</option><option value="ghosted">Ghosted</option></select>
+<input type="text" id="job-link" placeholder="Link" style="flex:1;min-width:80px">
+<button onclick="addJobApp()" style="font-size:12px;padding:5px 10px">Add</button>
+</div></div>
+</div></div>
+
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">SYSTEM DESIGN — Weekend 2hrs</h3><div class="card-body">
+<div id="career-sysdesign"></div>
+</div></div>
+
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">WORK PORTFOLIO — Weekend 1hr</h3><div class="card-body">
+<div class="flex mb8" style="gap:4px"><span style="font-size:10px;color:var(--text2);min-width:60px">Portfolio:</span><input type="text" id="portfolio-link" placeholder="Portfolio doc link" style="flex:1;font-size:10px" onchange="LS.set('portfolioLink',this.value)"><a id="portfolio-link-go" href="#" target="_blank" style="font-size:10px;color:var(--accent2);display:none">Open →</a></div>
+<div id="career-portfolio"></div>
+</div></div>
+
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">READING — Books / Papers</h3><div class="card-body">
+<div id="career-reading"></div>
+</div></div>
+
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">WISHLIST — Target Companies</h3><div class="card-body">
+<div id="wishlist-items"></div>
+<div class="flex mt8 flex-wrap" style="gap:4px">
+<input type="text" id="wl-company" placeholder="Company" style="width:100px">
+<input type="text" id="wl-role" placeholder="Role" style="width:100px">
+<input type="text" id="wl-comp" placeholder="Comp (e.g. 30-40L)" style="width:100px">
+<input type="text" id="wl-location" placeholder="Location" style="width:80px">
+<input type="text" id="wl-notes" placeholder="Notes" style="flex:1;min-width:80px">
+<button onclick="addWishlist()" style="font-size:12px;padding:5px 10px">Add</button>
+</div>
+</div></div>
+<div class="card"><h3>CALENDAR</h3><div class="cal-grid" id="career-calendar"></div></div>
 </div>
 
 <!-- JOURNAL TAB -->
@@ -2560,50 +2718,79 @@ if(actions.length>1)toast(actions.length+' auto-actions applied');
 }
 
 function renderDashboard(){
-try{runSmartAutomations()}catch(e){}
+runSmartAutomations();
 const hour=today.getHours();
-$('dash-greeting').textContent=hour<12?'Good morning':hour<17?'Good afternoon':hour<21?'Good evening':'Good night';
+const greet=hour<12?'Good morning':hour<17?'Good afternoon':hour<21?'Good evening':'Good night';
+$('dash-greeting').textContent=greet;
 $('dash-date').textContent=today.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 const habits=getHabits(),hData=getHabitData(),water=getWaterData(),wGoal=getWaterGoal();
 const sc=calcDayScore(todayStr);const wc=water[todayStr]||0;
 const dayType=classifyDay(todayStr);
+const accs=getAccounts();const netWorth=accs.reduce((s,a)=>s+a.bal,0);
+// Top 4 stats
 $('dash-top-stats').innerHTML=`
 <div class="card stat-box"><div class="num" style="font-size:16px">${sc.pct}%</div><div class="lbl">Habits</div></div>
 <div class="card stat-box"><div class="num" style="font-size:16px">${wc}/${wGoal}</div><div class="lbl">Water</div></div>
 <div class="card stat-box"><div class="num" style="font-size:16px">${dayType?dayType.name:'—'}</div><div class="lbl">Vibe</div></div>
-<div class="card stat-box"><div class="num" style="font-size:16px">${sc.done}/${sc.total}</div><div class="lbl">Done</div></div>`;
-let todayHtml='<div style="font-size:12px">';
-const cats=['good','donts','fitness'];
-cats.forEach(cat=>{habits[cat].forEach(name=>{const d=hData[`${cat}_${name}_${todayStr}`];
+<div class="card stat-box"><div class="num" style="font-size:16px">${inr(netWorth)}</div><div class="lbl">Net Worth</div></div>`;
+// Today card — what's done, what's not
+let todayHtml='<div style="font-size:11px">';
+// Habits
+const cats=['good','donts','fitness'];let done=0,total=0;
+cats.forEach(cat=>{habits[cat].forEach(name=>{total++;const d=hData[`${cat}_${name}_${todayStr}`];if(d)done++;
 todayHtml+=`<div style="padding:1px 0;color:${d?'var(--green)':'var(--text2)'}">${d?'✓':'○'} ${name}</div>`})});
 todayHtml+=`<div style="padding:1px 0;color:${wc>=wGoal?'var(--green)':'var(--text2)'}">${wc>=wGoal?'✓':'○'} Water ${wc}/${wGoal}</div>`;
+// Outfit
 const outHist=getOutfitHistory(),outfits=getOutfits(),oe=outHist[todayStr];
 if(oe&&oe.outfit){const o=outfits.find(x=>x.id===oe.outfit);todayHtml+=`<div style="padding:1px 0;color:var(--green)">✓ Outfit: ${o?o.name.slice(0,30):''}</div>`}
 else if(oe&&oe.off){todayHtml+=`<div style="padding:1px 0;color:var(--text2)">— Day off</div>`}
 else{todayHtml+=`<div style="padding:1px 0;color:var(--text2)">○ No outfit picked</div>`}
+// Life log
 const acts=getDayActivities(todayStr);
 todayHtml+=`<div style="padding:1px 0;color:${acts.length?'var(--green)':'var(--text2)'}">${acts.length?'✓ '+acts.length+' hours logged':'○ No hours logged'}</div>`;
 todayHtml+='</div>';$('dash-today').innerHTML=todayHtml;
+// Week summary — simple streak counts
 let weekHtml='<div class="grid g4" style="gap:4px;font-size:10px;text-align:center">';
 let hStreak=0,wStreak=0,lStreak=0,jStreak=0;
-for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);if(calcDayScore(ds).pct>=50)hStreak++;else if(i>0)break}
-for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);if((water[ds]||0)>=wGoal)wStreak++;else if(i>0)break}
-for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);if(getDayActivities(ds).length)lStreak++;else if(i>0)break}
-const jData=getJournalData();for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);if(jData.some(e=>e.date===ds))jStreak++;else if(i>0)break}
+for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
+if(calcDayScore(ds).pct>=50)hStreak++;else if(i>0)break}
+for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
+if((water[ds]||0)>=wGoal)wStreak++;else if(i>0)break}
+for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
+if(getDayActivities(ds).length)lStreak++;else if(i>0)break}
+const jData=getJournalData();
+for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
+if(jData.some(e=>e.date===ds))jStreak++;else if(i>0)break}
 weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${hStreak}d</div>Habits</div>`;
 weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${wStreak}d</div>Water</div>`;
 weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${lStreak}d</div>Life Log</div>`;
 weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${jStreak}d</div>Journal</div>`;
 weekHtml+='</div>';$('dash-week').innerHTML=weekHtml;
+// Alerts — only show if something needs attention
 let alerts=[];
 const yd=new Date(today);yd.setDate(yd.getDate()-1);const yds=yd.toISOString().slice(0,10);
 const ySc=calcDayScore(yds);if(ySc.total>0&&ySc.pct<50)alerts.push({text:'Yesterday: '+ySc.pct+'% habits',action:"switchTab('habits')"});
 if(!acts.length)alerts.push({text:'No hours logged today',action:"switchTab('work')"});
 if(!oe)alerts.push({text:'No outfit picked',action:"switchTab('outfit')"});
+const inv=getInvestments();inv.fd.forEach(f=>{const dl=Math.round((new Date(f.maturity)-today)/86400000);
+if(dl>0&&dl<=7)alerts.push({text:f.bank+' FD matures in '+dl+'d',action:"switchTab('finance')"})});
+// Backlog todos — tasks sitting undone for days
 const allT=getTodos();Object.entries(allT).forEach(([d,items])=>{if(d>=todayStr)return;
-items.forEach(t=>{if(!t.done){const age=Math.round((today-new Date(d))/86400000);if(age>=7)alerts.push({text:t.text+' (backlog '+age+'d)',action:"switchTab('work')"})}})});
+items.forEach(t=>{if(!t.done){const age=Math.round((today-new Date(d))/86400000);
+if(age>=7)alerts.push({text:t.text+' (backlog '+age+'d)',action:"switchTab('work')"})}})});
+// Habits not picked up — less than 25% completion this month
+const hAll=getHabits(),hData2=getHabitData();const daysThisMonth=today.getDate();
+['good','donts','fitness'].forEach(cat=>{hAll[cat].forEach(name=>{let done=0;
+for(let d=1;d<=daysThisMonth;d++){const ds2=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+if(hData2[`${cat}_${name}_${ds2}`])done++}
+if(daysThisMonth>=7&&done/daysThisMonth<0.25)alerts.push({text:name+' only '+Math.round(done/daysThisMonth*100)+'% this month',action:"switchTab('habits')"})})});
+// Career sections not touched in 14+ days
+const cData2=getCareerData();['Coursera','LeetCode','System Design','Resume/Jobs','Portfolio','Reading'].forEach(t=>{
+const last=cData2.filter(e=>e.type===t).sort((a,b)=>b.date.localeCompare(a.date))[0];
+const age=last?Math.round((today-new Date(last.date))/86400000):999;
+if(age>=14)alerts.push({text:t+(age===999?' never started':' idle '+age+'d'),action:"switchTab('career')"})});
 if(alerts.length){$('dash-alerts').style.display='block';
-$('dash-alerts').innerHTML='<h3>NEEDS ATTENTION</h3>'+alerts.map(a=>`<div style="padding:3px 0;font-size:12px;cursor:pointer;border-bottom:1px solid var(--border)" onclick="${a.action}">${a.text} →</div>`).join('')}
+$('dash-alerts').innerHTML='<h3>NEEDS ATTENTION</h3>'+alerts.map(a=>`<div style="padding:3px 0;font-size:11px;cursor:pointer;border-bottom:1px solid var(--border)" onclick="${a.action}">${a.text} →</div>`).join('')}
 else{$('dash-alerts').style.display='none'}
 }
 
@@ -2612,7 +2799,8 @@ else{$('dash-alerts').style.display='none'}
 document.addEventListener('keydown',e=>{
 if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;
 if(e.key==='1')switchTab('dashboard');if(e.key==='2')switchTab('habits');if(e.key==='3')switchTab('work');
-if(e.key==='4')switchTab('journal');if(e.key==='5')switchTab('outfit');if(e.key==='/'){e.preventDefault();$('global-search').focus()}
+if(e.key==='4')switchTab('finance');if(e.key==='5')switchTab('career');if(e.key==='6')switchTab('journal');
+if(e.key==='7')switchTab('outfit');if(e.key==='/'){e.preventDefault();$('global-search').focus()}
 if((e.key==='z'||e.key==='Z')&&(e.ctrlKey||e.metaKey)){e.preventDefault();undo()}
 if(e.key==='?')showModal(`<h3>Keyboard Shortcuts</h3>
 <table style="font-size:12px"><tbody>
@@ -2633,8 +2821,10 @@ getJournalData().forEach(e=>{if((e.title||'').toLowerCase().includes(q)||(e.body
 results.push({icon:'📝',text:e.title||'Journal',sub:fmtDate(e.date),action:`switchTab('journal')`})});
 // Search career
 getCareerData().forEach(e=>{if((e.desc||'').toLowerCase().includes(q)||(e.type||'').toLowerCase().includes(q))
+results.push({icon:'🚀',text:e.type+': '+(e.desc||'').slice(0,40),sub:fmtDate(e.date),action:`switchTab('career')`})});
 // Search expenses
 getExpenses().forEach(e=>{if((e.cat||'').toLowerCase().includes(q)||(e.note||'').toLowerCase().includes(q))
+results.push({icon:'💰',text:e.cat+' '+inr(e.amount),sub:fmtDate(e.date)+' ('+e.who+')',action:`switchTab('finance')`})});
 // Search outfits
 getOutfits().forEach(o=>{if(o.name.toLowerCase().includes(q))
 results.push({icon:'👔',text:'#'+o.id+' '+o.name,sub:o.cat,action:`switchTab('outfit')`})});
@@ -2700,37 +2890,10 @@ keys.forEach(k=>localStorage.removeItem(k));alert('Data cleared. Refreshing...')
 initFinanceHistory();
 localStorage.removeItem('lt_finHistoryLoaded');
 // Seed default data if empty
-function seedDefaults(){
-if(LS.get('outfits'))return;// Already has data
-LS.set('outfits',[
-{id:1,name:'Baby pink with puff sleeves + light blue jeans',cat:'Top+Jeans'},
-{id:2,name:'Pista green top + black jeans',cat:'Top+Jeans'},
-{id:3,name:'Light pink shirt + dark blue jeans',cat:'Shirt+Jeans'},
-{id:4,name:'Rose gold kurti + sandal leggings',cat:'Kurti+Leggings'},
-{id:5,name:'Blue silver kurti + white leggings',cat:'Kurti+Leggings'},
-{id:6,name:'Mustard short top + black pant',cat:'Top+Pant'},
-{id:7,name:'Green short top + dark blue jeans',cat:'Top+Jeans'},
-{id:8,name:'White short loose top + light blue jeans',cat:'Top+Jeans'},
-{id:9,name:'White formal top + black jeans',cat:'Top+Jeans'},
-{id:10,name:'Black shirt + dark blue jeans',cat:'Shirt+Jeans'},
-{id:11,name:'Light blue striped tshirt',cat:'Tshirt'},
-{id:12,name:'Colorful tshirt',cat:'Tshirt'},
-{id:13,name:'White top with blue green',cat:'Top'},
-{id:14,name:'White top with black',cat:'Top'},
-{id:15,name:'Black top',cat:'Top'},
-{id:16,name:'Red top',cat:'Top'}]);
-LS.set('outfitHistory',{
-'2026-04-01':{outfit:3},'2026-04-02':{outfit:6},'2026-04-03':{outfit:8},
-'2026-04-04':{off:true},'2026-04-05':{off:true},
-'2026-04-06':{outfit:7},'2026-04-07':{outfit:5},'2026-04-08':{outfit:14},
-'2026-04-09':{outfit:10},'2026-04-10':{outfit:2},'2026-04-11':{outfit:13},
-'2026-04-12':{off:true},'2026-04-13':{outfit:12},'2026-04-14':{outfit:16},
-'2026-04-15':{outfit:11},'2026-04-16':{outfit:1},'2026-04-17':{outfit:3},
-'2026-04-18':{outfit:6},'2026-04-19':{off:true}});
-LS.set('habits',{good:['Wake at 7','Drink water & restroom','Bath + Cloth Wash + Get ready','Book','Brush twice'],donts:['No junk','No social media','No touch'],fitness:['Walk/Yoga/Exercise']});
-LS.set('waterGoal',3);
+if(!LS.get('outfits')){
+LS.set('outfits',[{id:1,name:'Baby pink with puff sleeves + light blue jeans',cat:'Top+Jeans'},{id:2,name:'Pista green top + black jeans',cat:'Top+Jeans'},{id:3,name:'Light pink shirt + dark blue jeans',cat:'Shirt+Jeans'},{id:4,name:'Rose gold kurti + sandal leggings',cat:'Kurti+Leggings'},{id:5,name:'Blue silver kurti + white leggings',cat:'Kurti+Leggings'},{id:6,name:'Mustard short top + black pant',cat:'Top+Pant'},{id:7,name:'Green short top + dark blue jeans',cat:'Top+Jeans'},{id:8,name:'White short loose top + light blue jeans',cat:'Top+Jeans'},{id:9,name:'White formal top + black jeans',cat:'Top+Jeans'},{id:10,name:'Black shirt + dark blue jeans',cat:'Shirt+Jeans'},{id:11,name:'Light blue striped tshirt',cat:'Tshirt'},{id:12,name:'Colorful tshirt',cat:'Tshirt'},{id:13,name:'White top with blue green',cat:'Top'},{id:14,name:'White top with black',cat:'Top'},{id:15,name:'Black top',cat:'Top'},{id:16,name:'Red top',cat:'Top'}]);
+LS.set('outfitHistory',{'2026-04-01':{outfit:3},'2026-04-02':{outfit:6},'2026-04-03':{outfit:8},'2026-04-04':{off:true},'2026-04-05':{off:true},'2026-04-06':{outfit:7},'2026-04-07':{outfit:5},'2026-04-08':{outfit:14},'2026-04-09':{outfit:10},'2026-04-10':{outfit:2},'2026-04-11':{outfit:13},'2026-04-12':{off:true},'2026-04-13':{outfit:12},'2026-04-14':{outfit:16},'2026-04-15':{outfit:11},'2026-04-16':{outfit:1},'2026-04-17':{outfit:3},'2026-04-18':{outfit:6},'2026-04-19':{off:true}});
 }
-seedDefaults();
 autoSnapshot();
 renderDashboard();
 // Auto-refresh life log time pointer every minute
