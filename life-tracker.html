@@ -2627,6 +2627,14 @@ result+=`<div>His: ${his.length} categories, ${inr(his.reduce((s,c)=>s+c.budget,
 result+=`<div>My: ${my.length} categories, ${inr(my.reduce((s,c)=>s+c.budget,0))} budget / ${inr(my.reduce((s,c)=>s+c.actual,0))} actual</div>`;
 $('paste-result').innerHTML=result;
 renderFinance();
+// Auto-switch to history tab and select the parsed month
+setTimeout(()=>{closeModal();
+document.querySelectorAll('.fin-panel').forEach(p=>p.style.display='none');
+document.querySelectorAll('.fin-sub').forEach(b=>b.classList.remove('active'));
+$('fin-sub-history').style.display='block';
+document.querySelectorAll('.fin-sub')[2].classList.add('active');
+$('history-month-select').value=month;renderFinanceHistory();
+toast('Saved to '+month+' history')},500);
 }
 
 // ===== SMART AUTOMATIONS =====
