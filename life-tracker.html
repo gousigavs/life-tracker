@@ -2597,13 +2597,17 @@ if(lower.includes('my expense')){section='my';continue}
 if(lower.includes('total expense')){section='';continue}
 if(lower.includes('salary')||lower.includes('saving'))continue;
 if(!section)continue;
-// Parse "Category - budget / actual" or "Category budget / actual"
-const match=l.match(/^(.+?)\s*[-=]+\s*([\d.,]+\s*k?)\s*(?:\/\s*([\d.,]+\s*k?))?/i)
-  ||l.match(/^(.+?)\s+([\d.,]+\s*k?)\s*(?:\/\s*([\d.,]+\s*k?))?$/i);
+// Parse "Category - budget / actual" or "Category === budget / actual" or "Category budget /actual"
+// Clean up complex expressions like "1.5k (eve food) + 2k (outing) = 3.5k"
+let cleaned=l.replace(/\([^)]*\)/g,'').replace(/\+[^=]+=\s*/,'');
+// For lines with ===, take the last number group after ===
+const eqMatch=cleaned.match(/^(.+?)\s*={2,}\s*([\d.,]+\s*k?)\s*(?:\/\s*([\d.,]+\s*k?))?/i);
+const match=eqMatch||cleaned.match(/^(.+?)\s*[-]+\s*([\d.,]+\s*k?)\s*(?:\/\s*([\d.,]+\s*k?))?/i)
+  ||cleaned.match(/^(.+?)\s+([\d.,]+\s*k?)\s*(?:\/\s*([\d.,]+\s*k?))?$/i);
 if(match){
 const name=match[1].replace(/[-=:]+$/,'').trim();
 const budget=parseK(match[2]);const actual=match[3]?parseK(match[3]):0;
-if(name&&budget)(section==='his'?his:my).push({name,budget,actual})}
+if(name)(section==='his'?his:my).push({name,budget,actual})}
 }
 // Save to history
 const hist=LS.get('finHistory',{});
