@@ -2560,73 +2560,50 @@ if(actions.length>1)toast(actions.length+' auto-actions applied');
 }
 
 function renderDashboard(){
-runSmartAutomations();
+try{runSmartAutomations()}catch(e){}
 const hour=today.getHours();
-const greet=hour<12?'Good morning':hour<17?'Good afternoon':hour<21?'Good evening':'Good night';
-$('dash-greeting').textContent=greet;
+$('dash-greeting').textContent=hour<12?'Good morning':hour<17?'Good afternoon':hour<21?'Good evening':'Good night';
 $('dash-date').textContent=today.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 const habits=getHabits(),hData=getHabitData(),water=getWaterData(),wGoal=getWaterGoal();
 const sc=calcDayScore(todayStr);const wc=water[todayStr]||0;
 const dayType=classifyDay(todayStr);
-const accs=getAccounts();const netWorth=accs.reduce((s,a)=>s+a.bal,0);
-// Top 4 stats
 $('dash-top-stats').innerHTML=`
 <div class="card stat-box"><div class="num" style="font-size:16px">${sc.pct}%</div><div class="lbl">Habits</div></div>
 <div class="card stat-box"><div class="num" style="font-size:16px">${wc}/${wGoal}</div><div class="lbl">Water</div></div>
 <div class="card stat-box"><div class="num" style="font-size:16px">${dayType?dayType.name:'—'}</div><div class="lbl">Vibe</div></div>
-<div class="card stat-box"><div class="num" style="font-size:16px">${inr(netWorth)}</div><div class="lbl">Net Worth</div></div>`;
-// Today card — what's done, what's not
-let todayHtml='<div style="font-size:11px">';
-// Habits
-const cats=['good','donts','fitness'];let done=0,total=0;
-cats.forEach(cat=>{habits[cat].forEach(name=>{total++;const d=hData[`${cat}_${name}_${todayStr}`];if(d)done++;
+<div class="card stat-box"><div class="num" style="font-size:16px">${sc.done}/${sc.total}</div><div class="lbl">Done</div></div>`;
+let todayHtml='<div style="font-size:12px">';
+const cats=['good','donts','fitness'];
+cats.forEach(cat=>{habits[cat].forEach(name=>{const d=hData[`${cat}_${name}_${todayStr}`];
 todayHtml+=`<div style="padding:1px 0;color:${d?'var(--green)':'var(--text2)'}">${d?'✓':'○'} ${name}</div>`})});
 todayHtml+=`<div style="padding:1px 0;color:${wc>=wGoal?'var(--green)':'var(--text2)'}">${wc>=wGoal?'✓':'○'} Water ${wc}/${wGoal}</div>`;
-// Outfit
 const outHist=getOutfitHistory(),outfits=getOutfits(),oe=outHist[todayStr];
 if(oe&&oe.outfit){const o=outfits.find(x=>x.id===oe.outfit);todayHtml+=`<div style="padding:1px 0;color:var(--green)">✓ Outfit: ${o?o.name.slice(0,30):''}</div>`}
 else if(oe&&oe.off){todayHtml+=`<div style="padding:1px 0;color:var(--text2)">— Day off</div>`}
 else{todayHtml+=`<div style="padding:1px 0;color:var(--text2)">○ No outfit picked</div>`}
-// Life log
 const acts=getDayActivities(todayStr);
 todayHtml+=`<div style="padding:1px 0;color:${acts.length?'var(--green)':'var(--text2)'}">${acts.length?'✓ '+acts.length+' hours logged':'○ No hours logged'}</div>`;
 todayHtml+='</div>';$('dash-today').innerHTML=todayHtml;
-// Week summary — simple streak counts
 let weekHtml='<div class="grid g4" style="gap:4px;font-size:10px;text-align:center">';
 let hStreak=0,wStreak=0,lStreak=0,jStreak=0;
-for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
-if(calcDayScore(ds).pct>=50)hStreak++;else if(i>0)break}
-for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
-if((water[ds]||0)>=wGoal)wStreak++;else if(i>0)break}
-for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
-if(getDayActivities(ds).length)lStreak++;else if(i>0)break}
-const jData=getJournalData();
-for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
-if(jData.some(e=>e.date===ds))jStreak++;else if(i>0)break}
+for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);if(calcDayScore(ds).pct>=50)hStreak++;else if(i>0)break}
+for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);if((water[ds]||0)>=wGoal)wStreak++;else if(i>0)break}
+for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);if(getDayActivities(ds).length)lStreak++;else if(i>0)break}
+const jData=getJournalData();for(let i=0;i<7;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);if(jData.some(e=>e.date===ds))jStreak++;else if(i>0)break}
 weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${hStreak}d</div>Habits</div>`;
 weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${wStreak}d</div>Water</div>`;
 weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${lStreak}d</div>Life Log</div>`;
 weekHtml+=`<div style="padding:6px;background:var(--card2);border-radius:6px"><div style="font-size:16px;font-weight:700">${jStreak}d</div>Journal</div>`;
 weekHtml+='</div>';$('dash-week').innerHTML=weekHtml;
-// Alerts — only show if something needs attention
 let alerts=[];
 const yd=new Date(today);yd.setDate(yd.getDate()-1);const yds=yd.toISOString().slice(0,10);
 const ySc=calcDayScore(yds);if(ySc.total>0&&ySc.pct<50)alerts.push({text:'Yesterday: '+ySc.pct+'% habits',action:"switchTab('habits')"});
 if(!acts.length)alerts.push({text:'No hours logged today',action:"switchTab('work')"});
 if(!oe)alerts.push({text:'No outfit picked',action:"switchTab('outfit')"});
-const inv=getInvestments();inv.fd.forEach(f=>{const dl=Math.round((new Date(f.maturity)-today)/86400000);
-// Backlog todos — tasks sitting undone for days
 const allT=getTodos();Object.entries(allT).forEach(([d,items])=>{if(d>=todayStr)return;
-items.forEach(t=>{if(!t.done){const age=Math.round((today-new Date(d))/86400000);
-if(age>=7)alerts.push({text:t.text+' (backlog '+age+'d)',action:"switchTab('work')"})}})});
-// Habits not picked up — less than 25% completion this month
-const hAll=getHabits(),hData2=getHabitData();const daysThisMonth=today.getDate();
-['good','donts','fitness'].forEach(cat=>{hAll[cat].forEach(name=>{let done=0;
-for(let d=1;d<=daysThisMonth;d++){const ds2=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-if(hData2[`${cat}_${name}_${ds2}`])done++}
-if(daysThisMonth>=7&&done/daysThisMonth<0.25)alerts.push({text:name+' only '+Math.round(done/daysThisMonth*100)+'% this month',action:"switchTab('habits')"})})});
+items.forEach(t=>{if(!t.done){const age=Math.round((today-new Date(d))/86400000);if(age>=7)alerts.push({text:t.text+' (backlog '+age+'d)',action:"switchTab('work')"})}})});
 if(alerts.length){$('dash-alerts').style.display='block';
-$('dash-alerts').innerHTML='<h3>NEEDS ATTENTION</h3>'+alerts.map(a=>`<div style="padding:3px 0;font-size:11px;cursor:pointer;border-bottom:1px solid var(--border)" onclick="${a.action}">${a.text} →</div>`).join('')}
+$('dash-alerts').innerHTML='<h3>NEEDS ATTENTION</h3>'+alerts.map(a=>`<div style="padding:3px 0;font-size:12px;cursor:pointer;border-bottom:1px solid var(--border)" onclick="${a.action}">${a.text} →</div>`).join('')}
 else{$('dash-alerts').style.display='none'}
 }
 
