@@ -13,7 +13,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0a0a0c;--card:#111116;--card2:#18181f;--border:#1f1f2a;--text:#d4d4d8;--text2:#63637a;--accent:#7c3aed;--accent2:#a78bfa;--green:#10b981;--red:#ef4444;--yellow:#f59e0b;--pink:#ec4899;--r:12px}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
 .sidebar{width:180px;background:var(--card);border-right:1px solid var(--border);padding:8px 0;display:flex;flex-direction:column;position:fixed;height:100vh;z-index:10}
 .sidebar h2{padding:14px 14px 10px;font-size:13px;font-weight:700;color:var(--text);letter-spacing:-.3px}
 .nav-item{padding:7px 14px;cursor:pointer;font-size:12px;color:var(--text2);transition:.12s;margin:1px 6px;border-radius:6px}
@@ -29,12 +29,12 @@ h3{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;le
 .card h3{color:var(--text2)}
 .grid{display:grid;gap:8px}
 .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:repeat(4,1fr)}
-button{background:var(--accent);color:#fff;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:500;transition:.12s}
+button{background:var(--accent);color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;transition:.12s}
 button:hover{opacity:.9}
 button.sec{background:transparent;border:1px solid var(--border);color:var(--text2);font-weight:400}
 button.sec:hover{border-color:var(--accent);color:var(--accent2)}
 button.danger{background:var(--red)}
-input,select,textarea{background:var(--bg);color:var(--text);border:1px solid var(--border);padding:8px 10px;border-radius:6px;font-family:inherit;font-size:13px;width:100%;transition:.12s}
+input,select,textarea{background:var(--bg);color:var(--text);border:1px solid var(--border);padding:8px 12px;border-radius:6px;font-family:inherit;font-size:14px;width:100%;transition:.12s}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(124,58,237,.1)}
 textarea{resize:vertical;min-height:60px}select{cursor:pointer}
 table{width:100%;border-collapse:collapse;font-size:13px}
@@ -45,7 +45,7 @@ th{color:var(--text2);font-weight:600;font-size:11px;text-transform:uppercase;le
 .badge-green{background:rgba(16,185,129,.1);color:var(--green)}.badge-red{background:rgba(239,68,68,.1);color:var(--red)}.badge-yellow{background:rgba(245,158,11,.1);color:var(--yellow)}
 .habit-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;background:var(--card2);margin-bottom:3px;transition:.12s}
 .habit-row:hover{background:#1e1e28}
-.habit-row .h-name{flex:1;font-size:13px;font-weight:500}
+.habit-row .h-name{flex:1;font-size:14px;font-weight:500}
 .habit-row .h-streak{font-size:10px;color:var(--text2);min-width:50px;text-align:right}
 .habit-row .h-check{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:.15s;border:1.5px solid var(--border);background:transparent;flex-shrink:0}
 .habit-row .h-check.done{background:var(--green);border-color:var(--green);color:#fff}
@@ -164,16 +164,16 @@ body.light .card:hover{border-color:#d4d4d8}
 <button class="sec" onclick="changeHabitDate(1)" style="padding:4px 8px">▶</button>
 </div>
 <div class="flex mt8" style="justify-content:center;gap:3px">
-<button class="sec" style="font-size:11px;padding:4px 8px" onclick="quickFillAll(true)">Check All</button>
-<button class="sec" style="font-size:11px;padding:4px 8px" onclick="quickFillAll(false)">Uncheck</button>
-<button class="sec" style="font-size:11px;padding:4px 8px" onclick="copyFromYesterday()">Copy Yesterday</button>
+<button class="sec" style="font-size:12px;padding:5px 10px" onclick="quickFillAll(true)">Check All</button>
+<button class="sec" style="font-size:12px;padding:5px 10px" onclick="quickFillAll(false)">Uncheck</button>
+<button class="sec" style="font-size:12px;padding:5px 10px" onclick="copyFromYesterday()">Copy Yesterday</button>
 </div>
 </div>
 <div id="habit-nudge" style="font-size:11px;color:var(--accent2);padding:4px 0"></div>
 <!-- Habits -->
-<div class="card"><div class="flex" style="justify-content:space-between"><h3>GOOD HABITS</h3><button class="sec" onclick="addHabitPrompt('good')" style="font-size:11px;padding:4px 8px">+ Add</button></div><div id="good-habits-list"></div></div>
-<div class="card"><div class="flex" style="justify-content:space-between"><h3>DON'TS</h3><button class="sec" onclick="addHabitPrompt('donts')" style="font-size:11px;padding:4px 8px">+ Add</button></div><div id="donts-list"></div></div>
-<div class="card"><div class="flex" style="justify-content:space-between"><h3>FITNESS</h3><button class="sec" onclick="addHabitPrompt('fitness')" style="font-size:11px;padding:4px 8px">+ Add</button></div><div id="fitness-list"></div></div>
+<div class="card"><div class="flex" style="justify-content:space-between"><h3>GOOD HABITS</h3><button class="sec" onclick="addHabitPrompt('good')" style="font-size:12px;padding:5px 10px">+ Add</button></div><div id="good-habits-list"></div></div>
+<div class="card"><div class="flex" style="justify-content:space-between"><h3>DON'TS</h3><button class="sec" onclick="addHabitPrompt('donts')" style="font-size:12px;padding:5px 10px">+ Add</button></div><div id="donts-list"></div></div>
+<div class="card"><div class="flex" style="justify-content:space-between"><h3>FITNESS</h3><button class="sec" onclick="addHabitPrompt('fitness')" style="font-size:12px;padding:5px 10px">+ Add</button></div><div id="fitness-list"></div></div>
 <!-- Water -->
 <div class="card">
 <h3>WATER</h3>
@@ -189,7 +189,7 @@ body.light .card:hover{border-color:#d4d4d8}
 <div class="card card-collapse">
 <h3 onclick="toggleCollapse(this)">FOOD LOG <span id="food-date-display" style="font-size:10px;color:var(--text2)"></span></h3>
 <div class="card-body"><div id="food-log-entries"></div>
-<div class="flex mt8"><button class="sec" onclick="addFoodEntry()" style="font-size:11px;padding:4px 8px">+ Add Meal</button></div></div>
+<div class="flex mt8"><button class="sec" onclick="addFoodEntry()" style="font-size:12px;padding:5px 10px">+ Add Meal</button></div></div>
 </div>
 <!-- Calendar -->
 <div class="card"><h3>CALENDAR</h3><div class="cal-grid" id="habit-calendar"></div></div>
@@ -219,11 +219,11 @@ body.light .card:hover{border-color:#d4d4d8}
 <div id="work-score" class="mt16" style="font-size:18px;font-weight:600"></div>
 <div id="day-tag" class="mt8"></div>
 <div class="flex mt8 flex-wrap" style="gap:4px">
-<button class="sec" onclick="suggestLifeLog()" style="font-size:11px;padding:4px 8px">Auto-fill</button>
-<button class="sec" onclick="copyLifeLogFromYesterday()" style="font-size:11px;padding:4px 8px">Yesterday</button>
-<button class="sec" onclick="applyTemplate('workday')" style="font-size:11px;padding:4px 8px">Workday</button>
-<button class="sec" onclick="applyTemplate('weekend')" style="font-size:11px;padding:4px 8px">Weekend</button>
-<button class="sec" onclick="clearDay()" style="font-size:11px;padding:4px 8px">Clear</button>
+<button class="sec" onclick="suggestLifeLog()" style="font-size:12px;padding:5px 10px">Auto-fill</button>
+<button class="sec" onclick="copyLifeLogFromYesterday()" style="font-size:12px;padding:5px 10px">Yesterday</button>
+<button class="sec" onclick="applyTemplate('workday')" style="font-size:12px;padding:5px 10px">Workday</button>
+<button class="sec" onclick="applyTemplate('weekend')" style="font-size:12px;padding:5px 10px">Weekend</button>
+<button class="sec" onclick="clearDay()" style="font-size:12px;padding:5px 10px">Clear</button>
 </div>
 </div>
 <div class="grid g4 mb8" id="work-stats"></div>
@@ -232,7 +232,7 @@ body.light .card:hover{border-color:#d4d4d8}
 <div id="work-todos"></div>
 <div class="flex mt8" style="gap:4px">
 <input type="text" id="new-todo" placeholder="Add a task..." style="flex:1" onkeydown="if(event.key==='Enter')addTodo()">
-<button onclick="addTodo()" style="font-size:11px;padding:4px 8px">Add</button>
+<button onclick="addTodo()" style="font-size:12px;padding:5px 10px">Add</button>
 </div>
 </div>
 <div class="card"><h3>Month View</h3>
@@ -263,7 +263,7 @@ body.light .card:hover{border-color:#d4d4d8}
 <!-- Accounts -->
 <div class="card">
 <div class="flex" style="justify-content:space-between"><h3>ACCOUNTS</h3>
-<div class="flex" style="gap:3px"><button class="sec" onclick="editAccounts()" style="font-size:11px;padding:4px 8px">Edit</button><button class="sec" onclick="showTransfer()" style="font-size:11px;padding:4px 8px">Transfer</button><button class="sec" onclick="showAddIncome()" style="font-size:11px;padding:4px 8px">+ Income</button></div></div>
+<div class="flex" style="gap:3px"><button class="sec" onclick="editAccounts()" style="font-size:12px;padding:5px 10px">Edit</button><button class="sec" onclick="showTransfer()" style="font-size:12px;padding:5px 10px">Transfer</button><button class="sec" onclick="showAddIncome()" style="font-size:12px;padding:5px 10px">+ Income</button></div></div>
 <div class="grid g4" id="account-balances" style="margin-top:6px"></div>
 </div>
 <!-- Budget vs Actual — single unified table -->
@@ -271,9 +271,9 @@ body.light .card:hover{border-color:#d4d4d8}
 <div class="flex" style="justify-content:space-between"><h3>BUDGET vs ACTUAL</h3>
 <div class="flex" style="gap:3px">
 <input type="month" id="finance-month" style="width:auto;font-size:10px;padding:2px 6px" onchange="renderFinance()">
-<button class="sec" onclick="editSalary()" style="font-size:11px;padding:4px 8px">Settings</button></div></div>
+<button class="sec" onclick="editSalary()" style="font-size:12px;padding:5px 10px">Settings</button></div></div>
 <table id="budget-table"><thead><tr><th>Category</th><th style="text-align:right">Budget</th><th style="text-align:right">Actual</th><th style="text-align:right">Left</th></tr></thead><tbody></tbody></table>
-<div class="flex mt8" style="gap:3px"><button class="sec" onclick="addExpenseCategory('his')" style="font-size:11px;padding:4px 8px">+ His category</button><button class="sec" onclick="addExpenseCategory('my')" style="font-size:11px;padding:4px 8px">+ My category</button></div>
+<div class="flex mt8" style="gap:3px"><button class="sec" onclick="addExpenseCategory('his')" style="font-size:12px;padding:5px 10px">+ His category</button><button class="sec" onclick="addExpenseCategory('my')" style="font-size:12px;padding:5px 10px">+ My category</button></div>
 </div>
 <!-- Quick expense log -->
 <div class="card">
@@ -289,18 +289,19 @@ body.light .card:hover{border-color:#d4d4d8}
 </div>
 <table id="daily-expenses-table" style="margin-top:6px"><thead><tr><th>Date</th><th>Who</th><th>Category</th><th style="text-align:right">Amount</th><th>A/c</th><th>Note</th><th></th></tr></thead><tbody></tbody></table>
 <div class="flex mt8" style="gap:3px">
-<button class="sec" onclick="showParseSMS()" style="font-size:11px;padding:4px 8px">SMS Import</button>
-<button class="sec" onclick="showBankCSVImport()" style="font-size:11px;padding:4px 8px">Bank CSV</button>
-<button class="sec" onclick="showRecurring()" style="font-size:11px;padding:4px 8px">Recurring</button>
-<button class="sec" onclick="suggestBudgets()" style="font-size:11px;padding:4px 8px">Auto-Budget</button>
-<button class="sec" onclick="saveMonthSnapshot()" style="font-size:11px;padding:4px 8px">Save Snapshot</button>
+<button class="sec" onclick="showParseSMS()" style="font-size:12px;padding:5px 10px">SMS Import</button>
+<button class="sec" onclick="showBankCSVImport()" style="font-size:12px;padding:5px 10px">Bank CSV</button>
+<button class="sec" onclick="showRecurring()" style="font-size:12px;padding:5px 10px">Recurring</button>
+<button class="sec" onclick="suggestBudgets()" style="font-size:12px;padding:5px 10px">Auto-Budget</button>
+<button class="sec" onclick="saveMonthSnapshot()" style="font-size:12px;padding:5px 10px">Save Snapshot</button>
+<button class="sec" onclick="showPasteMonthData()" style="font-size:12px;padding:5px 10px">Paste Month Data</button>
 </div>
 </div>
 <!-- Spending pace -->
 <div class="card" id="finance-summary"></div>
 <!-- Goals -->
 <div class="card"><h3>GOALS</h3><div id="fin-goals"></div>
-<div class="flex mt8"><button class="sec" onclick="showAddGoal()" style="font-size:11px;padding:4px 8px">+ Add Goal</button></div></div>
+<div class="flex mt8"><button class="sec" onclick="showAddGoal()" style="font-size:12px;padding:5px 10px">+ Add Goal</button></div></div>
 </div>
 
 <!-- INVESTMENTS -->
@@ -369,7 +370,7 @@ body.light .card:hover{border-color:#d4d4d8}
 <input type="text" id="job-role" placeholder="Role" style="width:100px">
 <select id="job-status" style="width:auto;font-size:10px"><option value="applied">Applied</option><option value="screening">Screening</option><option value="interview">Interview</option><option value="offer">Offer</option><option value="rejected">Rejected</option><option value="ghosted">Ghosted</option></select>
 <input type="text" id="job-link" placeholder="Link" style="flex:1;min-width:80px">
-<button onclick="addJobApp()" style="font-size:11px;padding:4px 8px">Add</button>
+<button onclick="addJobApp()" style="font-size:12px;padding:5px 10px">Add</button>
 </div></div>
 </div></div>
 
@@ -394,7 +395,7 @@ body.light .card:hover{border-color:#d4d4d8}
 <input type="text" id="wl-comp" placeholder="Comp (e.g. 30-40L)" style="width:100px">
 <input type="text" id="wl-location" placeholder="Location" style="width:80px">
 <input type="text" id="wl-notes" placeholder="Notes" style="flex:1;min-width:80px">
-<button onclick="addWishlist()" style="font-size:11px;padding:4px 8px">Add</button>
+<button onclick="addWishlist()" style="font-size:12px;padding:5px 10px">Add</button>
 </div>
 </div></div>
 <div class="card"><h3>CALENDAR</h3><div class="cal-grid" id="career-calendar"></div></div>
@@ -453,12 +454,12 @@ body.light .card:hover{border-color:#d4d4d8}
 <button class="sec" onclick="clearOutfitDate()">Clear</button>
 </div>
 <div class="flex flex-wrap mt8" style="gap:3px">
-<button class="sec" style="font-size:11px;padding:4px 8px" onclick="suggestByCategory('Top+Jeans')">Top+Jeans</button>
-<button class="sec" style="font-size:11px;padding:4px 8px" onclick="suggestByCategory('Kurti+Leggings')">Kurti</button>
-<button class="sec" style="font-size:11px;padding:4px 8px" onclick="suggestByCategory('Shirt+Jeans')">Shirt</button>
-<button class="sec" style="font-size:11px;padding:4px 8px" onclick="suggestByCategory('Tshirt')">Tshirt</button>
-<button class="sec" style="font-size:11px;padding:4px 8px" onclick="suggestLeastWorn()">Least worn</button>
-<button class="sec" style="font-size:11px;padding:4px 8px" onclick="smartOutfitSuggest()">Smart</button>
+<button class="sec" style="font-size:12px;padding:5px 10px" onclick="suggestByCategory('Top+Jeans')">Top+Jeans</button>
+<button class="sec" style="font-size:12px;padding:5px 10px" onclick="suggestByCategory('Kurti+Leggings')">Kurti</button>
+<button class="sec" style="font-size:12px;padding:5px 10px" onclick="suggestByCategory('Shirt+Jeans')">Shirt</button>
+<button class="sec" style="font-size:12px;padding:5px 10px" onclick="suggestByCategory('Tshirt')">Tshirt</button>
+<button class="sec" style="font-size:12px;padding:5px 10px" onclick="suggestLeastWorn()">Least worn</button>
+<button class="sec" style="font-size:12px;padding:5px 10px" onclick="smartOutfitSuggest()">Smart</button>
 </div>
 <div id="manual-pick" style="display:none;margin-top:8px">
 <select id="manual-outfit-select" style="margin-bottom:6px"></select>
@@ -2558,6 +2559,72 @@ if(LS.get('theme')==='light'){document.body.classList.add('light');$('theme-btn'
 
 // ===== DASHBOARD =====
 const QUOTES=['Small daily improvements lead to stunning results.','You don\'t have to be extreme, just consistent.','The secret of getting ahead is getting started.','What gets measured gets managed.','Discipline is choosing between what you want now and what you want most.','A year from now you\'ll wish you had started today.','Progress, not perfection.','The best time to start was yesterday. The next best time is now.','Your future self will thank you.','One day or day one — you decide.','It\'s not about having time, it\'s about making time.','Success is the sum of small efforts repeated daily.','Be stronger than your excuses.','Don\'t count the days, make the days count.'];
+// ===== PASTE MONTH DATA PARSER =====
+function showPasteMonthData(){
+showModal(`<h3>Paste Monthly Finance Data</h3>
+<p style="font-size:11px;color:var(--text2);margin-bottom:6px">Paste your monthly summary in the format you use in Google Docs. It will parse month, salary, savings, his/my expenses with budget/actual.</p>
+<textarea id="paste-month-text" rows="12" placeholder="April 2026\nSALARY - 1.7 Lakhs\n\nHis expenses - 16.5k / 8.3k\nRent - 6k / 5.6k\nFood - 5k / 900\n...\n\nMy expenses - 8k / 6.6k\nTravel 500 / 200\n..."></textarea>
+<div class="flex mt8"><button onclick="parseMonthData()">Parse & Save</button><button class="sec" onclick="closeModal()">Cancel</button></div>
+<div id="paste-result" class="mt8" style="font-size:11px"></div>`);
+}
+function parseK(s){
+if(!s)return 0;s=s.toString().trim().toLowerCase().replace(/[₹,]/g,'');
+if(s.includes('lakh'))return parseFloat(s)*100000;
+if(s.includes('l')&&!s.includes('k'))return parseFloat(s)*100000;
+if(s.endsWith('k'))return parseFloat(s)*1000;
+return parseFloat(s)||0;
+}
+function parseMonthData(){
+const text=$('paste-month-text').value;if(!text.trim())return;
+const lines=text.split('\n').map(l=>l.trim()).filter(Boolean);
+// Detect month
+let month='';const monthNames={jan:'01',feb:'02',mar:'03',apr:'04',may:'05',jun:'06',jul:'07',aug:'08',sep:'09',oct:'10',nov:'11',dec:'12'};
+for(const l of lines){const m=l.match(/(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\w*\s*(\d{4})/i);
+if(m){month=m[2]+'-'+monthNames[m[1].slice(0,3).toLowerCase()];break}}
+if(!month){$('paste-result').innerHTML='<span style="color:var(--red)">Could not detect month (e.g. "April 2026")</span>';return}
+// Parse salary
+let salary=0;for(const l of lines){if(l.toLowerCase().includes('salary')){const m=l.match(/[\d.]+\s*(lakh|l|k)/i);if(m)salary=parseK(m[0]);break}}
+// Parse savings
+let savings=0;for(const l of lines){if(l.toLowerCase().includes('saving')){const m=l.match(/[\d.]+\s*(lakh|l|k)/i);if(m)savings=parseK(m[0]);break}}
+// Parse his/my sections
+let section='';const his=[],my=[];
+for(const l of lines){
+const lower=l.toLowerCase();
+if(lower.includes('his expense')){section='his';
+const m=l.match(/([\d.]+k?)\s*\/\s*([\d.]+k?)/i);
+if(m){/* total line, skip */}continue}
+if(lower.includes('my expense')){section='my';continue}
+if(lower.includes('total expense')){section='';continue}
+if(lower.includes('salary')||lower.includes('saving'))continue;
+if(!section)continue;
+// Parse "Category - budget / actual" or "Category budget / actual"
+const match=l.match(/^(.+?)\s*[-=]+\s*([\d.,]+\s*k?)\s*(?:\/\s*([\d.,]+\s*k?))?/i)
+  ||l.match(/^(.+?)\s+([\d.,]+\s*k?)\s*(?:\/\s*([\d.,]+\s*k?))?$/i);
+if(match){
+const name=match[1].replace(/[-=:]+$/,'').trim();
+const budget=parseK(match[2]);const actual=match[3]?parseK(match[3]):0;
+if(name&&budget)(section==='his'?his:my).push({name,budget,actual})}
+}
+// Save to history
+const hist=LS.get('finHistory',{});
+const accs=getAccounts();
+hist[month]={
+accounts:JSON.parse(JSON.stringify(accs)),salary,savings,
+his,my,
+hisBudget:his.reduce((s,c)=>s+c.budget,0),hisActual:his.reduce((s,c)=>s+c.actual,0),
+myBudget:my.reduce((s,c)=>s+c.budget,0),myActual:my.reduce((s,c)=>s+c.actual,0)
+};
+LS.set('finHistory',hist);
+// Also save salary for this month
+const ms=LS.get('monthlySalary',{});ms[month]=salary;LS.set('monthlySalary',ms);
+let result=`<div style="color:var(--green)">Saved for ${month}</div>`;
+result+=`<div>Salary: ${inr(salary)} | Savings: ${inr(savings)}</div>`;
+result+=`<div>His: ${his.length} categories, ${inr(his.reduce((s,c)=>s+c.budget,0))} budget / ${inr(his.reduce((s,c)=>s+c.actual,0))} actual</div>`;
+result+=`<div>My: ${my.length} categories, ${inr(my.reduce((s,c)=>s+c.budget,0))} budget / ${inr(my.reduce((s,c)=>s+c.actual,0))} actual</div>`;
+$('paste-result').innerHTML=result;
+renderFinance();
+}
+
 // ===== SMART AUTOMATIONS =====
 function runSmartAutomations(){
 const key='smartAuto_'+todayStr;if(LS.get(key))return;
