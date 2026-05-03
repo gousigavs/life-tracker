@@ -403,56 +403,34 @@ body.light .card:hover{border-color:#d4d4d8}
 <!-- JOURNAL TAB -->
 <div id="tab-journal" class="tab">
 <h2 style="margin-bottom:12px">Journal</h2>
-<div class="card">
-<div class="flex flex-wrap mb8">
-<input type="date" id="journal-date" style="width:auto">
-<input type="text" id="journal-title" placeholder="Title" style="flex:1;min-width:200px">
-</div>
-<div id="journal-daily-prompt" style="font-size:12px;color:var(--accent2);margin-bottom:8px;cursor:pointer" onclick="$('journal-body').value=this.textContent.slice(2);$('journal-title').value='Daily Prompt'"></div>
+<!-- Manual entry -->
+<div class="card card-collapse"><h3 onclick="toggleCollapse(this)">WRITE ENTRY</h3><div class="card-body">
 <div class="flex flex-wrap mb8" style="gap:4px">
-<span style="font-size:11px;color:var(--text2)">Templates:</span>
-<button class="sec" style="font-size:10px;padding:2px 6px" onclick="$('journal-body').value='Today I am grateful for:\n1. \n2. \n3. \n\nHighlight of the day:\n\nWhat I learned:\n';$('journal-title').value='Gratitude'">Gratitude</button>
-<button class="sec" style="font-size:10px;padding:2px 6px" onclick="$('journal-body').value='What went well today:\n\nWhat could be better:\n\nTomorrow I will:\n';$('journal-title').value='Daily Reflection'">Reflection</button>
-<button class="sec" style="font-size:10px;padding:2px 6px" onclick="$('journal-body').value='Goal:\n\nWhy it matters:\n\nFirst step:\n\nDeadline:\n';$('journal-title').value='Goal Setting'">Goal</button>
-<button class="sec" style="font-size:10px;padding:2px 6px" onclick="$('journal-body').value='I feel:\n\nBecause:\n\nWhat would help:\n';$('journal-title').value='Mood Check'">Mood Check</button>
+<input type="date" id="journal-date" style="width:auto">
+<input type="text" id="journal-title" placeholder="Title" style="flex:1;min-width:150px">
 </div>
-<textarea id="journal-body" placeholder="What's on your mind..." rows="4" oninput="$('journal-wc').textContent=this.value.trim()?this.value.trim().split(/\s+/).length+' words':''"></textarea>
-<div style="font-size:11px;color:var(--text2);text-align:right" id="journal-wc"></div>
+<textarea id="journal-body" placeholder="What's on your mind..." rows="3"></textarea>
 <div class="flex flex-wrap mt8 mb8">
-<span style="font-size:13px;color:var(--text2)">Mood:</span>
-<span class="chip" onclick="pickMood(this,'😊')">😊</span>
-<span class="chip" onclick="pickMood(this,'😐')">😐</span>
-<span class="chip" onclick="pickMood(this,'😔')">😔</span>
-<span class="chip" onclick="pickMood(this,'😤')">😤</span>
-<span class="chip" onclick="pickMood(this,'🤩')">🤩</span>
-<span class="chip" onclick="pickMood(this,'😴')">😴</span>
-<span class="chip" onclick="pickMood(this,'🤒')">🤒</span>
+<span style="font-size:12px;color:var(--text2)">Mood:</span>
+<span class="chip" onclick="pickMood(this,'😊')">😊</span><span class="chip" onclick="pickMood(this,'😐')">😐</span><span class="chip" onclick="pickMood(this,'😔')">😔</span><span class="chip" onclick="pickMood(this,'😤')">😤</span><span class="chip" onclick="pickMood(this,'🤩')">🤩</span><span class="chip" onclick="pickMood(this,'😴')">😴</span><span class="chip" onclick="pickMood(this,'🤒')">🤒</span>
 </div>
 <div class="flex flex-wrap mb8" id="journal-tags">
-<span style="font-size:13px;color:var(--text2)">Tags:</span>
-<span class="chip" onclick="toggleTag(this)">personal</span>
-<span class="chip" onclick="toggleTag(this)">work</span>
-<span class="chip" onclick="toggleTag(this)">health</span>
-<span class="chip" onclick="toggleTag(this)">milestone</span>
-<span class="chip" onclick="toggleTag(this)">idea</span>
-<span class="chip" onclick="toggleTag(this)">gratitude</span>
+<span class="chip" onclick="toggleTag(this)">personal</span><span class="chip" onclick="toggleTag(this)">work</span><span class="chip" onclick="toggleTag(this)">health</span><span class="chip" onclick="toggleTag(this)">milestone</span>
 </div>
-<div class="flex"><input type="text" id="custom-tag" placeholder="Custom tag" style="width:150px"><button class="sec" onclick="addCustomTag()" style="margin-left:4px">+</button><button onclick="saveJournal()" style="margin-left:auto">Save Entry</button></div>
-</div>
-<div class="grid g4 mb16" id="journal-stats"></div>
+<button onclick="saveJournal()">Save Entry</button>
+</div></div>
+<!-- Auto-generated timeline -->
 <div class="card">
-<div class="flex mb8" style="justify-content:space-between;flex-wrap:wrap;gap:4px">
-<h3>ENTRIES</h3>
-<div class="flex" style="gap:4px">
-<select id="journal-month-filter" style="width:auto;font-size:10px" onchange="renderJournal()"><option value="">All time</option></select>
-<input type="text" id="journal-search" placeholder="Search..." style="width:100px;font-size:10px" oninput="renderJournal()">
-<select id="journal-filter-mood" style="width:auto;font-size:10px" onchange="renderJournal()"><option value="">All moods</option><option>😊</option><option>😐</option><option>😔</option><option>😤</option><option>🤩</option><option>😴</option><option>🤒</option></select>
+<div class="flex" style="justify-content:space-between;align-items:center">
+<h3>TIMELINE</h3>
+<select id="journal-month-filter" style="width:auto" onchange="renderJournal()"><option value="">This Month</option></select>
 </div>
+<div id="journal-timeline"></div>
 </div>
-<div id="journal-entries"></div>
-</div>
-<div class="card"><h3>Mood Trend (30 days)</h3><div class="chart-container"><canvas id="mood-chart"></canvas></div></div>
-<div class="card" id="on-this-day" style="display:none"><h3>📅 On This Day...</h3><div id="on-this-day-content"></div></div>
+<!-- Food journal -->
+<div class="card"><h3>FOOD JOURNAL</h3><div id="food-journal"></div></div>
+<!-- Hidden elements for JS compat -->
+<div style="display:none"><div id="journal-stats"></div><div id="journal-entries"></div><div id="journal-daily-prompt"></div><input id="journal-search"><select id="journal-filter-mood"></select><div id="journal-wc"></div><canvas id="mood-chart"></canvas><div id="on-this-day"></div><div id="on-this-day-content"></div></div>
 </div>
 
 <!-- OUTFIT TAB -->
@@ -674,6 +652,7 @@ entries.forEach((e,i)=>{
 html+=`<div class="food-row">
 <select onchange="updateFood('${date}',${i},'meal',this.value)" style="width:80px;font-size:10px">${meals.map(m=>`<option ${e.meal===m?'selected':''}>${m}</option>`).join('')}</select>
 <input value="${e.desc||''}" placeholder="What did you eat?" onchange="updateFood('${date}',${i},'desc',this.value)">
+<span class="chip ${e.healthy?'active':''}" onclick="toggleFoodFlag('${date}',${i},'healthy')" style="${e.healthy?'background:var(--green);border-color:var(--green)':''}">Healthy</span>
 <span class="chip ${e.outside?'active':''}" onclick="toggleFoodFlag('${date}',${i},'outside')">Outside</span>
 <span class="chip ${e.junk?'active':''}" onclick="toggleFoodFlag('${date}',${i},'junk')">Junk</span>
 <button class="sec" onclick="removeFood('${date}',${i})" style="padding:2px 6px;font-size:10px">✕</button>
@@ -2345,51 +2324,50 @@ showModal(`<h3>Edit Entry</h3>
 function saveEditJournal(i){const d=getJournalData();d[i].date=$('ej-date').value;d[i].title=$('ej-title').value;d[i].body=$('ej-body').value;LS.set('journalData',d);closeModal();toast('✅ Updated');renderJournal()}
 function renderJournal(){
 if(!$('journal-date').value)$('journal-date').value=todayStr;
-const prompt=getJournalPrompt();if($('journal-daily-prompt'))$('journal-daily-prompt').textContent=prompt?''+prompt+' (click to use)':'';
 const data=getJournalData();
-const search=($('journal-search')?$('journal-search').value:'').toLowerCase();
-const moodFilter=$('journal-filter-mood')?$('journal-filter-mood').value:'';
 const monthFilter=$('journal-month-filter')?$('journal-month-filter').value:'';
+const targetMonth=monthFilter||thisMonth;
 // Populate month dropdown
-const allMonths=[...new Set(data.map(e=>e.date?e.date.slice(0,7):'').filter(Boolean))].sort().reverse();
+const allMonths=new Set();
+data.forEach(e=>{if(e.date)allMonths.add(e.date.slice(0,7))});
+Object.keys(getWorkData()).forEach(d=>allMonths.add(d.slice(0,7)));
+const sortedMonths=[...allMonths].sort().reverse();
 const mfEl=$('journal-month-filter');if(mfEl){const cur=mfEl.value;
-mfEl.innerHTML='<option value="">All time</option>'+allMonths.map(m=>`<option value="${m}" ${m===cur?'selected':''}>${m}</option>`).join('')}
-const thisMonthEntries=data.filter(e=>e.date&&e.date.startsWith(thisMonth));
-let streak=0;for(let i=0;i<30;i++){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
-if(data.some(e=>e.date===ds))streak++;else break}
-const moodCounts={};data.forEach(e=>{if(e.mood){moodCounts[e.mood]=(moodCounts[e.mood]||0)+1}});
-const topMood=Object.entries(moodCounts).sort((a,b)=>b[1]-a[1])[0];
-$('journal-stats').innerHTML=`
-<div class="card stat-box"><div class="num">${data.length}</div><div class="lbl">Total Entries</div></div>
-<div class="card stat-box"><div class="num">${thisMonthEntries.length}</div><div class="lbl">This Month</div></div>
-<div class="card stat-box"><div class="num">${streak>0?'🔥 '+streak:0}</div><div class="lbl">Writing Streak</div></div>
-<div class="card stat-box"><div class="num">${topMood?topMood[0]:'—'}</div><div class="lbl">Top Mood</div></div>`;
-// Filter entries
-let filtered=[...data].sort((a,b)=>b.date.localeCompare(a.date));
-if(monthFilter)filtered=filtered.filter(e=>e.date&&e.date.startsWith(monthFilter));
-if(search)filtered=filtered.filter(e=>(e.title||'').toLowerCase().includes(search)||(e.body||'').toLowerCase().includes(search)||(e.tags||[]).some(t=>t.toLowerCase().includes(search)));
-if(moodFilter)filtered=filtered.filter(e=>e.mood===moodFilter);
-let ehtml='';filtered.forEach(e=>{
-const i=data.indexOf(e);
-ehtml+=`<div class="card" style="padding:12px"><div class="flex" style="justify-content:space-between">
-<div><strong>${e.title||'Untitled'}</strong> <span style="color:var(--text2);font-size:12px">${fmtDate(e.date)}</span> ${e.mood||''}</div>
-<button class="sec" style="padding:2px 6px;margin-right:4px" onclick="editJournalEntry(${i})">✏️</button><button class="sec" style="padding:2px 6px" onclick="removeJournalEntry(${i})">✕</button></div>
-<p style="font-size:13px;color:var(--text2);margin-top:4px;white-space:pre-wrap">${e.body||''}</p>
-<div style="margin-top:4px">${(e.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`});
-$('journal-entries').innerHTML=ehtml||'<p style="color:var(--text2);text-align:center">No entries match</p>';
-const moodMap={'😊':5,'🤩':5,'😐':3,'😴':2,'😔':1,'😤':1,'🤒':1};
-const labels=[],vals=[];
-for(let i=29;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);const ds=d.toISOString().slice(0,10);
-const entry=data.find(e=>e.date===ds);labels.push(d.getDate());vals.push(entry&&entry.mood?moodMap[entry.mood]||3:null)}
-makeChart('mood-chart',{type:'line',data:{labels,datasets:[{label:'Mood',data:vals,borderColor:'#ec4899',backgroundColor:'#ec489933',fill:true,tension:.3,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:0,max:6,ticks:{callback:v=>['','😔','😴','😐','','😊'][v]||''}}},plugins:{legend:{display:false}}}});
-// On this day
-const todayMD=todayStr.slice(5);const otd=data.filter(e=>e.date&&e.date.slice(5)===todayMD&&e.date!==todayStr);
-if(otd.length){$('on-this-day').style.display='block';
-$('on-this-day-content').innerHTML=otd.map(e=>`<div style="padding:6px 0;border-bottom:1px solid var(--border)"><strong>${e.title||'Untitled'}</strong> ${e.mood||''} <span style="color:var(--text2);font-size:12px">${e.date}</span><p style="font-size:12px;color:var(--text2);margin:2px 0">${(e.body||'').slice(0,100)}${(e.body||'').length>100?'...':''}</p></div>`).join('')}
-else{$('on-this-day').style.display='none'}
+mfEl.innerHTML=sortedMonths.map(m=>`<option value="${m}" ${m===(cur||thisMonth)?'selected':''}>${m}</option>`).join('')}
+// Build auto-timeline: day 1 to day N, ascending
+const[yr,mo]=[parseInt(targetMonth.split('-')[0]),parseInt(targetMonth.split('-')[1])-1];
+const dim=daysInMonth(yr,mo);
+let tlHtml='';
+for(let d=1;d<=Math.min(dim,targetMonth===thisMonth?today.getDate():dim);d++){
+const ds=`${yr}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+const events=[];
+data.filter(e=>e.date===ds).forEach(e=>{events.push({type:'journal',text:(e.title||'Entry')+': '+(e.body||'').slice(0,80),mood:e.mood||''})});
+const sc=calcDayScore(ds);if(sc.total>0&&sc.pct===100)events.push({type:'habit',text:'Perfect habit day (100%)'});
+else if(sc.total>0&&sc.pct>=80)events.push({type:'habit',text:'Great habits ('+sc.pct+'%)'});
+const dt=classifyDay(ds);if(dt&&dt.name.includes('Productive'))events.push({type:'work',text:'Productive day'});
+getCareerData().filter(e=>e.date===ds).forEach(e=>{events.push({type:'career',text:e.type+': '+(e.desc||'').slice(0,50)})});
+const food=getFoodLog()[ds]||[];
+if(food.some(f=>f.junk))events.push({type:'food-bad',text:'Junk food: '+food.filter(f=>f.junk).map(f=>f.desc||f.meal).join(', ')});
+else if(food.length&&food.every(f=>f.healthy))events.push({type:'food-good',text:'All healthy meals'});
+const todos=getTodos()[ds]||[];const doneTodos=todos.filter(t=>t.done);
+if(doneTodos.length>=3)events.push({type:'todo',text:doneTodos.length+' tasks done'});
+if(!events.length)continue;
+const dayName=DAYS[new Date(ds).getDay()];
+tlHtml+=`<div style="padding:6px 0;border-bottom:1px solid var(--border)"><div style="font-size:11px;font-weight:600;color:var(--text2)">${fmtDate(ds)} ${dayName}</div>`;
+const colors={journal:'var(--accent2)',habit:'var(--green)',work:'#7c3aed','food-bad':'var(--red)','food-good':'var(--green)',career:'#3b82f6',todo:'var(--text2)'};
+events.forEach(e=>{tlHtml+=`<div style="font-size:12px;padding:2px 0 2px 8px;border-left:2px solid ${colors[e.type]||'var(--border)'}">${e.mood||''} ${e.text}</div>`});
+tlHtml+='</div>'}
+$('journal-timeline').innerHTML=tlHtml||'<div style="color:var(--text2);font-size:12px">No events this month</div>';
+// Food journal
+const fjEl=$('food-journal');if(fjEl){let fjHtml='';
+for(let d=1;d<=Math.min(dim,targetMonth===thisMonth?today.getDate():dim);d++){
+const ds=`${yr}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+const food=getFoodLog()[ds]||[];if(!food.length)continue;
+const hasJunk=food.some(f=>f.junk);const allHealthy=food.length&&food.every(f=>f.healthy);
+const dot=hasJunk?'<span style="color:var(--red)">*</span>':allHealthy?'<span style="color:var(--green)">*</span>':'';
+fjHtml+=`<div style="padding:2px 0;border-bottom:1px solid var(--border);font-size:11px"><span style="color:var(--text2);min-width:45px;display:inline-block">${fmtDate(ds)}</span> ${dot} ${food.map(f=>(f.desc||f.meal)+(f.healthy?' [H]':'')+(f.junk?' [J]':'')+(f.outside?' [O]':'')).join(', ')}</div>`}
+fjEl.innerHTML=fjHtml||'<div style="color:var(--text2);font-size:11px">No food logged</div>'}
 }
-</script>
-<script>
 // ===== OUTFIT MODULE =====
 const DEFAULT_OUTFITS=[
 {id:1,name:'Baby pink with puff sleeves + light blue jeans',cat:'Top+Jeans'},
@@ -2632,8 +2610,28 @@ actions.push('Auto-marked weekend as off (you usually do)');}
 }
 }
 
-// 4. Carry forward account balances to new month
-// (accounts are global, but ensure finHistory seed is fresh)
+// 4. Carry forward incomplete todos from yesterday
+const allTodos=getTodos();const ydTodos=allTodos[yds]||[];
+const todayTodos=allTodos[todayStr]||[];
+const carried=ydTodos.filter(t=>!t.done&&!todayTodos.some(tt=>tt.text===t.text));
+if(carried.length){if(!allTodos[todayStr])allTodos[todayStr]=[];
+carried.forEach(t=>{allTodos[todayStr].push({text:t.text,done:false,hours:[]})});
+LS.set('todos',allTodos);actions.push(carried.length+' todos carried forward')}
+
+// 5. Auto-copy life log pattern from same weekday last week if today is empty
+const todayHrs=wData[todayStr]?.hours||{};
+const filledToday=Object.values(todayHrs).filter(h=>h.cat||(h.cats&&h.cats.length)).length;
+if(filledToday<=1){// Only sleep auto-filled
+const lastWeek=new Date(today);lastWeek.setDate(lastWeek.getDate()-7);const lwds=lastWeek.toISOString().slice(0,10);
+if(wData[lwds]&&wData[lwds].hours){
+const lwHrs=wData[lwds].hours;let copied=0;
+Object.entries(lwHrs).forEach(([slot,h])=>{
+const s=parseInt(slot);if(s<=0)return;// Skip sleep slot
+if(!todayHrs[s]||(!todayHrs[s].cat&&(!todayHrs[s].cats||!todayHrs[s].cats.length))){
+wData[todayStr].hours[s]=JSON.parse(JSON.stringify(h));wData[todayStr].hours[s].desc='';copied++}});
+if(copied>2){saveWorkData(wData);actions.push('Life log suggested from last '+DAYS[lastWeek.getDay()])}
+}}
+
 initFinanceHistory();
 
 LS.set(key,true);
@@ -2697,6 +2695,21 @@ if(!acts.length)alerts.push({text:'No hours logged today',action:"switchTab('wor
 if(!oe)alerts.push({text:'No outfit picked',action:"switchTab('outfit')"});
 const inv=getInvestments();inv.fd.forEach(f=>{const dl=Math.round((new Date(f.maturity)-today)/86400000);
 if(dl>0&&dl<=7)alerts.push({text:f.bank+' FD matures in '+dl+'d',action:"switchTab('finance')"})});
+// Backlog todos — tasks sitting undone for days
+const allT=getTodos();Object.entries(allT).forEach(([d,items])=>{if(d>=todayStr)return;
+items.forEach(t=>{if(!t.done){const age=Math.round((today-new Date(d))/86400000);
+if(age>=7)alerts.push({text:t.text+' (backlog '+age+'d)',action:"switchTab('work')"})}})});
+// Habits not picked up — less than 25% completion this month
+const hAll=getHabits(),hData2=getHabitData();const daysThisMonth=today.getDate();
+['good','donts','fitness'].forEach(cat=>{hAll[cat].forEach(name=>{let done=0;
+for(let d=1;d<=daysThisMonth;d++){const ds2=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+if(hData2[`${cat}_${name}_${ds2}`])done++}
+if(daysThisMonth>=7&&done/daysThisMonth<0.25)alerts.push({text:name+' only '+Math.round(done/daysThisMonth*100)+'% this month',action:"switchTab('habits')"})})});
+// Career sections not touched in 14+ days
+const cData2=getCareerData();['Coursera','LeetCode','System Design','Resume/Jobs','Portfolio','Reading'].forEach(t=>{
+const last=cData2.filter(e=>e.type===t).sort((a,b)=>b.date.localeCompare(a.date))[0];
+const age=last?Math.round((today-new Date(last.date))/86400000):999;
+if(age>=14)alerts.push({text:t+(age===999?' never started':' idle '+age+'d'),action:"switchTab('career')"})});
 if(alerts.length){$('dash-alerts').style.display='block';
 $('dash-alerts').innerHTML='<h3>NEEDS ATTENTION</h3>'+alerts.map(a=>`<div style="padding:3px 0;font-size:11px;cursor:pointer;border-bottom:1px solid var(--border)" onclick="${a.action}">${a.text} →</div>`).join('')}
 else{$('dash-alerts').style.display='none'}
